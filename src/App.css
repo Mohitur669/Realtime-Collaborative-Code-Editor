@@ -102,7 +102,6 @@ footer a:hover {
 .mainWrap {
     display: grid;
     grid-template-columns: 300px 1fr;
-    height: 100vh;
 }
 
 .aside {
@@ -141,7 +140,7 @@ footer a:hover {
 }
 
 .logoImage {
-    height: 60px;
+    height: 70px;
 }
 
 .leaveBtn {

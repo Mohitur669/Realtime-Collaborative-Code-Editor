@@ -1,14 +1,54 @@
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import Client from '../components/Client';
 import Editor from '../components/Editor';
+import { initSocket } from '../socket';
+import ACTIONS from '../actions/Actions';
+import { useLocation, useNavigate, Navigate, useParams } from 'react-router-dom';
+import toast from 'react-hot-toast';
 
 function EditorPage() {
 
-    const [ clients, setClients ] = useState([
-        { socketId: 1, username: "Mohitur R" },
-        { socketId: 2, username: "Sayan C" },
-        { socketId: 3, username: "Indrajit C" },
-    ]);
+    const socketRef = useRef(null);
+    const location = useLocation();
+    const { roomId } = useParams();
+    const reactNavigator = useNavigate();
+    const [ clients, setClients ] = useState([]);
+
+    useEffect(() => {
+        const init = async () => {
+            socketRef.current = await initSocket();
+            socketRef.current.on('connect_error', (err) => handleErrors(err));
+            socketRef.current.on('connect_failed', (err) => handleErrors(err));
+
+            function handleErrors(e) {
+                console.log('socket error', e);
+                toast.error('Socket connection failed, try again later.');
+                reactNavigator('/');
+            }
+
+            socketRef.current.emit(ACTIONS.JOIN, {
+                roomId,
+                username: location.state?.username,
+            });
+
+            // Listening for joined event
+            socketRef.current.on(
+                ACTIONS.JOINED,
+                ({ clients, username, socketId }) => {
+                    if (username !== location.state?.username) {
+                        toast.success(`${username} joined the room.`);
+                        console.log(`${username} joined`);
+                    }
+                    setClients(clients);
+                }
+            );
+        };
+        init();
+    }, []);
+
+    if (!location.state) {
+        return <Navigate to="/" />
+    }
 
     return (
         <div className="mainWrap">
