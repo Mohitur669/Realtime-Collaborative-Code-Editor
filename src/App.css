@@ -1,7 +1,8 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500&display=swap');
+@import url('https://fonts.cdnfonts.com/css/cascadia-code');
 
 body {
-    font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    font-family: Inter, system-ui, -apple-system;
     font-weight: 500;
 }
 
@@ -154,8 +155,9 @@ footer a:hover {
 }
 
 .CodeMirror {
+    font-family: 'Cascadia Code', sans-serif!important;
     min-height: calc(100vh - 20px);
-    font-size: 20px;
+    font-size: 19px;
     padding-top: 20px;
     line-height: 1.2;
 }
