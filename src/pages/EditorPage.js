@@ -34,6 +34,7 @@ function EditorPage() {
             // Listening for joined event
             socketRef.current.on(ACTIONS.JOINED, ({ clients, username, socketId }) => {
                 if (username !== location.state?.username) {
+                    // TODO: toaster count fix
                     toast.success(`${username} joined the room.`);
                     console.log(`${username} joined`);
                 }
@@ -47,8 +48,22 @@ function EditorPage() {
                 setClients(uniqueClients);
             });
 
+            // listening for disconnected
+            socketRef.current.on(ACTIONS.DISCONNECTED, ({ socketId, username }) => {
+                toast.success(`${username} left the room`);
+                setClients((prev) => {
+                    return prev.filter(client => client.socketId !== socketId);
+                });
+            });
         };
         init();
+
+        // listener cleaning function
+        // return () => {
+        //     socketRef.current.disconnect();
+        //     socketRef.current.off(ACTIONS.JOINED);
+        //     socketRef.current.off(ACTIONS.DISCONNECTED);
+        // }
     }, []);
 
     if (!location.state) {
