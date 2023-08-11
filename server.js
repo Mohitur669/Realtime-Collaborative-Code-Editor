@@ -64,19 +64,19 @@ io.on('connection', (socket) => {
     });
 
     socket.on(ACTIONS.LEAVE_ROOM, ({ roomId, username }) => {
-        const leavingSocketId = Object.keys(userSocketMap).find(key => userSocketMap[key] === username);
-    
+        const leavingSocketId = Object.keys(userSocketMap).find(key => userSocketMap[ key ] === username);
+
         if (leavingSocketId) {
             // Emit a custom event to notify other clients that the user left
             socket.to(roomId).emit(ACTIONS.DISCONNECTED, {
                 socketId: leavingSocketId,
-                username: userSocketMap[leavingSocketId],
+                username: userSocketMap[ leavingSocketId ],
             });
-    
+
             // Remove the user from the userSocketMap
-            delete userSocketMap[leavingSocketId];
+            delete userSocketMap[ leavingSocketId ];
         }
-    });    
+    });
 });
 
 const PORT = process.env.PORT || 5000;
