@@ -1,5 +1,3 @@
-// Editor.js
-
 import React, { useEffect, useRef } from 'react';
 import CodeMirror from 'codemirror';
 import 'codemirror/lib/codemirror.css';
@@ -9,7 +7,7 @@ import 'codemirror/addon/edit/closetag';
 import 'codemirror/addon/edit/closebrackets';
 import ACTIONS from '../actions/Actions';
 
-function Editor({ socketRef, roomId }) {
+function Editor({ socketRef, roomId, onCodeChange }) {
     const editorRef = useRef(null);
 
     useEffect(() => {
@@ -27,6 +25,8 @@ function Editor({ socketRef, roomId }) {
         const handleCodeChange = (instance, changes) => {
             const { origin } = changes;
             const code = instance.getValue();
+
+            onCodeChange(code);
 
             // Emit the code change to other clients in the same room
             if (origin !== 'setValue' && socketRef.current) {

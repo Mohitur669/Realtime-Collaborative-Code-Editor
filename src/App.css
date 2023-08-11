@@ -155,7 +155,7 @@ footer a:hover {
 }
 
 .CodeMirror {
-    font-family: 'Cascadia Code', sans-serif!important;
+    font-family: 'Cascadia Code', sans-serif !important;
     min-height: calc(100vh - 20px);
     font-size: 19px;
     padding-top: 20px;
