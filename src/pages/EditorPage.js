@@ -89,7 +89,14 @@ function EditorPage() {
 
     // leave the room
     function leaveRoom() {
+        socketRef.current.emit(ACTIONS.LEAVE_ROOM, {
+            roomId,
+            username: location.state.username,
+        });
         reactNavigator('/');
+        setTimeout(() => {
+            window.location.reload();
+        }, 100);
     }
 
     if (!location.state) {
