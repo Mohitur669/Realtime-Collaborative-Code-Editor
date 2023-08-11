@@ -21,6 +21,7 @@ function getAllConnectedClients(roomId) {
 io.on('connection', (socket) => {
     console.log('Socket Connected', socket.id);
 
+    // for joining room
     socket.on(ACTIONS.JOIN, ({ roomId, username }) => {
         userSocketMap[ socket.id ] = username;
         socket.join(roomId);
@@ -40,6 +41,12 @@ io.on('connection', (socket) => {
         }
     });
 
+    // for sync
+    socket.on(ACTIONS.CODE_CHANGE, ({ roomId, code }) => {
+        socket.in(roomId).emit(ACTIONS.CODE_CHANGE, { code });
+    });
+
+    // disconnecting from socket
     socket.on('disconnecting', () => {
         const rooms = [ ...socket.rooms ];
         rooms.forEach((roomId) => {
