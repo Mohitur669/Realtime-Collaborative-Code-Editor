@@ -18,7 +18,7 @@ function Editor() {
         });
 
         return () => {
-            editor.toTextArea(); // Clean up the CodeMirror instance
+            editor.toTextArea();
         };
     }, []);
 
