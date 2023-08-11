@@ -9,25 +9,14 @@ const io = new Server(server);
 
 const userSocketMap = {};
 
-// function getAllConnectedClients(roomId) {
-//     // Map
-//     Array.from(io.sockets.adapter.rooms.get(roomId) || []).map((socketId) => {
-//         return {
-//             socketId,
-//             username: userSocketMap[ socketId ]
-//         }
-//     });
-// }
-
 function getAllConnectedClients(roomId) {
     return Array.from(io.sockets.adapter.rooms.get(roomId) || []).map((socketId) => {
         return {
             socketId,
-            username: userSocketMap[socketId]
+            username: userSocketMap[ socketId ]
         };
     });
 }
-
 
 io.on('connection', (socket) => {
     console.log('Socket Connected', socket.id);
