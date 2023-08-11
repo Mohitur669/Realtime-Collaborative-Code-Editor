@@ -39,7 +39,20 @@ function EditorPage() {
                         toast.success(`${username} joined the room.`);
                         console.log(`${username} joined`);
                     }
-                    setClients(clients);
+                    // setClients(clients);
+                    // const newClients = clients.filter(client => !clients.some(c => c.socketId === client.socketId));
+                    // setClients(prevClients => [ ...prevClients, ...newClients ]);
+                    // setClients(prevClients => {
+                    //     const updatedClients = clients.filter(client => client.socketId !== socketId);
+                    //     return [...updatedClients, ...prevClients];
+                    // });
+                    setClients(prevClients => {
+                        console.log('Before filter:', clients);
+                        const updatedClients = prevClients.filter(client => client.socketId !== socketId);
+                        console.log('After filter:', updatedClients);
+                        return [ ...updatedClients, { socketId, username } ];
+                    });
+
                 }
             );
         };
