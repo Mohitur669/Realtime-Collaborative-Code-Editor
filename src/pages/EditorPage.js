@@ -32,18 +32,21 @@ function EditorPage() {
             });
 
             // Listening for joined event
-            socketRef.current.on(
-                ACTIONS.JOINED,
-                ({ clients, username, socketId }) => {
-                    if (username !== location.state?.username) {
-                        toast.success(`${username} joined the room.`);
-                        console.log(`${username} joined`);
-                    }
-
-                    const filteredClients = clients.filter(client => client.socketId !== socketId);
-                    setClients(filteredClients);
+            socketRef.current.on(ACTIONS.JOINED, ({ clients, username, socketId }) => {
+                if (username !== location.state?.username) {
+                    toast.success(`${username} joined the room.`);
+                    console.log(`${username} joined`);
                 }
-            );
+
+                // Update the clients list with a unique list of clients using socketId
+                const uniqueClients = clients.filter(
+                    (client, index, self) =>
+                        index === self.findIndex(c => c.username === client.username)
+                );
+
+                setClients(uniqueClients);
+            });
+
         };
         init();
     }, []);

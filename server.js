@@ -20,9 +20,11 @@ function getAllConnectedClients(roomId) {
 
 io.on('connection', (socket) => {
     console.log('Socket Connected', socket.id);
+
     socket.on(ACTIONS.JOIN, ({ roomId, username }) => {
         userSocketMap[ socket.id ] = username;
         socket.join(roomId);
+
         const clients = getAllConnectedClients(roomId);
 
         if (Array.isArray(clients)) {
