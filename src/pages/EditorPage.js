@@ -59,11 +59,13 @@ function EditorPage() {
         init();
 
         // listener cleaning function
-        // return () => {
-        //     socketRef.current.disconnect();
-        //     socketRef.current.off(ACTIONS.JOINED);
-        //     socketRef.current.off(ACTIONS.DISCONNECTED);
-        // }
+        return () => {
+            if (socketRef.current) {
+                socketRef.current.disconnect();
+                socketRef.current.off(ACTIONS.JOINED);
+                socketRef.current.off(ACTIONS.DISCONNECTED);
+            }
+        }
     }, []);
 
     if (!location.state) {
