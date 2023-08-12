@@ -33,7 +33,7 @@ This project is not currently live on any server. But to use the demo version, f
 Now both your editor will be synced and you can see the changes in real time. Try opening the same room in multiple tabs and see the changes.
 
 ## Project Video
-<iframe width="560" height="315" src="https://www.youtube.com/embed/X-xMq8EAAB4" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+
 
 ## Known Bugs
 - If a user leaves or enters the room, the toast notification number not showing correctly. <br>
