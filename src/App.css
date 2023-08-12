@@ -1,6 +1,13 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500&display=swap');
 @import url('https://fonts.cdnfonts.com/css/cascadia-code');
 
+:root {
+    --join-color: #87CEEB;
+    --join-hover-color: #0096FF;
+    --leave-color: #B90000;
+    --leave-hover-color: #FF5733;
+}
+
 body {
     font-family: Inter, system-ui, -apple-system;
     font-weight: 500;
@@ -28,7 +35,8 @@ footer {
 }
 
 footer a {
-    color: #4aee88;
+    color: var(--join-color);
+    text-decoration: none;
 }
 
 
@@ -69,17 +77,29 @@ footer a {
     transition: all 0.3s ease-in-out;
 }
 
-.joinBtn,
-.leaveBtn {
-    background: #4aed88;
+.joinBtn {
+    background: var(--join-color);
     font-weight: bold;
     width: 100px;
     margin-left: auto;
 }
 
-.joinBtn:hover,
+.leaveBtn {
+    background-color: var(--leave-color);
+    font-weight: bold;
+    width: 100px;
+    margin-left: auto;
+    color: white;
+}
+
+.joinBtn:hover {
+    background: var(--join-hover-color);
+    color: white;
+}
+
 .leaveBtn:hover {
-    background: #42c072;
+    background: var(--leave-hover-color);
+    transition: all 0.3s ease-in-out;
 }
 
 .createInfo {
@@ -88,16 +108,19 @@ footer a {
 }
 
 .createNewBtn {
-    color: #4aed88;
+    color: #40be70;
     text-decoration: none;
-    border-bottom: 1px solid #4aed88;
     transition: all 0.3s ease-in-out;
+    font-weight: 500 !important;
 }
 
-.createNewBtn:hover,
+.createNewBtn:hover {
+    color: #4aed88;
+    border-color: #4aed88;
+}
+
 footer a:hover {
-    color: #42c072;
-    border-color: #42c072;
+    color: var(--join-hover-color);
 }
 
 .mainWrap {

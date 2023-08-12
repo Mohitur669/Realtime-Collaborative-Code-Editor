@@ -41,7 +41,7 @@ function Home() {
         <div className="homePageWrapper">
 
             <div className="formWrapper">
-                <img className="homePageLogo" src="/code-sync.png" alt="code-sync-logo" />
+                <img className="homePageLogo" src="/logo.png" alt="code-sync-logo" />
                 <h4 className="mainLabel">Paste invitation ROOM ID</h4>
 
                 <div className="inputGroup">
@@ -77,7 +77,7 @@ function Home() {
 
 
             <footer>
-                <h4>Built by &nbsp;<a href="https://github.com/Mohitur669">Mohitur</a></h4>
+                <h4>Built by &nbsp;<a href="https://github.com/Mohitur669" target='_blank' rel="noreferrer">Mohitur</a></h4>
             </footer>
 
         </div>
