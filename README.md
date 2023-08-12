@@ -1,7 +1,7 @@
 # Realtime Collaborative Code Editor
 
 ## Introduction
-This is a realtime collaborative (multiple users) code editor built using React, Node.js, Express and Socket.io.
+Are you tired of sending code snippets back and forth, struggling to debug and collaborate with your team? Look no further! **Sync Code** is here to revolutionize the way you code together. This powerful and intuitive collaborative code editor is designed to empower developers, designers, and teams to work seamlessly in real-time, regardless of their location. With **Sync Code**, you can code together, debug together, and ship faster, together.
 
 ## Features
 - Multiple users can join a room and edit code together
