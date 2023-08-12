@@ -34,7 +34,6 @@ Now both your editor will be synced and you can see the changes in real time. Tr
 
 ## Project Video
 
-
 ## Known Bugs
 - If a user leaves or enters the room, the toast notification number not showing correctly. <br>
     - Like, if I (user1) creates a room and user2 joins the same room, then instead of one toast notification, four toast notifications are shown.
