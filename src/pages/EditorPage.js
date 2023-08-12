@@ -108,7 +108,7 @@ function EditorPage() {
             <div className="aside">
                 <div className="asideInner">
                     <div className="logo">
-                        <img className="logoImage" src="/code-sync.png" alt="logo" />
+                        <img className="logoImage" src="/logo.png" alt="logo" />
                     </div>
 
                     <h3>Connected</h3>
