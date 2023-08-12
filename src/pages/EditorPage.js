@@ -37,7 +37,6 @@ function EditorPage() {
                 ACTIONS.JOINED,
                 ({ clients, username, socketId }) => {
                     if (username !== location.state?.username) {
-                        // TODO: toaster count fix
                         toast.success(`${username} joined the room.`);
                         console.log(`${username} joined`);
                     }
@@ -58,10 +57,12 @@ function EditorPage() {
 
             // listening for disconnected
             socketRef.current.on(ACTIONS.DISCONNECTED, ({ socketId, username }) => {
-                toast.success(`${username} left the room`);
-                setClients((prevClients) => {
-                    return prevClients.filter(client => client.socketId !== socketId);
-                });
+                if(username){
+                    toast.success(`${username} left the room`);
+                    setClients((prevClients) => {
+                        return prevClients.filter(client => client.socketId !== socketId);
+                    });
+                }
             });
         };
 
