@@ -33,7 +33,7 @@ This project is not currently live on any server. But to use the demo version, f
 Now both your editor will be synced and you can see the changes in real time. Try opening the same room in multiple tabs and see the changes.
 
 ## Project Video
-https://github.com/Mohitur669/Realtime-Collaborative-Code-Editor/assets/79283402/857136b1-b940-446c-b157-376548f8c448
+https://github.com/Mohitur669/Realtime-Collaborative-Code-Editor/assets/79283402/14c17cc7-d23a-4d39-8af3-ef9e9fa8ef45
 
 ## Known Bugs
 - If a user leaves or enters the room, the toast notification number not showing correctly. <br>
