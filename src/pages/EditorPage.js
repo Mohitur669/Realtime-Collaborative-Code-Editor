@@ -76,7 +76,7 @@ function EditorPage() {
                 socketRef.current.off(ACTIONS.DISCONNECTED);
             }
         }
-    }, []);
+    }, [location.state?.username, reactNavigator, roomId]);
 
     // copy the room id to clipboard
     async function copyRoomId() {
