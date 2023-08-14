@@ -57,7 +57,7 @@ function EditorPage() {
 
             // listening for disconnected
             socketRef.current.on(ACTIONS.DISCONNECTED, ({ socketId, username }) => {
-                if(username){
+                if (username) {
                     toast.success(`${username} left the room`);
                     setClients((prevClients) => {
                         return prevClients.filter(client => client.socketId !== socketId);
@@ -76,7 +76,7 @@ function EditorPage() {
                 socketRef.current.off(ACTIONS.DISCONNECTED);
             }
         }
-    }, [location.state?.username, reactNavigator, roomId]);
+    }, [ location.state?.username, reactNavigator, roomId ]);
 
     // copy the room id to clipboard
     async function copyRoomId() {
