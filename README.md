@@ -35,7 +35,7 @@ Now both your editor will be synced and you can see the changes in real time. Tr
 ## Project Video
 https://github.com/Mohitur669/Realtime-Collaborative-Code-Editor/assets/79283402/14c17cc7-d23a-4d39-8af3-ef9e9fa8ef45
 
-**Note:** If you find other bugs, please let me know. I will try to fix it as soon as possible :) <br>
+**Note:** If you find any bugs, please let me know. I will try to fix it as soon as possible :) <br>
 In case you want to fix it yourself, feel free to make a pull request.
 
 ## Future Scope 
