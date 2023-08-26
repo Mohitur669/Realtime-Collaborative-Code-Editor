@@ -35,15 +35,8 @@ Now both your editor will be synced and you can see the changes in real time. Tr
 ## Project Video
 https://github.com/Mohitur669/Realtime-Collaborative-Code-Editor/assets/79283402/14c17cc7-d23a-4d39-8af3-ef9e9fa8ef45
 
-## Known Bugs
-- If a user leaves or enters the room, the toast notification number not showing correctly. <br>
-    - Like, if I (user1) creates a room and user2 joins the same room, then instead of one toast notification, four toast notifications are shown.
-    - Now if user2 leaves, then two toast notifications are shown instead of one. <br>
-    P.S. The numbers of toast notification increases more and more if more users joins and leaves the room.
-
-**Note:** If you find any other bugs, please let me know. I will try to fix it as soon as possible :) <br>
+**Note:** If you find any bugs, please let me know. I will try to fix it as soon as possible :) <br>
 In case you want to fix it yourself, feel free to make a pull request.
-
 
 ## Future Scope 
 - Add syntax highlighting for multiple languages
