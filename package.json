@@ -22,7 +22,7 @@
     },
     "scripts": {
         "start": "react-scripts start",
-        "build": "react-scripts build",
+        "build": "react-scripts build && npm run server:prod",
         "server:dev": "nodemon server.js",
         "server:prod": "node server.js",
         "test": "react-scripts test",
