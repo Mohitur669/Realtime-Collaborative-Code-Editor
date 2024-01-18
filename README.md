@@ -1,7 +1,7 @@
 # Sync Code: Realtime Collaborative Code Editor
 
 ## Introduction
-Are you tired of sending code snippets back and forth, struggling to debug and collaborate with your team? Look no further! **Sync Code** is here to revolutionize the way you code together. This powerful and intuitive collaborative code editor is designed to empower developers, designers, and teams to work seamlessly in real-time, regardless of their location. With **Sync Code**, you can code together, debug together, and ship faster, together.
+Are you tired of sending code snippets back and forth, struggling to debug and collaborate with your team? Look no further! **Sync Code** is here to revolutionize the way you code together. This powerful and intuitive collaborative code editor is designed to empower developers, and teams to work seamlessly in real-time, regardless of their location. With **Sync Code**, you can code together, debug together, and ship faster, together.
 
 ## Features
 - Multiple users can join a room and edit code together
@@ -11,6 +11,12 @@ Are you tired of sending code snippets back and forth, struggling to debug and c
 - Supports syntax highlighting (currently only for JavaScript)
 - Users can leave the room and rejoin later to continue editing
 - Joining & leaving of users is also reflected in real time
+
+### Prerequisites
+- Node.js (v20.11.0)
+- npm (v10.2.4)
+
+I have used nvm (v0.39.7) to manage my node versions. View nvm official [documentation](https://github.com/nvm-sh/nvm) to install it.
 
 ## Tech Stack
 - React.js
@@ -35,15 +41,17 @@ Now both your editor will be synced and you can see the changes in real time. Tr
 ## Project Video
 https://github.com/Mohitur669/Realtime-Collaborative-Code-Editor/assets/79283402/14c17cc7-d23a-4d39-8af3-ef9e9fa8ef45
 
-**Note:** If you find any bugs, please let me know. I will try to fix it as soon as possible :) <br>
+**Note:** If you find any bugs, create an Issue [here](https://github.com/Mohitur669/Realtime-Collaborative-Code-Editor/issues). I will try to fix it as soon as possible :) <br>
 In case you want to fix it yourself, feel free to make a pull request.
 
-## Future Scope 
+## Future Scope
+- Currently, trying to implement video and voice chat feature inside the editor
 - Add syntax highlighting for multiple languages
 - Add support for multiple themes (currently using Dracula theme)
 
 ## About Me
-I am Mohd Mohitur Rahaman, a tech geek, currently pursuing a Master's in Computer Applications from KIIT, Bhubaneswar. And with a deep passion for coding and a strong love for science & technology, I am dedicated to honing my skills and achieving proficiency as a developer.
+I am Mohd Mohitur Rahaman, a tech geek, currently pursuing a Master's in Computer Applications (Final Year) from KIIT, Bhubaneswar. And with a deep passion for coding and a strong love for science & technology, I am dedicated to honing my skills and achieving proficiency as a developer.
 
 ## Connect with me
 - [LinkedIn](https://www.linkedin.com/in/mohitur02/)
+- [GitHub](https://www.github.com/Mohitur669/)
