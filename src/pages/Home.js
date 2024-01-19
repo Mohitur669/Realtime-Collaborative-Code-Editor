@@ -65,11 +65,11 @@ function Home() {
 
                     <button className="btn joinBtn" onClick={joinRoom}>JOIN</button>
 
-                    <span className="createInfo">If you don't have an invite code then create &nbsp;
+                    <span className="createInfo">If you don't have an invite code then&nbsp;
                         <a
                             onClick={createNewRoom}
-                            href="google.com"
-                            className="createNewBtn">new room
+                            href="/"
+                            className="createNewBtn">create new room
                         </a>
                     </span>
                 </div>

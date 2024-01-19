@@ -129,7 +129,8 @@ footer a:hover {
 }
 
 .aside {
-    background: #1c1e29;
+    /*background: #1c1e29;*/
+    background: #252631;
     padding: 16px;
     color: #fff;
     display: flex;
