@@ -2,6 +2,9 @@ import React, {useEffect, useRef} from 'react';
 import CodeMirror from 'codemirror';
 import 'codemirror/lib/codemirror.css';
 import 'codemirror/theme/dracula.css';
+import 'codemirror/theme/darcula.css';
+import 'codemirror/theme/nord.css';
+
 import 'codemirror/mode/javascript/javascript';
 import 'codemirror/addon/edit/closetag';
 import 'codemirror/addon/edit/closebrackets';
@@ -15,7 +18,7 @@ function Editor({socketRef, roomId, onCodeChange}) {
         const textarea = document.getElementById('realtimeEditor');
         editorRef.current = CodeMirror.fromTextArea(textarea, {
             mode: 'javascript',
-            theme: 'dracula',
+            theme: 'nord',
             autoCloseTags: true,
             autoCloseBrackets: true,
             lineNumbers: true,
