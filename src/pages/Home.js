@@ -1,14 +1,14 @@
-import React, { useState } from 'react';
-import { v4 as uuidV4 } from 'uuid';
+import React, {useState} from 'react';
+import {v4 as uuidV4} from 'uuid';
 import toast from 'react-hot-toast';
-import { useNavigate } from 'react-router-dom';
+import {useNavigate} from 'react-router-dom';
 
 function Home() {
 
     const navigate = useNavigate();
 
-    const [ roomId, setRoomId ] = useState('');
-    const [ username, setUsername ] = useState('');
+    const [roomId, setRoomId] = useState('');
+    const [username, setUsername] = useState('');
 
     const createNewRoom = (e) => {
         e.preventDefault();
@@ -49,7 +49,7 @@ function Home() {
                         type="text"
                         className="inputBox"
                         placeholder="ROOM ID"
-                        onChange={(e) => { setRoomId(e.target.value) }}
+                        onChange={(e) => {setRoomId(e.target.value)}}
                         value={roomId}
                         onKeyUp={handleInputEnter}
                     />
@@ -58,7 +58,7 @@ function Home() {
                         type="text"
                         className="inputBox"
                         placeholder="USERNAME"
-                        onChange={(e) => { setUsername(e.target.value) }}
+                        onChange={(e) => {setUsername(e.target.value)}}
                         value={username}
                         onKeyUp={handleInputEnter}
                     />

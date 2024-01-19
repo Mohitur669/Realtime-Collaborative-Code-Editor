@@ -1,9 +1,9 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import Client from '../components/Client';
 import Editor from '../components/Editor';
-import { initSocket } from '../socket';
+import {initSocket} from '../socket';
 import ACTIONS from '../actions/Actions';
-import { useLocation, useNavigate, Navigate, useParams } from 'react-router-dom';
+import {useLocation, useNavigate, Navigate, useParams} from 'react-router-dom';
 import toast from 'react-hot-toast';
 
 function EditorPage() {
@@ -11,9 +11,9 @@ function EditorPage() {
     const socketRef = useRef(null);
     const codeRef = useRef(null);
     const location = useLocation();
-    const { roomId } = useParams();
+    const {roomId} = useParams();
     const reactNavigator = useNavigate();
-    const [ clients, setClients ] = useState([]);
+    const [clients, setClients] = useState([]);
 
     useEffect(() => {
         const init = async () => {
@@ -35,7 +35,7 @@ function EditorPage() {
             // Listening for joined event
             socketRef.current.on(
                 ACTIONS.JOINED,
-                ({ clients, username, socketId }) => {
+                ({clients, username, socketId}) => {
                     if (username !== location.state?.username) {
                         toast.success(`${username} joined the room.`);
                         console.log(`${username} joined`);
@@ -56,7 +56,7 @@ function EditorPage() {
                 });
 
             // listening for disconnected
-            socketRef.current.on(ACTIONS.DISCONNECTED, ({ socketId, username }) => {
+            socketRef.current.on(ACTIONS.DISCONNECTED, ({socketId, username}) => {
                 if (username) {
                     toast.success(`${username} left the room`);
                     setClients((prevClients) => {
@@ -76,7 +76,7 @@ function EditorPage() {
                 socketRef.current.off(ACTIONS.DISCONNECTED);
             }
         }
-    }, [ location.state?.username, reactNavigator, roomId ]);
+    }, [location.state?.username, reactNavigator, roomId]);
 
     // copy the room id to clipboard
     async function copyRoomId() {
@@ -131,7 +131,7 @@ function EditorPage() {
                 <Editor
                     socketRef={socketRef}
                     roomId={roomId}
-                    onCodeChange={(code) => { codeRef.current = code }}
+                    onCodeChange={(code) => {codeRef.current = code}}
                 />
             </div>
         </div>
