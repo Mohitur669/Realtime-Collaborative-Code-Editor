@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, {useEffect, useRef} from 'react';
 import CodeMirror from 'codemirror';
 import 'codemirror/lib/codemirror.css';
 import 'codemirror/theme/dracula.css';
@@ -7,7 +7,7 @@ import 'codemirror/addon/edit/closetag';
 import 'codemirror/addon/edit/closebrackets';
 import ACTIONS from '../actions/Actions';
 
-function Editor({ socketRef, roomId, onCodeChange }) {
+function Editor({socketRef, roomId, onCodeChange}) {
     const editorRef = useRef(null);
 
     useEffect(() => {
@@ -23,7 +23,7 @@ function Editor({ socketRef, roomId, onCodeChange }) {
 
         // Handle local code changes and emit to other clients
         const handleCodeChange = (instance, changes) => {
-            const { origin } = changes;
+            const {origin} = changes;
             const code = instance.getValue();
 
             onCodeChange(code);
@@ -43,12 +43,12 @@ function Editor({ socketRef, roomId, onCodeChange }) {
             editorRef.current.off('change', handleCodeChange);
             editorRef.current.toTextArea(); // Clean up the CodeMirror instance
         };
-    }, []);
+    }, [onCodeChange, roomId, socketRef]);
 
     useEffect(() => {
         // Listen for code changes from other clients
         if (socketRef.current) {
-            socketRef.current.on(ACTIONS.CODE_CHANGE, ({ code }) => {
+            socketRef.current.on(ACTIONS.CODE_CHANGE, ({code}) => {
                 if (code !== null) {
                     editorRef.current.setValue(code);
                 }
@@ -60,7 +60,7 @@ function Editor({ socketRef, roomId, onCodeChange }) {
                 socketRef.current.off(ACTIONS.CODE_CHANGE);
             }
         };
-    }, [ socketRef.current ]);
+    }, [socketRef.current]);
 
     return <textarea id="realtimeEditor"></textarea>;
 }
