@@ -14,7 +14,7 @@ Are you tired of sending code snippets back and forth, struggling to debug and c
 
 ### Prerequisites
 - Node.js (v20.11.0)
-- npm (v10.2.4)
+- yarn (v1.22.21)
 
 I have used nvm (v0.39.7) to manage my node versions. View nvm official [documentation](https://github.com/nvm-sh/nvm) to install it.
 
@@ -33,10 +33,12 @@ This project is not currently live on any server. But to use the demo version, f
 - To start the react app client run `yarn start` in one terminal
 - To start the server run `yarn server:dev` in another terminal
 - Go to `http://localhost:3000` to view the app
-- To join as an another user open another browser or incognito tab and go to `http://localhost:3000`
+- Create a room by clicking on the `create new room` button and put a username of your choice
+- Copy the room id by clicking on the `Copy ROOM ID` button
+- To join as an another user open another browser/browser-window or an incognito tab and go to `http://localhost:3000`
 - Enter the same room id to join the same room
 
-Now both your editor will be synced and you can see the changes in real time. Try opening the same room in multiple tabs and see the changes.
+Now both your editor will be synced and you can see the changes in real time. Try opening the same room in multiple browsers/browsers-windows and see the changes.
 
 ## Project Video
 https://github.com/Mohitur669/Realtime-Collaborative-Code-Editor/assets/79283402/14c17cc7-d23a-4d39-8af3-ef9e9fa8ef45
