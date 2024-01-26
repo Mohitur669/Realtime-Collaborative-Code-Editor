@@ -47,9 +47,21 @@ https://github.com/Mohitur669/Realtime-Collaborative-Code-Editor/assets/79283402
 In case you want to fix it yourself, feel free to make a pull request.
 
 ## Future Scope
-- Currently, trying to implement video and voice chat feature inside the editor
+- Add support to accept or reject new users trying to join the room
+- Add to implement video and voice chat feature inside the editor
 - Add syntax highlighting for multiple languages
 - Add support for multiple themes (currently using Dracula theme)
+
+## Open Source Contribution
+If you want to make contribution to this projects, follow the steps below:
+- Fork this repository
+- Clone the forked repository
+- Create a new branch
+- Make your changes
+- Commit and push your changes
+- Create a pull request
+
+**Note:** Please make sure to use your own branch when contributing.
 
 ## About Me
 I am Mohd Mohitur Rahaman, a tech geek, currently pursuing a Master's in Computer Applications (Final Year) from KIIT, Bhubaneswar. And with a deep passion for coding and a strong love for science & technology, I am dedicated to honing my skills and achieving proficiency as a developer.
