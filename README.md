@@ -56,15 +56,21 @@ In case you want to fix it yourself, feel free to make a pull request.
 If you want to make contribution to this projects, follow the steps below:
 - Fork this repository
 - Clone the forked repository <br>
-`git clone https://github.com/your-github_username/Realtime-Collaborative-Code-Editor.git`
+```
+git clone https://github.com/your-github_username/Realtime-Collaborative-Code-Editor.git
+```
 - cd into the cloned repository
 - Create a new branch <br>
-`git checkout -b your_branch_name`
+```
+git checkout -b your_branch_name`
+```
 - Make your changes
 - Commit and push your changes <br>
-`git add .` <br>
-`git commit -m "your commit message"` <br>
-`git push origin your_branch_name`
+```
+git add . <br>
+git commit -m "your commit message" <br>
+git push origin your_branch_name
+```
 - Create a pull request by visiting your forked repository on GitHub
 
 **Note:** Please make sure to use your own branch when contributing.
