@@ -62,7 +62,7 @@ git clone https://github.com/your-github_username/Realtime-Collaborative-Code-Ed
 - cd into the cloned repository
 - Create a new branch <br>
 ```
-git checkout -b your_branch_name`
+git checkout -b your_branch_name
 ```
 - Make your changes
 - Commit and push your changes <br>
