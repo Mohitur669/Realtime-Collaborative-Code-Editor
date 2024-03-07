@@ -2,6 +2,11 @@
 @import url('https://fonts.cdnfonts.com/css/cascadia-code');
 
 :root {
+    --copy-text: black;
+    --copy-color: #0096FF;
+    --copy-hover-color: #87CEEB;
+    --create-color: #0096FF;
+    --create-hover-color: #87CEEB;
     --join-color: #87CEEB;
     --join-hover-color: #0096FF;
     --leave-color: #B90000;
@@ -17,7 +22,7 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
-    color: white;
+    color: #fff;
     height: 100vh;
 }
 
@@ -25,7 +30,7 @@ body {
     background: #282a36;
     padding: 20px;
     border-radius: 10px;
-    width: 450px;
+    width: 400px;
     max-width: 90%;
 }
 
@@ -35,10 +40,8 @@ footer {
 }
 
 footer a {
-    color: var(--join-color);
-    text-decoration: none;
+    color: var(--create-hover-color);
 }
-
 
 .inputGroup {
     display: flex;
@@ -48,7 +51,6 @@ footer a {
 .mainLabel {
     margin-bottom: 20px;
     margin-top: 0;
-    font-weight: 500;
 }
 
 .homePageLogo {
@@ -77,19 +79,20 @@ footer a {
     transition: all 0.3s ease-in-out;
 }
 
-.joinBtn {
-    background: var(--join-color);
-    font-weight: bold;
-    width: 100px;
-    margin-left: auto;
+.copyBtn {
+    background-color: var(--copy-color);
+    color: white;
 }
 
-.leaveBtn {
-    background-color: var(--leave-color);
-    font-weight: bold;
+.copyBtn:hover {
+    background-color: var(--create-color);
+    color: var(--copy-text);
+}
+
+.joinBtn {
+    background: var(--join-color);
     width: 100px;
     margin-left: auto;
-    color: white;
 }
 
 .joinBtn:hover {
@@ -97,9 +100,16 @@ footer a {
     color: white;
 }
 
+.leaveBtn {
+    background: var(--leave-color);
+    font-weight: bold;
+    color: white;
+}
+
 .leaveBtn:hover {
-    background: var(--leave-hover-color);
-    transition: all 0.3s ease-in-out;
+    background: var(--leave-color);
+    color: var(--copy-text);
+    transition: all 0.2s ease-in-out;
 }
 
 .createInfo {
@@ -120,17 +130,25 @@ footer a {
 }
 
 footer a:hover {
-    color: var(--join-hover-color);
+    color: var(--create-color);
 }
 
 .mainWrap {
     display: grid;
-    grid-template-columns: 300px 1fr;
+    grid-template-columns: 180px 1fr;
+    height: 100vh;
+}
+
+@media screen and (min-width: 480px) {
+    .mainWrap {
+        display: grid;
+        grid-template-columns: 230px 1fr;
+        height: 100vh;
+    }
 }
 
 .aside {
-    /*background: #1c1e29;*/
-    background: #252631;
+    background: #1c1e29;
     padding: 16px;
     color: #fff;
     display: flex;
@@ -152,7 +170,7 @@ footer a:hover {
     display: flex;
     align-items: center;
     flex-direction: column;
-    font-weight: 500;
+    font-weight: bold;
 }
 
 .userName {
@@ -165,23 +183,40 @@ footer a:hover {
 }
 
 .logoImage {
-    height: 70px;
+    height: 60px;
+}
+
+.seLang {
+    border: none;
+    width: 100%;
+    margin-top: 4px;
+    margin-bottom: 20px;
+    padding: 10px;
+    border-radius: 5px;
+    font-size: 16px;
+    font-weight: bold;
+    text-align-last: center;
 }
 
 .leaveBtn {
     width: 100%;
     margin-top: 20px;
-    font-weight: bol;
-}
-
-.copyBtn {
-    font-weight: bold;
 }
 
 .CodeMirror {
-    font-family: 'Cascadia Code', sans-serif !important;
     min-height: calc(100vh - 20px);
-    font-size: 19px;
+    width: calc(100vw - 180px);
+    font-size: 16px;
+    line-height: 1.6;
     padding-top: 20px;
-    line-height: 1.2;
+}
+
+@media screen and (min-width: 480px) {
+    .CodeMirror {
+        min-height: calc(100vh - 20px);
+        width: calc(100vw - 230px);
+        font-size: 16px;
+        line-height: 1.6;
+        padding-top: 20px;
+    }
 }
