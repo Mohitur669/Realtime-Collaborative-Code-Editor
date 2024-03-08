@@ -60,5 +60,10 @@ io.on('connection', (socket) => {
     });
 });
 
-const PORT = process.env.PORT || 5000;
+// Serve response in production
+app.get('/', (req, res) => {
+    res.json({message: 'Welcome to the code editor server'});
+});
+
+const PORT = process.env.SERVER_PORT || 5000;
 server.listen(PORT, () => console.log(`Listening on port ${PORT}`));
