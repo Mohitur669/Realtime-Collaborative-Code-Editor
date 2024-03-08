@@ -62,7 +62,9 @@ io.on('connection', (socket) => {
 
 // Serve response in production
 app.get('/', (req, res) => {
-    res.json({message: 'Welcome to the code editor server'});
+    const htmlContent = '<h1>Welcome to the code editor server</h1>';
+    res.setHeader('Content-Type', 'text/html');
+    res.send(htmlContent);
 });
 
 const PORT = process.env.SERVER_PORT || 5000;
