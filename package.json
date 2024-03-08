@@ -24,6 +24,7 @@
     "scripts": {
         "start": "react-scripts start",
         "build": "react-scripts build",
+        "build:digitalocean": "npm install --force && react-scripts build",
         "server:dev": "nodemon server.js",
         "server:prod": "node server.js",
         "test": "react-scripts test",
