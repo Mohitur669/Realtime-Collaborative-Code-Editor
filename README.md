@@ -17,7 +17,8 @@ Are you tired of sending code snippets back and forth, struggling to debug and c
 ### Prerequisites
 
 - Node.js (v20.11.1)
-- npm (v10.2.4) or yarn
+- npm (10.2.4)
+- pm2 (5.3.1) : `npm i -g pm2`
 
 I have used nvm (v0.39.7) to manage my node versions. View nvm official [documentation](https://github.com/nvm-sh/nvm) to install it.
 
@@ -35,9 +36,9 @@ I have used nvm (v0.39.7) to manage my node versions. View nvm official [documen
 This project is not currently live on any server. But to use the demo version, follow the steps below:
 
 - Clone this repository and cd into it
-- Run `yarn` to install the dependencies
-- To start the react app client run `yarn start` in one terminal
-- To start the server run `yarn server:dev` in another terminal
+- Run `npm install` to install the dependencies
+- To start the react app client run `npm start` in one terminal
+- To start the server run `npm server:dev` or `pm2 start server.js` in another terminal
 - Go to `http://localhost:3000` to view the app
 - Create a room by clicking on the `create new room` button and put a username of your choice
 - Copy the room id by clicking on the `Copy ROOM ID` button
@@ -45,6 +46,8 @@ This project is not currently live on any server. But to use the demo version, f
 - Enter the same room id to join the same room
 
 Now both your editor will be synced and you can see the changes in real time. Try opening the same room in multiple browsers/browsers-windows and see the changes.
+
+**Note:** To stop your server (only if you used pm2) run `pm2 stop server.js` in the terminal
 
 ## Project Video
 
