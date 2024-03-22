@@ -118,7 +118,7 @@ const EditorPage = () => {
                 <label>
                     Select Language:
                     <select value={lang} onChange={(e) => {setLang(e.target.value); window.location.reload();}} className="seLang">
-                        <option value="clike">C / C++ / C#</option>
+                        <option value="clike">C / C++ / C# / Java</option>
                         <option value="css">CSS</option>
                         <option value="dart">Dart</option>
                         <option value="django">Django</option>

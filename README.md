@@ -10,7 +10,8 @@ Are you tired of sending code snippets back and forth, struggling to debug and c
 - Changes are reflected in real time
 - Copy button to copy the room id to clipboard
 - Leave button to leave the room
-- Supports syntax highlighting (currently only for JavaScript)
+- Supports syntax highlighting for different programming languages
+- Users can choose theme based on their preferences
 - Users can leave the room and rejoin later to continue editing
 - Joining & leaving of users is also reflected in real time
 
@@ -25,7 +26,7 @@ Are you tired of sending code snippets back and forth, struggling to debug and c
 
 - Node.js (v20.11.1)
 - npm (10.2.4)
-- pm2 (5.3.1) : `npm i -g pm2`
+- pm2 (5.3.1) : run `npm i -g pm2` to install pm2 globally
 
 **Note:** I have used nvm (v0.39.7) to manage my node versions. View nvm official [documentation](https://github.com/nvm-sh/nvm) to install it.
 
@@ -93,7 +94,7 @@ In case you want to fix it yourself, feel free to make a pull request.
 1. [x] Added syntax highlighting for multiple languages
 2. [x] Added support for multiple themes
 3. [x] Added support for saving the last theme and language selected by the user in local storage
-4. [ ] Add support to accept or reject new users trying to join the room
+4. [x] Add support to accept or reject new users trying to join the room
 5. [ ] Add to implement video and voice chat feature inside the editor
 6. [ ] Add support for local code file uploading
 
