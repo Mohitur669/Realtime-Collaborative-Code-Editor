@@ -1,10 +1,61 @@
+:root {
+  --background: 224 71% 4%;
+  --foreground: 213 31% 91%;
+  --card: 222 47% 8%;
+  --card-foreground: 213 31% 91%;
+  --popover: 222 47% 8%;
+  --popover-foreground: 213 31% 91%;
+  --primary: 210 40% 98%;
+  --primary-foreground: 222 47% 11%;
+  --secondary: 222 47% 14%;
+  --secondary-foreground: 210 40% 98%;
+  --muted: 223 47% 11%;
+  --muted-foreground: 215 20% 65%;
+  --accent: 216 34% 17%;
+  --accent-foreground: 210 40% 98%;
+  --destructive: 0 63% 45%;
+  --destructive-foreground: 210 40% 98%;
+  --border: 216 34% 17%;
+  --input: 216 34% 17%;
+  --ring: 216 34% 40%;
+  --success: 142 71% 45%;
+  --success-foreground: 144 80% 10%;
+  --radius: 0.5rem;
+  --sidebar-width: 260px;
+  --font-sans: "DM Sans", "Segoe UI", sans-serif;
+  --font-mono: "JetBrains Mono", "Cascadia Code", ui-monospace, monospace;
+}
+
 * {
-    font-variant-ligatures: none;
+  box-sizing: border-box;
+  font-variant-ligatures: none;
+}
+
+html,
+body,
+#root {
+  height: 100%;
 }
 
 body {
-    margin: 0;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    background: #1c1e29;
+  margin: 0;
+  font-family: var(--font-sans);
+  font-weight: 400;
+  color: hsl(var(--foreground));
+  background:
+    radial-gradient(ellipse 80% 60% at 50% -20%, hsl(215 40% 18% / 0.55), transparent),
+    radial-gradient(ellipse 50% 40% at 100% 100%, hsl(200 50% 12% / 0.35), transparent),
+    hsl(var(--background));
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+a {
+  color: hsl(var(--foreground));
+}
+
+button,
+input,
+select {
+  font: inherit;
 }
