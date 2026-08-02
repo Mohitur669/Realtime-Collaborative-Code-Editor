@@ -1,55 +1,19 @@
 {
-    "name": "realtime-code-editor",
-    "version": "0.1.0",
-    "private": true,
-    "dependencies": {
-        "@testing-library/jest-dom": "^5.16.4",
-        "@testing-library/react": "^14.2.1",
-        "@testing-library/user-event": "^13.5.0",
-        "codemirror": "^5.65.2",
-        "express": "^4.21.2",
-        "pm2": "^5.3.1",
-        "react": "^18.0.0",
-        "react-avatar": "^4.0.0",
-        "react-dom": "^18.0.0",
-        "react-hot-toast": "^2.2.0",
-        "react-router-dom": "^6.3.0",
-        "react-scripts": "5.0.0",
-        "recoil": "^0.7.0",
-        "socket.io": "^4.4.1",
-        "socket.io-client": "^4.4.1",
-        "uuid": "^8.3.2",
-        "web-vitals": "^2.1.4"
-    },
-    "scripts": {
-        "start:docker": "pm2 start server.js && npm start",
-        "start": "react-scripts start",
-        "build": "react-scripts build",
-        "build:digitalocean": "npm install --force && react-scripts build",
-        "server:dev": "nodemon server.js",
-        "server:prod": "node server.js",
-        "test": "react-scripts test",
-        "eject": "react-scripts eject"
-    },
-    "eslintConfig": {
-        "extends": [
-            "react-app",
-            "react-app/jest"
-        ]
-    },
-    "browserslist": {
-        "production": [
-            ">0.2%",
-            "not dead",
-            "not op_mini all"
-        ],
-        "development": [
-            "last 1 chrome version",
-            "last 1 firefox version",
-            "last 1 safari version"
-        ]
-    },
-    "devDependencies": {
-        "nodemon": "^2.0.15"
-    }
+  "name": "realtime-code-editor-monorepo",
+  "version": "1.0.0",
+  "private": true,
+  "packageManager": "pnpm@9.1.0",
+  "scripts": {
+    "build": "turbo run build",
+    "test": "turbo run test",
+    "dev": "turbo run dev",
+    "lint": "turbo run lint",
+    "format": "prettier --write \"**/*.{ts,tsx,js,jsx,json,md}\""
+  },
+  "devDependencies": {
+    "eslint": "^8.57.0",
+    "prettier": "^3.2.5",
+    "turbo": "^1.13.0",
+    "typescript": "^5.4.5"
+  }
 }

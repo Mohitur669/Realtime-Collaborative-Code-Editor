@@ -1,0 +1,5 @@
+# Docker Compose placeholder for Realtime Collaborative Code Editor
+# Will be populated with postgres, redis, minio, livekit, egress, etc. in upcoming phases.
+version: '3.8'
+
+services: {}

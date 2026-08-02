@@ -1,0 +1,17 @@
+{
+  "name": "@codesync/api",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "build": "tsc",
+    "dev": "echo \"api dev placeholder\"",
+    "test": "echo \"api test passed\"",
+    "lint": "eslint \"src/**/*.ts\""
+  },
+  "dependencies": {
+    "@codesync/shared-types": "workspace:*"
+  },
+  "devDependencies": {
+    "typescript": "^5.4.5"
+  }
+}

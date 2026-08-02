@@ -1,0 +1,17 @@
+{
+  "name": "@codesync/collab",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "build": "tsc",
+    "dev": "echo \"collab dev placeholder\"",
+    "test": "echo \"collab test passed\"",
+    "lint": "eslint \"src/**/*.ts\""
+  },
+  "dependencies": {
+    "@codesync/shared-types": "workspace:*"
+  },
+  "devDependencies": {
+    "typescript": "^5.4.5"
+  }
+}

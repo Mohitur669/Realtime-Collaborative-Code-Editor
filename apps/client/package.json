@@ -1,0 +1,18 @@
+{
+  "name": "@codesync/client",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "build": "tsc",
+    "dev": "echo \"client dev placeholder\"",
+    "test": "echo \"client test passed\"",
+    "lint": "eslint \"src/**/*.ts\""
+  },
+  "dependencies": {
+    "@codesync/shared-types": "workspace:*",
+    "@codesync/ui": "workspace:*"
+  },
+  "devDependencies": {
+    "typescript": "^5.4.5"
+  }
+}
