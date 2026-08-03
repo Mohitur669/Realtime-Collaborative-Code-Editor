@@ -527,6 +527,7 @@ const EditorPage: React.FC = () => {
                 <FilePreview
                   setFilePreview={setFilePreview}
                   fileContent={fileContent}
+                  currentCode={codeRef.current}
                   resetFileInput={resetFileInput}
                   onAppend={handleAppendCode}
                   onReplace={handleReplaceCode}
