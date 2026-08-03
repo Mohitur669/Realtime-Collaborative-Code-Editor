@@ -10,13 +10,25 @@ exports.AppModule = void 0;
 const common_1 = require("@nestjs/common");
 const app_controller_1 = require("./app.controller");
 const room_gateway_1 = require("./room.gateway");
+const livekit_controller_1 = require("./livekit.controller");
+const recordings_controller_1 = require("./recordings.controller");
+const ai_controller_1 = require("./ai.controller");
+const persistence_controller_1 = require("./persistence.controller");
+const auth_controller_1 = require("./auth.controller");
 let AppModule = class AppModule {
 };
 exports.AppModule = AppModule;
 exports.AppModule = AppModule = __decorate([
     (0, common_1.Module)({
         imports: [],
-        controllers: [app_controller_1.AppController],
+        controllers: [
+            app_controller_1.AppController,
+            livekit_controller_1.LiveKitController,
+            recordings_controller_1.RecordingsController,
+            ai_controller_1.AiController,
+            persistence_controller_1.PersistenceController,
+            auth_controller_1.AuthController,
+        ],
         providers: [room_gateway_1.RoomGateway],
     })
 ], AppModule);

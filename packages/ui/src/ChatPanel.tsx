@@ -134,17 +134,17 @@ export const ChatPanel: React.FC<ChatPanelProps> = ({
       )}
 
       {/* Input Form */}
-      <form onSubmit={handleSubmit} className="p-3 border-t border-gray-800 flex gap-2">
+      <form onSubmit={handleSubmit} className="p-3 border-t border-gray-800 flex flex-wrap gap-2">
         <input
           type="text"
           placeholder="Type message... (@username)"
           value={input}
           onChange={handleInputChange}
-          className="flex-1 bg-gray-800 border border-gray-700 rounded-lg px-3 py-2 text-xs text-gray-100 focus:outline-none focus:ring-1 focus:ring-green-500"
+          className="flex-1 min-w-[120px] bg-gray-800 border border-gray-700 rounded-lg px-3 py-2 text-xs text-gray-100 focus:outline-none focus:ring-1 focus:ring-green-500"
         />
         <button
           type="submit"
-          className="px-3 py-2 bg-green-500 hover:bg-green-400 text-gray-950 font-bold rounded-lg text-xs transition-colors"
+          className="px-3 py-1.5 bg-green-500 hover:bg-green-400 text-gray-950 font-semibold rounded-lg text-xs transition-colors"
         >
           Send
         </button>

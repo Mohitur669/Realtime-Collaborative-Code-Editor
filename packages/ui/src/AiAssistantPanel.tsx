@@ -55,13 +55,13 @@ export const AiAssistantPanel: React.FC<AiAssistantPanelProps> = ({
 
       <div className="flex-1 p-4 flex flex-col space-y-4 overflow-y-auto">
         {/* Preset Action Pills */}
-        <div className="grid grid-cols-2 gap-2">
+        <div className="flex flex-wrap gap-2">
           <button
             onClick={() => {
               setAction('explain');
               handleSubmit('explain');
             }}
-            className={`p-2 rounded-xl text-xs font-bold border transition-all flex items-center justify-center gap-1.5 ${
+            className={`px-3 py-1.5 rounded-lg text-xs font-semibold border transition-all flex items-center justify-center gap-1.5 flex-1 min-w-[120px] ${
               action === 'explain'
                 ? 'bg-purple-600/20 text-purple-300 border-purple-500/40'
                 : 'bg-gray-950/60 text-gray-400 border-gray-800 hover:border-gray-700'
@@ -75,7 +75,7 @@ export const AiAssistantPanel: React.FC<AiAssistantPanelProps> = ({
               setAction('refactor');
               handleSubmit('refactor');
             }}
-            className={`p-2 rounded-xl text-xs font-bold border transition-all flex items-center justify-center gap-1.5 ${
+            className={`px-3 py-1.5 rounded-lg text-xs font-semibold border transition-all flex items-center justify-center gap-1.5 flex-1 min-w-[120px] ${
               action === 'refactor'
                 ? 'bg-purple-600/20 text-purple-300 border-purple-500/40'
                 : 'bg-gray-950/60 text-gray-400 border-gray-800 hover:border-gray-700'
@@ -89,7 +89,7 @@ export const AiAssistantPanel: React.FC<AiAssistantPanelProps> = ({
               setAction('fix');
               handleSubmit('fix');
             }}
-            className={`p-2 rounded-xl text-xs font-bold border transition-all flex items-center justify-center gap-1.5 ${
+            className={`px-3 py-1.5 rounded-lg text-xs font-semibold border transition-all flex items-center justify-center gap-1.5 flex-1 min-w-[120px] ${
               action === 'fix'
                 ? 'bg-purple-600/20 text-purple-300 border-purple-500/40'
                 : 'bg-gray-950/60 text-gray-400 border-gray-800 hover:border-gray-700'
@@ -100,7 +100,7 @@ export const AiAssistantPanel: React.FC<AiAssistantPanelProps> = ({
 
           <button
             onClick={() => setAction('generate')}
-            className={`p-2 rounded-xl text-xs font-bold border transition-all flex items-center justify-center gap-1.5 ${
+            className={`px-3 py-1.5 rounded-lg text-xs font-semibold border transition-all flex items-center justify-center gap-1.5 flex-1 min-w-[120px] ${
               action === 'generate'
                 ? 'bg-purple-600/20 text-purple-300 border-purple-500/40'
                 : 'bg-gray-950/60 text-gray-400 border-gray-800 hover:border-gray-700'
@@ -122,7 +122,7 @@ export const AiAssistantPanel: React.FC<AiAssistantPanelProps> = ({
           <button
             onClick={() => handleSubmit()}
             disabled={loading}
-            className="w-full py-2.5 bg-purple-600 hover:bg-purple-500 disabled:opacity-50 text-white font-bold rounded-xl text-xs transition-all shadow-md shadow-purple-600/20"
+            className="w-full px-3 py-1.5 bg-purple-600 hover:bg-purple-500 disabled:opacity-50 text-white font-semibold rounded-lg text-xs transition-all shadow-md shadow-purple-600/20"
           >
             {loading ? 'AI is thinking...' : 'Generate with AI'}
           </button>
@@ -131,20 +131,20 @@ export const AiAssistantPanel: React.FC<AiAssistantPanelProps> = ({
         {/* AI Output Stream */}
         {response && (
           <div className="p-3.5 bg-gray-950 rounded-xl border border-purple-500/30 space-y-3">
-            <div className="flex items-center justify-between border-b border-gray-800 pb-2">
+            <div className="flex flex-wrap items-center justify-between border-b border-gray-800 pb-2 gap-2">
               <span className="text-2xs font-mono font-bold uppercase tracking-wider text-purple-400">
                 Response ({response.action})
               </span>
-              <div className="flex items-center gap-2">
+              <div className="flex flex-wrap items-center gap-2">
                 <button
                   onClick={handleCopy}
-                  className="px-2 py-0.5 bg-gray-800 hover:bg-gray-700 text-gray-300 text-2xs font-semibold rounded border border-gray-700"
+                  className="px-3 py-1.5 bg-gray-800 hover:bg-gray-700 text-gray-300 text-xs font-semibold rounded-lg border border-gray-700"
                 >
                   📋 Copy
                 </button>
                 <button
                   onClick={() => onInsertCode(response.result)}
-                  className="px-2 py-0.5 bg-purple-500 hover:bg-purple-400 text-gray-950 text-2xs font-bold rounded"
+                  className="px-3 py-1.5 bg-purple-500 hover:bg-purple-400 text-gray-950 text-xs font-semibold rounded-lg"
                 >
                   📥 Insert into Editor
                 </button>

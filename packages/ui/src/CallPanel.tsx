@@ -64,7 +64,7 @@ export const CallPanel: React.FC<CallPanelProps> = ({ username, onFetchToken }) 
             <button
               onClick={handleJoinCall}
               disabled={loading}
-              className="px-6 py-2.5 bg-green-500 hover:bg-green-400 text-gray-950 font-bold rounded-xl text-xs transition-all shadow-md shadow-green-500/20"
+              className="px-3 py-1.5 bg-green-500 hover:bg-green-400 text-gray-950 font-semibold rounded-lg text-xs transition-all shadow-md shadow-green-500/20"
             >
               {loading ? 'Connecting...' : 'Join Call'}
             </button>
@@ -89,10 +89,10 @@ export const CallPanel: React.FC<CallPanelProps> = ({ username, onFetchToken }) 
             </div>
 
             {/* Controls Bar */}
-            <div className="flex items-center justify-center gap-3 pt-2">
+            <div className="flex flex-wrap items-center justify-center gap-2 pt-2">
               <button
                 onClick={() => setMicOn(!micOn)}
-                className={`p-3 rounded-xl text-xs font-bold transition-colors ${
+                className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-colors ${
                   micOn ? 'bg-gray-800 text-gray-200 border border-gray-700 hover:bg-gray-700' : 'bg-red-600/20 text-red-400 border border-red-500/30'
                 }`}
                 title={micOn ? 'Mute Mic' : 'Unmute Mic'}
@@ -102,7 +102,7 @@ export const CallPanel: React.FC<CallPanelProps> = ({ username, onFetchToken }) 
 
               <button
                 onClick={() => setCamOn(!camOn)}
-                className={`p-3 rounded-xl text-xs font-bold transition-colors ${
+                className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-colors ${
                   camOn ? 'bg-gray-800 text-gray-200 border border-gray-700 hover:bg-gray-700' : 'bg-red-600/20 text-red-400 border border-red-500/30'
                 }`}
                 title={camOn ? 'Turn Off Camera' : 'Turn On Camera'}
@@ -112,7 +112,7 @@ export const CallPanel: React.FC<CallPanelProps> = ({ username, onFetchToken }) 
 
               <button
                 onClick={() => setScreenShare(!screenShare)}
-                className={`p-3 rounded-xl text-xs font-bold transition-colors ${
+                className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-colors ${
                   screenShare ? 'bg-green-500 text-gray-950' : 'bg-gray-800 text-gray-200 border border-gray-700 hover:bg-gray-700'
                 }`}
                 title="Share Screen"
@@ -122,7 +122,7 @@ export const CallPanel: React.FC<CallPanelProps> = ({ username, onFetchToken }) 
 
               <button
                 onClick={handleLeaveCall}
-                className="p-3 bg-red-600 hover:bg-red-500 text-white font-bold rounded-xl text-xs transition-colors shadow-sm"
+                className="px-3 py-1.5 bg-red-600 hover:bg-red-500 text-white font-semibold rounded-lg text-xs transition-colors shadow-sm"
                 title="Leave Call"
               >
                 Leave

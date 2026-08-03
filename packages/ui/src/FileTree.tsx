@@ -74,7 +74,7 @@ export const FileTree: React.FC<FileTreeProps> = ({
   };
 
   return (
-    <div className="flex flex-col h-full min-w-[200px] overflow-x-hidden bg-gray-950 border-r border-gray-800 text-gray-200 select-none">
+    <div className="flex flex-col h-full min-w-0 overflow-hidden bg-gray-950 border-r border-gray-800 text-gray-200 select-none">
       {/* Explorer Header */}
       <div className="p-3 bg-gray-900 border-b border-gray-800 flex items-center justify-between">
         <div className="flex items-center gap-2">
@@ -185,9 +185,12 @@ export const FileTree: React.FC<FileTreeProps> = ({
       </div>
 
       {/* Footer Info */}
-      <div className="p-2.5 bg-gray-900/80 border-t border-gray-800 text-2xs text-gray-500 flex items-center justify-between font-mono">
-        <span>SYNC WORKSPACE</span>
-        <span className="text-green-400">● REALTIME</span>
+      <div className="px-3 py-2 bg-gray-900/80 border-t border-gray-800 text-[10px] text-gray-400 flex items-center justify-between font-mono tracking-tight">
+        <span>Sync Workspace</span>
+        <span className="text-green-400 font-medium flex items-center gap-1">
+          <span className="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse"></span>
+          Realtime
+        </span>
       </div>
     </div>
   );

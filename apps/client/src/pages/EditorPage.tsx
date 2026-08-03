@@ -103,16 +103,36 @@ const EditorPage: React.FC = () => {
 
   useEffect(() => {
     const filesArray = doc.getArray<string>('projectFiles');
+    let initTimer: ReturnType<typeof setTimeout> | null = null;
 
     const updateFilesList = () => {
-      const current = filesArray.toArray();
-      if (current.length === 0) {
+      const raw = filesArray.toArray();
+      // Deduplicate — CRDT + IndexedDB restore can cause repeats
+      const unique = [...new Set(raw)];
+
+      // If duplicates exist in the CRDT array, clean them up
+      if (unique.length !== raw.length) {
         doc.transact(() => {
-          filesArray.push(['main.js']);
+          filesArray.delete(0, filesArray.length);
+          filesArray.push(unique);
         });
-        setFileList(['main.js']);
+        return; // observer will fire again with clean data
+      }
+
+      if (unique.length === 0) {
+        // Don't insert default immediately — IndexedDB may still be loading.
+        // Wait a short tick, then check again.
+        if (initTimer) clearTimeout(initTimer);
+        initTimer = setTimeout(() => {
+          if (filesArray.length === 0) {
+            doc.transact(() => {
+              filesArray.push(['main.js']);
+            });
+          }
+        }, 300);
       } else {
-        setFileList(current);
+        setFileList(unique);
+        if (initTimer) clearTimeout(initTimer);
       }
     };
 
@@ -121,6 +141,7 @@ const EditorPage: React.FC = () => {
 
     return () => {
       filesArray.unobserve(updateFilesList);
+      if (initTimer) clearTimeout(initTimer);
     };
   }, [doc]);
 
@@ -490,12 +511,12 @@ const EditorPage: React.FC = () => {
           <Panel id="editor" defaultSize="55%" minSize="30%">
             <div className="flex flex-col h-full bg-gray-950">
               {/* File Tab Header */}
-              <div className="px-4 py-2 bg-gray-900 border-b border-gray-800 flex items-center justify-between">
-                <div className="flex items-center gap-2">
-                  <span className="text-xs font-mono text-gray-400">Editing:</span>
-                  <span className="text-xs font-semibold text-green-400 font-mono">{activeFile}</span>
+              <div className="px-3 py-1.5 bg-gray-900 border-b border-gray-800 flex items-center justify-between flex-wrap gap-2">
+                <div className="flex items-center gap-2 min-w-0">
+                  <span className="text-xs font-mono text-gray-400 whitespace-nowrap">Editing:</span>
+                  <span className="text-xs font-semibold text-green-400 font-mono truncate">{activeFile}</span>
                 </div>
-                <div className="flex items-center gap-2">
+                <div className="flex items-center gap-1.5 flex-wrap">
                   <input
                     type="file"
                     accept=".js,.ts,.py,.java,.cpp,.c,.txt,.html,.css,.json,.md"
@@ -506,19 +527,19 @@ const EditorPage: React.FC = () => {
                   />
                   <button
                     onClick={() => fileInputRef.current?.click()}
-                    className="px-2 py-1 bg-gray-800 hover:bg-gray-700 text-gray-300 text-xs font-medium rounded border border-gray-700"
+                    className="px-3 py-1.5 bg-gray-800 hover:bg-gray-700 text-gray-300 text-xs font-semibold rounded-lg border border-gray-700 transition-colors whitespace-nowrap"
                   >
                     Upload File
                   </button>
                   <button
                     onClick={copyRoomId}
-                    className="px-2.5 py-1 bg-green-500 hover:bg-green-400 text-gray-950 font-bold rounded text-xs"
+                    className="px-3 py-1.5 bg-green-500 hover:bg-green-400 text-gray-950 text-xs font-semibold rounded-lg transition-colors whitespace-nowrap"
                   >
                     Copy Room ID
                   </button>
                   <button
                     onClick={leaveRoom}
-                    className="px-2.5 py-1 bg-red-600/20 hover:bg-red-600/30 text-red-400 font-bold rounded text-xs border border-red-500/30"
+                    className="px-3 py-1.5 bg-red-600/20 hover:bg-red-600/30 text-red-400 text-xs font-semibold rounded-lg border border-red-500/30 transition-colors whitespace-nowrap"
                   >
                     Leave
                   </button>

@@ -173,11 +173,11 @@ export const WhiteboardPanel: React.FC<WhiteboardPanelProps> = ({
   return (
     <div className="flex flex-col h-full bg-gray-900 text-gray-200">
       {/* Tools Toolbar */}
-      <div className="p-3 border-b border-gray-800 flex items-center justify-between gap-2 overflow-x-auto">
-        <div className="flex items-center gap-1">
+      <div className="p-3 border-b border-gray-800 flex flex-wrap items-center justify-between gap-2 overflow-x-auto min-w-0">
+        <div className="flex flex-wrap items-center gap-1">
           <button
             onClick={() => setTool('pencil')}
-            className={`p-1.5 rounded-lg text-xs font-bold transition-all ${
+            className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all ${
               tool === 'pencil' ? 'bg-green-500 text-gray-950' : 'bg-gray-800 text-gray-300 hover:bg-gray-700'
             }`}
             title="Pencil"
@@ -186,7 +186,7 @@ export const WhiteboardPanel: React.FC<WhiteboardPanelProps> = ({
           </button>
           <button
             onClick={() => setTool('rectangle')}
-            className={`p-1.5 rounded-lg text-xs font-bold transition-all ${
+            className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all ${
               tool === 'rectangle' ? 'bg-green-500 text-gray-950' : 'bg-gray-800 text-gray-300 hover:bg-gray-700'
             }`}
             title="Rectangle"
@@ -195,7 +195,7 @@ export const WhiteboardPanel: React.FC<WhiteboardPanelProps> = ({
           </button>
           <button
             onClick={() => setTool('circle')}
-            className={`p-1.5 rounded-lg text-xs font-bold transition-all ${
+            className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all ${
               tool === 'circle' ? 'bg-green-500 text-gray-950' : 'bg-gray-800 text-gray-300 hover:bg-gray-700'
             }`}
             title="Circle"
@@ -204,7 +204,7 @@ export const WhiteboardPanel: React.FC<WhiteboardPanelProps> = ({
           </button>
           <button
             onClick={() => setTool('text')}
-            className={`p-1.5 rounded-lg text-xs font-bold transition-all ${
+            className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all ${
               tool === 'text' ? 'bg-green-500 text-gray-950' : 'bg-gray-800 text-gray-300 hover:bg-gray-700'
             }`}
             title="Text"
@@ -214,7 +214,7 @@ export const WhiteboardPanel: React.FC<WhiteboardPanelProps> = ({
         </div>
 
         {/* Color Palette */}
-        <div className="flex items-center gap-1.5">
+        <div className="flex flex-wrap items-center gap-1.5">
           {['#22c55e', '#3b82f6', '#ef4444', '#eab308', '#a855f7', '#ffffff'].map((c) => (
             <button
               key={c}
@@ -227,16 +227,16 @@ export const WhiteboardPanel: React.FC<WhiteboardPanelProps> = ({
           ))}
         </div>
 
-        <div className="flex items-center gap-1.5">
+        <div className="flex flex-wrap items-center gap-1.5">
           <button
             onClick={onClearElements}
-            className="px-2 py-1 bg-red-600/20 hover:bg-red-600/30 text-red-400 text-2xs font-bold rounded border border-red-500/30"
+            className="px-3 py-1.5 bg-red-600/20 hover:bg-red-600/30 text-red-400 text-xs font-semibold rounded-lg border border-red-500/30"
           >
             🗑️ Clear
           </button>
           <button
             onClick={handleExportPNG}
-            className="px-2 py-1 bg-gray-800 hover:bg-gray-700 text-gray-300 text-2xs font-bold rounded border border-gray-700"
+            className="px-3 py-1.5 bg-gray-800 hover:bg-gray-700 text-gray-300 text-xs font-semibold rounded-lg border border-gray-700"
           >
             📷 Export
           </button>
