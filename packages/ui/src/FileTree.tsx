@@ -20,6 +20,30 @@ interface FileTreeProps {
   onImportZip: (file: File) => void;
 }
 
+const getFileIcon = (fileName: string) => {
+  const ext = fileName.split('.').pop()?.toLowerCase();
+  switch (ext) {
+    case 'js':
+    case 'jsx':
+      return { icon: '🟨', color: 'text-amber-400', tag: 'JS' };
+    case 'ts':
+    case 'tsx':
+      return { icon: '🔷', color: 'text-blue-400', tag: 'TS' };
+    case 'py':
+      return { icon: '🐍', color: 'text-yellow-400', tag: 'PY' };
+    case 'html':
+      return { icon: '🌐', color: 'text-orange-400', tag: 'HTML' };
+    case 'css':
+      return { icon: '🎨', color: 'text-sky-400', tag: 'CSS' };
+    case 'json':
+      return { icon: '📦', color: 'text-green-400', tag: 'JSON' };
+    case 'md':
+      return { icon: '📝', color: 'text-purple-400', tag: 'MD' };
+    default:
+      return { icon: '📄', color: 'text-gray-400', tag: 'TXT' };
+  }
+};
+
 export const FileTree: React.FC<FileTreeProps> = ({
   files,
   activeFile,
@@ -50,81 +74,120 @@ export const FileTree: React.FC<FileTreeProps> = ({
   };
 
   return (
-    <div className="flex flex-col h-full bg-gray-900 border-r border-gray-800 text-gray-200 select-none">
-      <div className="p-3 border-b border-gray-800 flex items-center justify-between">
-        <span className="text-xs font-bold uppercase tracking-wider text-gray-400">Files</span>
-        <div className="flex gap-1.5">
+    <div className="flex flex-col h-full bg-gray-950 border-r border-gray-800 text-gray-200 select-none">
+      {/* Explorer Header */}
+      <div className="p-3 bg-gray-900 border-b border-gray-800 flex items-center justify-between">
+        <div className="flex items-center gap-2">
+          <span className="text-xs font-extrabold uppercase tracking-wider text-gray-400">Explorer</span>
+          <span className="px-1.5 py-0.5 bg-gray-800 border border-gray-700 rounded text-2xs font-mono text-green-400">
+            {files.length} {files.length === 1 ? 'file' : 'files'}
+          </span>
+        </div>
+
+        <div className="flex items-center gap-1">
           <button
             onClick={() => setIsCreating(!isCreating)}
-            className="p-1 hover:bg-gray-800 rounded text-gray-400 hover:text-white transition-colors"
-            title="New File"
+            className="p-1.5 hover:bg-gray-800 rounded-lg text-gray-400 hover:text-green-400 transition-all font-bold text-xs"
+            title="Create New File"
           >
-            + File
+            ➕
           </button>
           <button
             onClick={onExportZip}
-            className="p-1 hover:bg-gray-800 rounded text-gray-400 hover:text-white transition-colors text-xs"
-            title="Export Zip"
+            className="p-1.5 hover:bg-gray-800 rounded-lg text-gray-400 hover:text-blue-400 transition-all text-xs"
+            title="Export Project Zip"
           >
-            Export
+            📦
           </button>
-          <label className="p-1 hover:bg-gray-800 rounded text-gray-400 hover:text-white transition-colors text-xs cursor-pointer">
-            Import
+          <label
+            className="p-1.5 hover:bg-gray-800 rounded-lg text-gray-400 hover:text-purple-400 transition-all text-xs cursor-pointer"
+            title="Import Project Zip"
+          >
+            📥
             <input type="file" accept=".zip" onChange={handleImport} className="hidden" />
           </label>
         </div>
       </div>
 
+      {/* New File Creation Form */}
       {isCreating && (
-        <form onSubmit={handleCreate} className="p-2 border-b border-gray-800 flex gap-2 bg-gray-850">
-          <input
-            type="text"
-            placeholder="filename.js"
-            value={newFileName}
-            onChange={(e) => setNewFileName(e.target.value)}
-            className="flex-1 bg-gray-800 text-xs px-2 py-1 border border-gray-700 rounded text-gray-100 focus:outline-none focus:ring-1 focus:ring-green-500"
-            autoFocus
-          />
-          <button type="submit" className="px-2 py-1 bg-green-500 text-gray-950 text-xs font-bold rounded">
-            Add
-          </button>
+        <form onSubmit={handleCreate} className="p-2.5 bg-gray-900/90 border-b border-gray-800 space-y-2">
+          <div className="flex gap-2">
+            <input
+              type="text"
+              placeholder="e.g. index.ts or utils.js"
+              value={newFileName}
+              onChange={(e) => setNewFileName(e.target.value)}
+              className="flex-1 bg-gray-950 text-xs px-2.5 py-1.5 border border-gray-700 rounded-lg text-gray-100 focus:outline-none focus:border-green-500 font-mono"
+              autoFocus
+            />
+            <button
+              type="submit"
+              className="px-3 py-1.5 bg-green-500 hover:bg-green-400 text-gray-950 text-xs font-bold rounded-lg transition-colors shadow-sm"
+            >
+              Add
+            </button>
+          </div>
         </form>
       )}
 
+      {/* File Items List */}
       <div className="flex-1 overflow-y-auto p-2 space-y-1">
         {files.length === 0 ? (
-          <div className="text-xs text-gray-500 italic p-2">No files in project</div>
+          <div className="p-6 text-center text-xs text-gray-500 italic border border-dashed border-gray-800 rounded-xl my-4">
+            No files in project workspace. Click <span className="text-green-400 font-bold">➕</span> to create one.
+          </div>
         ) : (
           files.map((filePath) => {
             const isActive = activeFile === filePath;
+            const meta = getFileIcon(filePath);
+
             return (
               <div
                 key={filePath}
                 onClick={() => onSelectFile(filePath)}
-                className={`group flex items-center justify-between px-2.5 py-1.5 rounded-lg text-xs cursor-pointer transition-colors ${
-                  isActive ? 'bg-gray-800 text-green-400 font-medium' : 'hover:bg-gray-800/60 text-gray-300'
+                className={`group relative flex items-center justify-between px-3 py-2 rounded-xl text-xs cursor-pointer transition-all border ${
+                  isActive
+                    ? 'bg-green-500/10 border-green-500/40 text-green-400 font-semibold shadow-sm'
+                    : 'bg-gray-900/40 border-transparent hover:bg-gray-900 hover:border-gray-800 text-gray-300'
                 }`}
               >
-                <div className="flex items-center gap-2 truncate">
-                  <span className="text-gray-500 font-mono">📄</span>
-                  <span className="truncate">{filePath}</span>
+                {/* Active Indicator Bar */}
+                {isActive && <div className="absolute left-0 top-1.5 bottom-1.5 w-1 bg-green-500 rounded-r" />}
+
+                <div className="flex items-center gap-2.5 truncate pl-1">
+                  <span className="text-sm">{meta.icon}</span>
+                  <span className="truncate font-mono text-xs">{filePath}</span>
                 </div>
-                {files.length > 1 && (
-                  <button
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      onDeleteFile(filePath);
-                    }}
-                    className="opacity-0 group-hover:opacity-100 p-0.5 hover:text-red-400 text-gray-500 transition-opacity"
-                    title="Delete File"
-                  >
-                    ✕
-                  </button>
-                )}
+
+                <div className="flex items-center gap-1.5">
+                  <span className={`text-3xs font-mono font-bold px-1.5 py-0.5 rounded bg-gray-950 border border-gray-800 ${meta.color}`}>
+                    {meta.tag}
+                  </span>
+
+                  {files.length > 1 && (
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        onDeleteFile(filePath);
+                      }}
+                      className="opacity-0 group-hover:opacity-100 p-1 hover:bg-red-500/20 hover:text-red-400 text-gray-500 rounded transition-all"
+                      title="Delete File"
+                    >
+                      ✕
+                    </button>
+                  )}
+                </div>
               </div>
             );
           })
         )}
+      </div>
+
+      {/* Footer Info */}
+      <div className="p-2.5 bg-gray-900/80 border-t border-gray-800 text-2xs text-gray-500 flex items-center justify-between font-mono">
+        <span>SYNC WORKSPACE</span>
+        <span className="text-green-400">● REALTIME</span>
       </div>
     </div>
   );
