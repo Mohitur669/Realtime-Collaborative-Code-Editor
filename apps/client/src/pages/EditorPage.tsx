@@ -7,12 +7,20 @@ import { SocketActions, ClientInfo, JoinedPayload, DisconnectedPayload } from '@
 import { initSocket } from '../socket';
 import { Socket } from 'socket.io-client';
 import { useLocation, useNavigate, Navigate, useParams } from 'react-router-dom';
-import { FileTree } from '@codesync/ui';
+import {
+  FileTree,
+  PresenceBar,
+  ToolsPanel,
+  ToolTab,
+  EditorSettingsPanel,
+} from '@codesync/ui';
+import { Group as PanelGroup, Panel, Separator as PanelResizeHandle } from 'react-resizable-panels';
 import * as Y from 'yjs';
 import { HocuspocusProvider } from '@hocuspocus/provider';
 import { IndexeddbPersistence } from 'y-indexeddb';
 import JSZip from 'jszip';
 import { saveAs } from 'file-saver';
+import { useSettingsStore } from '../store/settingsStore';
 
 const LANGUAGES = [
   { label: 'JavaScript', value: 'javascript' },
@@ -40,8 +48,7 @@ const THEMES = [
 ];
 
 const EditorPage: React.FC = () => {
-  const [lang, setLang] = useState<string>('javascript');
-  const [theme, setTheme] = useState<string>('oneDark');
+  const { settings, updateSettings } = useSettingsStore();
   const [clients, setClients] = useState<ClientInfo[]>([]);
 
   const socketRef = useRef<Socket | null>(null);
@@ -54,6 +61,8 @@ const EditorPage: React.FC = () => {
   const [fileContent, setFileContent] = useState<string>('');
   const fileInputRef = useRef<HTMLInputElement | null>(null);
   const editorInstanceRef = useRef<EditorRef | null>(null);
+
+  const [activeTab, setActiveTab] = useState<ToolTab>('settings');
 
   const username = location.state?.username;
 
@@ -206,7 +215,7 @@ const EditorPage: React.FC = () => {
     resetFileInput();
   };
 
-  // File tree CRUD operations synced live via Yjs
+  // File tree CRUD operations
   const handleCreateFile = (filePath: string) => {
     const filesArray = doc.getArray<string>('projectFiles');
     if (!filesArray.toArray().includes(filePath)) {
@@ -256,7 +265,6 @@ const EditorPage: React.FC = () => {
     }
   };
 
-  // Export Project to Zip
   const handleExportZip = async () => {
     const zip = new JSZip();
     fileList.forEach((filePath) => {
@@ -268,7 +276,6 @@ const EditorPage: React.FC = () => {
     toast.success('Exported project zip');
   };
 
-  // Import Zip to Project
   const handleImportZip = async (file: File) => {
     try {
       const zip = await JSZip.loadAsync(file);
@@ -303,131 +310,133 @@ const EditorPage: React.FC = () => {
     }
   };
 
+  const presenceUsers = clients.map((c) => ({
+    socketId: c.socketId,
+    username: c.username,
+    activeFile,
+  }));
+
   return (
-    <div className="flex h-screen bg-gray-950 text-gray-100 overflow-hidden">
-      {/* File Tree Sidebar */}
-      <div className="w-56 bg-gray-900 border-r border-gray-800">
-        <FileTree
-          files={fileList}
-          activeFile={activeFile}
-          onSelectFile={setActiveFile}
-          onCreateFile={handleCreateFile}
-          onDeleteFile={handleDeleteFile}
-          onRenameFile={handleRenameFile}
-          onExportZip={handleExportZip}
-          onImportZip={handleImportZip}
-        />
-      </div>
+    <div className="flex flex-col h-screen bg-gray-950 text-gray-100 overflow-hidden">
+      {/* Presence Bar */}
+      <PresenceBar users={presenceUsers} currentUsername={username} />
 
-      {/* Main Settings & Users Sidebar */}
-      <div className="w-56 bg-gray-900 border-r border-gray-800 flex flex-col p-4 justify-between select-none">
-        <div className="flex flex-col flex-1 overflow-hidden">
-          <div className="flex items-center gap-3 mb-6 pb-4 border-b border-gray-800">
-            <div className="w-8 h-8 bg-green-500 rounded-lg flex items-center justify-center font-bold text-gray-950 text-sm">
-              &lt;/&gt;
-            </div>
-            <h2 className="font-bold tracking-tight text-gray-100 text-lg">Sync Code</h2>
-          </div>
-
-          <div className="flex items-center justify-between mb-3">
-            <h3 className="text-xs font-semibold text-gray-400 uppercase tracking-wider">Connected ({clients.length})</h3>
-          </div>
-
-          <div className="flex-1 overflow-y-auto space-y-2 pr-1 mb-4">
-            {clients.map((client) => (
-              <Client key={client.socketId} username={client.username} />
-            ))}
-          </div>
-        </div>
-
-        {/* Controls */}
-        <div className="space-y-3 pt-4 border-t border-gray-800">
-          <input
-            type="file"
-            accept=".js,.ts,.py,.java,.cpp,.c,.txt,.html,.css,.json,.md"
-            className="hidden"
-            id="fileUpload"
-            onChange={handleFileUpload}
-            ref={fileInputRef}
-          />
-          <button
-            onClick={() => fileInputRef.current?.click()}
-            className="w-full py-2 px-3 bg-gray-800 hover:bg-gray-700 text-gray-200 font-medium rounded-lg text-xs border border-gray-700 transition-colors"
-          >
-            Upload File
-          </button>
-
-          {filePreview && (
-            <FilePreview
-              setFilePreview={setFilePreview}
-              fileContent={fileContent}
-              resetFileInput={resetFileInput}
-              onAppend={handleAppendCode}
-              onReplace={handleReplaceCode}
+      {/* Main Resizable Panes Layout */}
+      <div className="flex-1 overflow-hidden">
+        <PanelGroup orientation="horizontal">
+          {/* File Tree Sidebar Panel */}
+          <Panel defaultSize={18} minSize={12} maxSize={30}>
+            <FileTree
+              files={fileList}
+              activeFile={activeFile}
+              onSelectFile={setActiveFile}
+              onCreateFile={handleCreateFile}
+              onDeleteFile={handleDeleteFile}
+              onRenameFile={handleRenameFile}
+              onExportZip={handleExportZip}
+              onImportZip={handleImportZip}
             />
-          )}
+          </Panel>
 
-          <div className="space-y-1">
-            <label className="text-xs font-medium text-gray-400">Language</label>
-            <select
-              value={lang}
-              onChange={(e) => setLang(e.target.value)}
-              className="w-full bg-gray-800 border border-gray-700 rounded-lg px-2.5 py-1.5 text-xs text-gray-200 focus:outline-none focus:ring-1 focus:ring-green-500"
-            >
-              {LANGUAGES.map((l) => (
-                <option key={l.value} value={l.value}>
-                  {l.label}
-                </option>
-              ))}
-            </select>
-          </div>
+          <PanelResizeHandle className="w-1 bg-gray-800 hover:bg-green-500/50 transition-colors cursor-col-resize" />
 
-          <div className="space-y-1">
-            <label className="text-xs font-medium text-gray-400">Editor Theme</label>
-            <select
-              value={theme}
-              onChange={(e) => setTheme(e.target.value)}
-              className="w-full bg-gray-800 border border-gray-700 rounded-lg px-2.5 py-1.5 text-xs text-gray-200 focus:outline-none focus:ring-1 focus:ring-green-500"
-            >
-              {THEMES.map((t) => (
-                <option key={t.value} value={t.value}>
-                  {t.label}
-                </option>
-              ))}
-            </select>
-          </div>
+          {/* Main Editor Center Panel */}
+          <Panel defaultSize={57} minSize={30}>
+            <div className="flex flex-col h-full bg-gray-950">
+              {/* File Tab Header */}
+              <div className="px-4 py-2 bg-gray-900 border-b border-gray-800 flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <span className="text-xs font-mono text-gray-400">Editing:</span>
+                  <span className="text-xs font-semibold text-green-400 font-mono">{activeFile}</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <input
+                    type="file"
+                    accept=".js,.ts,.py,.java,.cpp,.c,.txt,.html,.css,.json,.md"
+                    className="hidden"
+                    id="fileUpload"
+                    onChange={handleFileUpload}
+                    ref={fileInputRef}
+                  />
+                  <button
+                    onClick={() => fileInputRef.current?.click()}
+                    className="px-2 py-1 bg-gray-800 hover:bg-gray-700 text-gray-300 text-xs font-medium rounded border border-gray-700"
+                  >
+                    Upload File
+                  </button>
+                  <button
+                    onClick={copyRoomId}
+                    className="px-2.5 py-1 bg-green-500 hover:bg-green-400 text-gray-950 font-bold rounded text-xs"
+                  >
+                    Copy Room ID
+                  </button>
+                  <button
+                    onClick={leaveRoom}
+                    className="px-2.5 py-1 bg-red-600/20 hover:bg-red-600/30 text-red-400 font-bold rounded text-xs border border-red-500/30"
+                  >
+                    Leave
+                  </button>
+                </div>
+              </div>
 
-          <div className="flex gap-2 pt-2">
-            <button
-              onClick={copyRoomId}
-              className="flex-1 py-2 px-3 bg-green-500 hover:bg-green-400 text-gray-950 font-bold rounded-lg text-xs transition-colors"
-            >
-              Copy ROOM ID
-            </button>
-            <button
-              onClick={leaveRoom}
-              className="py-2 px-3 bg-red-600/20 hover:bg-red-600/30 text-red-400 font-bold rounded-lg text-xs border border-red-500/30 transition-colors"
-            >
-              Leave
-            </button>
-          </div>
-        </div>
-      </div>
+              {filePreview && (
+                <FilePreview
+                  setFilePreview={setFilePreview}
+                  fileContent={fileContent}
+                  resetFileInput={resetFileInput}
+                  onAppend={handleAppendCode}
+                  onReplace={handleReplaceCode}
+                />
+              )}
 
-      {/* Main Editor View */}
-      <div className="flex-1 flex flex-col h-full overflow-hidden bg-gray-950">
-        <Editor
-          ref={editorInstanceRef}
-          doc={doc}
-          provider={provider}
-          activeFilePath={activeFile}
-          username={username}
-          language={lang}
-          theme={theme}
-          onCodeChange={(code) => {
-            codeRef.current = code;
-          }}
-        />
+              <div className="flex-1 overflow-hidden">
+                <Editor
+                  ref={editorInstanceRef}
+                  doc={doc}
+                  provider={provider}
+                  activeFilePath={activeFile}
+                  username={username}
+                  language={settings.language}
+                  theme={settings.theme}
+                  onCodeChange={(code) => {
+                    codeRef.current = code;
+                  }}
+                />
+              </div>
+            </div>
+          </Panel>
+
+          <PanelResizeHandle className="w-1 bg-gray-800 hover:bg-green-500/50 transition-colors cursor-col-resize" />
+
+          {/* Right Tools & Customization Panel */}
+          <Panel defaultSize={25} minSize={18} maxSize={40}>
+            <ToolsPanel activeTab={activeTab} onSelectTab={setActiveTab}>
+              {activeTab === 'settings' && (
+                <EditorSettingsPanel
+                  settings={settings}
+                  onChangeSettings={updateSettings}
+                  languages={LANGUAGES}
+                  themes={THEMES}
+                />
+              )}
+              {activeTab === 'chat' && (
+                <div className="text-xs text-gray-400 italic">Chat panel coming in Phase 7...</div>
+              )}
+              {activeTab === 'ai' && (
+                <div className="text-xs text-gray-400 italic">AI assistant coming in Phase 10...</div>
+              )}
+              {activeTab === 'call' && (
+                <div className="text-xs text-gray-400 italic">A/V call panel coming in Phase 8...</div>
+              )}
+              {activeTab === 'whiteboard' && (
+                <div className="text-xs text-gray-400 italic">Shared whiteboard coming in Phase 11...</div>
+              )}
+              {activeTab === 'recordings' && (
+                <div className="text-xs text-gray-400 italic">Recordings tab coming in Phase 9...</div>
+              )}
+            </ToolsPanel>
+          </Panel>
+        </PanelGroup>
       </div>
     </div>
   );
