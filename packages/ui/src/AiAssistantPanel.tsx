@@ -47,9 +47,7 @@ export const AiAssistantPanel: React.FC<AiAssistantPanelProps> = ({
       <div className="p-3 border-b border-gray-800 flex items-center justify-between">
         <div className="flex items-center gap-2">
           <span className="text-xs font-bold uppercase tracking-wider text-purple-400">AI Pair Programmer</span>
-          <span className="px-2 py-0.5 bg-purple-500/10 border border-purple-500/20 text-purple-300 rounded text-2xs font-mono">
-            Copilot Ready
-          </span>
+          <span className="text-[10px] font-mono text-purple-400/80">Copilot Ready</span>
         </div>
       </div>
 

@@ -520,10 +520,21 @@ const EditorPage: React.FC = () => {
 
   const roomUsernames = clients.map((c) => c.username);
 
+  const handleToggleTheme = () => {
+    const nextTheme = settings.theme === 'githubLight' ? 'dracula' : 'githubLight';
+    updateSettings({ theme: nextTheme });
+    toast.success(`Switched to ${nextTheme === 'githubLight' ? 'Light Mode' : 'Dark Mode'}`);
+  };
+
   return (
     <div className="flex flex-col h-screen bg-gray-950 text-gray-100 overflow-hidden">
       {/* Presence Bar */}
-      <PresenceBar users={presenceUsers} currentUsername={username} />
+      <PresenceBar
+        users={presenceUsers}
+        currentUsername={username}
+        theme={settings.theme}
+        onToggleTheme={handleToggleTheme}
+      />
 
       {/* Main Resizable Panes Layout */}
       <div className="flex-1 overflow-hidden">

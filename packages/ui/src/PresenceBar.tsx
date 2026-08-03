@@ -10,13 +10,17 @@ export interface PresenceUser {
 interface PresenceBarProps {
   users: PresenceUser[];
   currentUsername: string;
+  theme?: string;
+  onToggleTheme?: () => void;
 }
 
-export const PresenceBar: React.FC<PresenceBarProps> = ({ users }) => {
+export const PresenceBar: React.FC<PresenceBarProps> = ({ users, theme = 'dracula', onToggleTheme }) => {
   // Deduplicate users by username so same user doesn't show multiple times
   const uniqueUsers = users.filter(
     (user, index, self) => index === self.findIndex((u) => u.username === user.username)
   );
+
+  const isLight = theme === 'githubLight';
 
   return (
     <div className="flex flex-wrap items-center gap-2 px-3 py-2 bg-gray-900/90 border-b border-gray-800 backdrop-blur justify-between min-w-0">
@@ -43,6 +47,17 @@ export const PresenceBar: React.FC<PresenceBarProps> = ({ users }) => {
           <span className="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse mr-1.5"></span>
           CRDT Active
         </span>
+
+        {onToggleTheme && (
+          <button
+            onClick={onToggleTheme}
+            className="px-2 py-0.5 bg-gray-800 hover:bg-gray-700 text-gray-300 text-xs font-medium rounded border border-gray-700 transition-colors flex items-center gap-1.5 cursor-pointer select-none"
+            title={`Editor Theme: ${theme}. Click to switch theme mode.`}
+          >
+            <span className={`w-2 h-2 rounded-full ${isLight ? 'bg-amber-400' : 'bg-blue-400'}`}></span>
+            <span>{isLight ? 'Light Mode' : 'Dark Mode'}</span>
+          </button>
+        )}
       </div>
     </div>
   );
