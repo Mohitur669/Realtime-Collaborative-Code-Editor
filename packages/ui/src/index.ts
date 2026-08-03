@@ -8,3 +8,4 @@ export * from './ChatPanel';
 export * from './CallPanel';
 export * from './RecordingsPanel';
 export * from './AiAssistantPanel';
+export * from './WhiteboardPanel';

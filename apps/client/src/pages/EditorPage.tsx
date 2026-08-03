@@ -13,6 +13,7 @@ import {
   LiveKitTokenResponse,
   SessionRecording,
   AiCompletionResponse,
+  WhiteboardElement,
 } from '@codesync/shared-types';
 import { initSocket } from '../socket';
 import { Socket } from 'socket.io-client';
@@ -27,6 +28,7 @@ import {
   CallPanel,
   RecordingsPanel,
   AiAssistantPanel,
+  WhiteboardPanel,
 } from '@codesync/ui';
 import { Group as PanelGroup, Panel, Separator as PanelResizeHandle } from 'react-resizable-panels';
 import * as Y from 'yjs';
@@ -121,6 +123,34 @@ const EditorPage: React.FC = () => {
       filesArray.unobserve(updateFilesList);
     };
   }, [doc]);
+
+  const [whiteboardElements, setWhiteboardElements] = useState<WhiteboardElement[]>([]);
+
+  useEffect(() => {
+    const wbArray = doc.getArray<WhiteboardElement>('whiteboardElements');
+    const updateWb = () => {
+      setWhiteboardElements(wbArray.toArray());
+    };
+    updateWb();
+    wbArray.observe(updateWb);
+    return () => {
+      wbArray.unobserve(updateWb);
+    };
+  }, [doc]);
+
+  const handleAddWhiteboardElement = (el: WhiteboardElement) => {
+    const wbArray = doc.getArray<WhiteboardElement>('whiteboardElements');
+    doc.transact(() => {
+      wbArray.push([el]);
+    });
+  };
+
+  const handleClearWhiteboard = () => {
+    const wbArray = doc.getArray<WhiteboardElement>('whiteboardElements');
+    doc.transact(() => {
+      wbArray.delete(0, wbArray.length);
+    });
+  };
 
   useEffect(() => {
     if (!username) return;
@@ -556,7 +586,11 @@ const EditorPage: React.FC = () => {
                 />
               )}
               {activeTab === 'whiteboard' && (
-                <div className="text-xs text-gray-400 italic">Shared whiteboard coming in Phase 11...</div>
+                <WhiteboardPanel
+                  elements={whiteboardElements}
+                  onAddElement={handleAddWhiteboardElement}
+                  onClearElements={handleClearWhiteboard}
+                />
               )}
               {activeTab === 'recordings' && (
                 <RecordingsPanel

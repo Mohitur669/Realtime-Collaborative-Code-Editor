@@ -122,3 +122,20 @@ export interface AiCompletionResponse {
   action: string;
   timestamp: number;
 }
+
+export interface WhiteboardElement {
+  id: string;
+  type: 'pencil' | 'rectangle' | 'circle' | 'text';
+  points?: { x: number; y: number }[];
+  x?: number;
+  y?: number;
+  width?: number;
+  height?: number;
+  text?: string;
+  color: string;
+  strokeWidth: number;
+}
+
+export interface WhiteboardState {
+  elements: WhiteboardElement[];
+}
