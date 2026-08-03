@@ -1,12 +1,4 @@
-version: "3"
+version: '3.8'
 
-services:
-  code-editor:
-    build:
-      context: .
-      dockerfile: ./Dockerfile
-    image: "<your_docker_username>/code-editor"
-    ports:
-      - "5000:5000"
-      - "3000:3000"
-      - "8000:8000"
+include:
+  - infra/docker-compose.yml
