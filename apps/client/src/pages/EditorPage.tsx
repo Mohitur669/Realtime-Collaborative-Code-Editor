@@ -482,8 +482,8 @@ const EditorPage: React.FC = () => {
             />
           </Panel>
 
-          <PanelResizeHandle className="w-1.5 bg-gray-900 border-x border-gray-800/80 hover:bg-green-500/30 hover:border-green-500/40 transition-all cursor-col-resize flex items-center justify-center group focus:outline-none select-none">
-            <div className="w-0.5 h-7 bg-gray-700 rounded-full group-hover:bg-green-400 transition-colors" />
+          <PanelResizeHandle className="flex-shrink-0 w-2 h-full bg-gray-900 border-x border-gray-800/80 hover:bg-green-500/30 hover:border-green-500/40 transition-all cursor-col-resize flex items-center justify-center group focus:outline-none select-none z-20 pointer-events-auto">
+            <div className="w-0.5 h-7 bg-gray-700 rounded-full group-hover:bg-green-400 transition-colors pointer-events-none" />
           </PanelResizeHandle>
 
           {/* Main Editor Center Panel */}
@@ -553,8 +553,8 @@ const EditorPage: React.FC = () => {
             </div>
           </Panel>
 
-          <PanelResizeHandle className="w-1.5 bg-gray-900 border-x border-gray-800/80 hover:bg-green-500/30 hover:border-green-500/40 transition-all cursor-col-resize flex items-center justify-center group focus:outline-none select-none">
-            <div className="w-0.5 h-7 bg-gray-700 rounded-full group-hover:bg-green-400 transition-colors" />
+          <PanelResizeHandle className="flex-shrink-0 w-2 h-full bg-gray-900 border-x border-gray-800/80 hover:bg-green-500/30 hover:border-green-500/40 transition-all cursor-col-resize flex items-center justify-center group focus:outline-none select-none z-20 pointer-events-auto">
+            <div className="w-0.5 h-7 bg-gray-700 rounded-full group-hover:bg-green-400 transition-colors pointer-events-none" />
           </PanelResizeHandle>
 
           {/* Right Tools & Customization Panel */}

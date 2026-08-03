@@ -55,18 +55,40 @@ html, body, #root {
   top: -4px;
 }
 
-/* Resizable Panel Handles Styling */
+/* React Resizable Panels Layout & Dragging */
+[data-panel-group] {
+  display: flex !important;
+  width: 100% !important;
+  height: 100% !important;
+}
+
+[data-panel-group-direction="horizontal"] {
+  flex-direction: row !important;
+}
+
+[data-panel-group-direction="vertical"] {
+  flex-direction: column !important;
+}
+
+[data-panel] {
+  overflow: hidden !important;
+  position: relative !important;
+}
+
 [data-panel-resize-handle-id] {
-  touch-action: none;
-  user-select: none;
-  cursor: col-resize !important;
-  z-index: 10;
+  touch-action: none !important;
+  user-select: none !important;
+  -webkit-user-select: none !important;
+  z-index: 30 !important;
+  position: relative !important;
+  width: 6px !important;
+  min-width: 6px !important;
 }
 
 [data-panel-resize-handle-id]:hover,
 [data-panel-resize-handle-id][data-resize-handle-state="hover"],
 [data-panel-resize-handle-id][data-resize-handle-state="drag"] {
-  background-color: rgba(34, 197, 94, 0.4) !important;
+  background-color: rgba(34, 197, 94, 0.6) !important;
 }
 
 /* Custom Sleek Dark Scrollbars */
