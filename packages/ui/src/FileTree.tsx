@@ -76,20 +76,18 @@ export const FileTree: React.FC<FileTreeProps> = ({
   return (
     <div className="flex flex-col h-full min-w-0 overflow-hidden bg-gray-950 border-r border-gray-800 text-gray-200 select-none">
       {/* Explorer Header */}
-      <div className="p-3 bg-gray-900 border-b border-gray-800 flex items-center justify-between">
-        <div className="flex items-center gap-2">
-          <span className="text-xs font-extrabold uppercase tracking-wider text-gray-400">Explorer</span>
-          <span className="px-1.5 py-0.5 bg-gray-800 border border-gray-700 rounded text-2xs font-mono text-green-400">
-            {files.length} {files.length === 1 ? 'file' : 'files'}
-          </span>
+      <div className="px-3 py-2 bg-gray-900 border-b border-gray-800 flex items-center justify-between">
+        <div className="flex items-center gap-1.5">
+          <span className="text-[11px] font-bold uppercase tracking-wider text-gray-400">Explorer</span>
+          <span className="text-[10px] font-mono text-gray-500">({files.length})</span>
         </div>
 
         <button
           onClick={() => setIsCreating(!isCreating)}
-          className="px-2.5 py-1 bg-gray-800 hover:bg-gray-700 text-green-400 rounded text-xs font-semibold transition-colors border border-gray-700 flex items-center gap-1"
+          className="p-1 hover:bg-gray-800 text-gray-400 hover:text-green-400 rounded transition-colors text-xs font-semibold"
           title="Create New File"
         >
-          + File
+          <span className="text-sm leading-none">+</span>
         </button>
       </div>
 
