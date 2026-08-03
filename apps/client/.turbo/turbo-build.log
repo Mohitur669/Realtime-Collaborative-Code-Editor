@@ -1,4 +1,18 @@
 
 > @codesync/client@0.1.0 build /Users/mohitur/Desktop/git-projects/code-editor/apps/client
-> tsc
+> tsc && vite build
 
+vite v6.4.3 building for production...
+transforming...
+✓ 337 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/index.html                     0.54 kB │ gzip:   0.36 kB
+dist/assets/index-DFzABZPj.css     12.94 kB │ gzip:   3.19 kB
+dist/assets/index-DWoYfED2.js   1,945.08 kB │ gzip: 665.24 kB
+
+(!) Some chunks are larger than 500 kB after minification. Consider:
+- Using dynamic import() to code-split the application
+- Use build.rollupOptions.output.manualChunks to improve chunking: https://rollupjs.org/configuration-options/#output-manualchunks
+- Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.
+✓ built in 1.21s

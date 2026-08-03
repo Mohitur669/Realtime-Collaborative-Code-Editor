@@ -3,16 +3,37 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "build": "tsc",
-    "dev": "echo \"client dev placeholder\"",
+    "build": "tsc && vite build",
+    "dev": "vite",
     "test": "echo \"client test passed\"",
-    "lint": "eslint \"src/**/*.ts\""
+    "lint": "eslint \"src/**/*.{ts,tsx}\""
   },
   "dependencies": {
+    "@codemirror/state": "^6.7.1",
     "@codesync/shared-types": "workspace:*",
-    "@codesync/ui": "workspace:*"
+    "@codesync/ui": "workspace:*",
+    "@uiw/codemirror-extensions-langs": "^4.23.8",
+    "@uiw/codemirror-themes-all": "^4.23.8",
+    "@uiw/react-codemirror": "^4.23.8",
+    "react": "^18.3.1",
+    "react-avatar": "^5.0.4",
+    "react-dom": "^18.3.1",
+    "react-hot-toast": "^2.4.1",
+    "react-router-dom": "^6.28.0",
+    "socket.io-client": "^4.8.1",
+    "uuid": "^11.0.3",
+    "zustand": "^5.0.2"
   },
   "devDependencies": {
-    "typescript": "^5.4.5"
+    "@types/react": "^18.3.18",
+    "@types/react-dom": "^18.3.5",
+    "@types/uuid": "^10.0.0",
+    "@vitejs/plugin-react": "^4.3.4",
+    "autoprefixer": "^10.4.20",
+    "postcss": "^8.4.49",
+    "tailwindcss": "^3.4.17",
+    "typescript": "^5.4.5",
+    "vite": "^6.0.3",
+    "vitest": "^2.1.8"
   }
 }
