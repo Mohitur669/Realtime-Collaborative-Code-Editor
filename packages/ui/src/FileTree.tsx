@@ -84,26 +84,26 @@ export const FileTree: React.FC<FileTreeProps> = ({
           </span>
         </div>
 
-        <div className="flex items-center gap-1">
+        <div className="flex items-center gap-1.5">
           <button
             onClick={() => setIsCreating(!isCreating)}
-            className="p-1.5 hover:bg-gray-800 rounded-lg text-gray-400 hover:text-green-400 transition-all font-bold text-xs"
+            className="px-2 py-1 bg-gray-800 hover:bg-gray-700 text-gray-300 rounded text-[11px] font-semibold transition-colors border border-gray-700"
             title="Create New File"
           >
-            ➕
+            + File
           </button>
           <button
             onClick={onExportZip}
-            className="p-1.5 hover:bg-gray-800 rounded-lg text-gray-400 hover:text-blue-400 transition-all text-xs"
+            className="px-2 py-1 bg-gray-800 hover:bg-gray-700 text-gray-300 rounded text-[11px] font-semibold transition-colors border border-gray-700"
             title="Export Project Zip"
           >
-            📦
+            Export
           </button>
           <label
-            className="p-1.5 hover:bg-gray-800 rounded-lg text-gray-400 hover:text-purple-400 transition-all text-xs cursor-pointer"
+            className="px-2 py-1 bg-gray-800 hover:bg-gray-700 text-gray-300 rounded text-[11px] font-semibold transition-colors border border-gray-700 cursor-pointer"
             title="Import Project Zip"
           >
-            📥
+            Import
             <input type="file" accept=".zip" onChange={handleImport} className="hidden" />
           </label>
         </div>
@@ -135,7 +135,7 @@ export const FileTree: React.FC<FileTreeProps> = ({
       <div className="flex-1 overflow-y-auto p-2 space-y-1">
         {files.length === 0 ? (
           <div className="p-6 text-center text-xs text-gray-500 italic border border-dashed border-gray-800 rounded-xl my-4">
-            No files in project workspace. Click <span className="text-green-400 font-bold">➕</span> to create one.
+            No files in project workspace. Click <span className="text-green-400 font-bold">+ File</span> to create one.
           </div>
         ) : (
           files.map((filePath) => {
