@@ -1,5 +1,21 @@
 
 > @codesync/collab@0.1.0 test /Users/mohitur/Desktop/git-projects/code-editor/apps/collab
-> echo "collab test passed"
+> TMPDIR=$(pwd)/../../scratch vitest run
 
-collab test passed
+
+ RUN  v2.1.9 /Users/mohitur/Desktop/git-projects/code-editor/apps/collab
+
+stdout | test/collab.spec.ts > CRDT Collaboration Server (Hocuspocus + Yjs)
+
+  Hocuspocus v4.4.0 running at:
+
+  > HTTP: http://0.0.0.0:1235
+  > WebSocket: ws://0.0.0.0:1235
+
+ ✓ test/collab.spec.ts (1 test) 221ms
+
+ Test Files  1 passed (1)
+      Tests  1 passed (1)
+   Start at  22:01:26
+   Duration  425ms (transform 16ms, setup 0ms, collect 38ms, tests 221ms, environment 0ms, prepare 28ms)
+

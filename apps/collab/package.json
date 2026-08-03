@@ -4,14 +4,22 @@
   "private": true,
   "scripts": {
     "build": "tsc",
-    "dev": "echo \"collab dev placeholder\"",
-    "test": "echo \"collab test passed\"",
+    "dev": "ts-node src/index.ts",
+    "test": "TMPDIR=$(pwd)/../../scratch vitest run",
     "lint": "eslint \"src/**/*.ts\""
   },
   "dependencies": {
-    "@codesync/shared-types": "workspace:*"
+    "@codesync/shared-types": "workspace:*",
+    "@hocuspocus/extension-database": "^2.13.5",
+    "@hocuspocus/server": "^2.13.5",
+    "yjs": "^13.6.23"
   },
   "devDependencies": {
-    "typescript": "^5.4.5"
+    "@hocuspocus/provider": "^2.13.5",
+    "@types/node": "^22.10.2",
+    "@types/ws": "^8.5.13",
+    "typescript": "^5.4.5",
+    "vitest": "^2.1.8",
+    "ws": "^8.18.0"
   }
 }

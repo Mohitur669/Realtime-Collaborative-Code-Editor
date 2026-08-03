@@ -274,8 +274,8 @@ const EditorPage: React.FC = () => {
       <div className="flex-1 flex flex-col h-full overflow-hidden bg-gray-950">
         <Editor
           ref={editorInstanceRef}
-          socketRef={socketRef}
           roomId={roomId || ''}
+          username={username}
           language={lang}
           theme={theme}
           onCodeChange={(code) => {

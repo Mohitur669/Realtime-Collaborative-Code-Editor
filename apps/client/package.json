@@ -12,6 +12,7 @@
     "@codemirror/state": "^6.7.1",
     "@codesync/shared-types": "workspace:*",
     "@codesync/ui": "workspace:*",
+    "@hocuspocus/provider": "^4.4.0",
     "@uiw/codemirror-extensions-langs": "^4.23.8",
     "@uiw/codemirror-themes-all": "^4.23.8",
     "@uiw/react-codemirror": "^4.23.8",
@@ -22,6 +23,9 @@
     "react-router-dom": "^6.28.0",
     "socket.io-client": "^4.8.1",
     "uuid": "^11.0.3",
+    "y-codemirror.next": "^0.3.5",
+    "y-indexeddb": "^9.0.12",
+    "yjs": "^13.6.31",
     "zustand": "^5.0.2"
   },
   "devDependencies": {

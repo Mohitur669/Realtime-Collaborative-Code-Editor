@@ -1,21 +1,23 @@
-import React, { useEffect, useState, useImperativeHandle, forwardRef } from 'react';
+import React, { useEffect, useState, useImperativeHandle, forwardRef, useMemo } from 'react';
 import CodeMirror from '@uiw/react-codemirror';
 import { loadLanguage, LanguageName } from '@uiw/codemirror-extensions-langs';
 import * as themes from '@uiw/codemirror-themes-all';
-import { Socket } from 'socket.io-client';
-import { SocketActions, CodeChangePayload } from '@codesync/shared-types';
 import { Extension } from '@codemirror/state';
+import * as Y from 'yjs';
+import { HocuspocusProvider } from '@hocuspocus/provider';
+import { IndexeddbPersistence } from 'y-indexeddb';
+import { yCollab } from 'y-codemirror.next';
 
 export interface EditorRef {
   setCode: (code: string) => void;
 }
 
 interface EditorProps {
-  socketRef: React.MutableRefObject<Socket | null>;
   roomId: string;
+  username: string;
   language: string;
   theme: string;
-  onCodeChange: (code: string) => void;
+  onCodeChange?: (code: string) => void;
 }
 
 const mapLanguageName = (lang: string): LanguageName => {
@@ -31,49 +33,86 @@ const mapLanguageName = (lang: string): LanguageName => {
   }
 };
 
-const Editor = forwardRef<EditorRef, EditorProps>(
-  ({ socketRef, roomId, language, theme, onCodeChange }, ref) => {
-    const [code, setCode] = useState<string>('');
+const USER_COLORS = [
+  '#f59e0b', '#10b981', '#3b82f6', '#8b5cf6',
+  '#ec4899', '#ef4444', '#06b6d4', '#84cc16'
+];
 
-    useImperativeHandle(ref, () => ({
-      setCode: (newCode: string) => {
-        setCode(newCode);
-      },
-    }));
+const getRandomColor = (name: string) => {
+  let hash = 0;
+  for (let i = 0; i < name.length; i++) {
+    hash = name.charCodeAt(i) + ((hash << 5) - hash);
+  }
+  const index = Math.abs(hash) % USER_COLORS.length;
+  return USER_COLORS[index];
+};
+
+const Editor = forwardRef<EditorRef, EditorProps>(
+  ({ roomId, username, language, theme, onCodeChange }, ref) => {
+    const [crdtExtension, setCrdtExtension] = useState<Extension | null>(null);
+
+    const { doc, provider } = useMemo(() => {
+      const ydoc = new Y.Doc();
+      const wsUrl = import.meta.env.VITE_COLLAB_WS_URL || 'ws://localhost:1234';
+      const hocusProvider = new HocuspocusProvider({
+        url: wsUrl,
+        name: roomId,
+        document: ydoc,
+      });
+
+      // IndexedDB persistence for offline edit resilience
+      new IndexeddbPersistence(roomId, ydoc);
+
+      return { doc: ydoc, provider: hocusProvider };
+    }, [roomId]);
 
     useEffect(() => {
-      const socket = socketRef.current;
-      if (!socket) return;
+      if (!provider || !provider.awareness) return;
 
-      const handleCodeChange = ({ code: incomingCode }: CodeChangePayload) => {
-        if (incomingCode !== null && incomingCode !== undefined) {
-          setCode(incomingCode);
-          onCodeChange(incomingCode);
+      const userColor = getRandomColor(username || 'Guest');
+      provider.awareness.setLocalStateField('user', {
+        name: username || 'Guest',
+        color: userColor,
+        colorLight: userColor + '33',
+      });
+
+      const yText = doc.getText('codemirror');
+      const collab = yCollab(yText, provider.awareness);
+      setCrdtExtension(collab);
+
+      const observer = () => {
+        if (onCodeChange) {
+          onCodeChange(yText.toString());
         }
       };
 
-      socket.on(SocketActions.CODE_CHANGE, handleCodeChange);
+      yText.observe(observer);
 
       return () => {
-        socket.off(SocketActions.CODE_CHANGE, handleCodeChange);
+        yText.unobserve(observer);
+        provider.destroy();
       };
-    }, [socketRef.current, onCodeChange]);
+    }, [doc, provider, username, onCodeChange]);
 
-    const handleChange = (value: string) => {
-      setCode(value);
-      onCodeChange(value);
-
-      if (socketRef.current) {
-        socketRef.current.emit(SocketActions.CODE_CHANGE, {
-          roomId,
-          code: value,
+    useImperativeHandle(ref, () => ({
+      setCode: (newCode: string) => {
+        const yText = doc.getText('codemirror');
+        doc.transact(() => {
+          yText.delete(0, yText.length);
+          yText.insert(0, newCode);
         });
-      }
-    };
+      },
+    }));
 
     const targetLangName = mapLanguageName(language);
     const langExt = loadLanguage(targetLangName);
-    const extensions: Extension[] = langExt ? [langExt] : [];
+
+    const extensions = useMemo(() => {
+      const exts: Extension[] = [];
+      if (langExt) exts.push(langExt);
+      if (crdtExtension) exts.push(crdtExtension);
+      return exts;
+    }, [langExt, crdtExtension]);
 
     const themesMap = themes as unknown as Record<string, Extension>;
     const selectedTheme = themesMap[theme] || themesMap.dracula;
@@ -81,11 +120,9 @@ const Editor = forwardRef<EditorRef, EditorProps>(
     return (
       <div className="h-full w-full overflow-hidden text-base">
         <CodeMirror
-          value={code}
           height="100%"
           theme={selectedTheme}
           extensions={extensions}
-          onChange={handleChange}
           className="h-full text-sm"
         />
       </div>
