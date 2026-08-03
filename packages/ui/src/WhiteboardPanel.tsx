@@ -13,6 +13,11 @@ export const WhiteboardPanel: React.FC<WhiteboardPanelProps> = ({
   onClearElements,
 }) => {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
+  const containerRef = useRef<HTMLDivElement | null>(null);
+  const [canvasDimensions, setCanvasDimensions] = useState<{ width: number; height: number }>({
+    width: 600,
+    height: 600,
+  });
   const [tool, setTool] = useState<'pencil' | 'rectangle' | 'circle' | 'text'>('pencil');
   const [color, setColor] = useState('#22c55e');
   const [strokeWidth, setStrokeWidth] = useState(3);
@@ -20,7 +25,28 @@ export const WhiteboardPanel: React.FC<WhiteboardPanelProps> = ({
   const [currentPoints, setCurrentPoints] = useState<{ x: number; y: number }[]>([]);
   const [startPos, setStartPos] = useState<{ x: number; y: number } | null>(null);
 
-  // Redraw canvas whenever elements or active stroke changes
+  // ResizeObserver to make whiteboard canvas fit container width/height dynamically
+  useEffect(() => {
+    const container = containerRef.current;
+    if (!container) return;
+
+    const observer = new ResizeObserver((entries) => {
+      for (const entry of entries) {
+        const { width, height } = entry.contentRect;
+        if (width > 0 && height > 0) {
+          setCanvasDimensions({
+            width: Math.floor(width),
+            height: Math.floor(height),
+          });
+        }
+      }
+    });
+
+    observer.observe(container);
+    return () => observer.disconnect();
+  }, []);
+
+  // Redraw canvas whenever elements, dimensions or active stroke changes
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
@@ -75,7 +101,7 @@ export const WhiteboardPanel: React.FC<WhiteboardPanelProps> = ({
         ctx.stroke();
       }
     }
-  }, [elements, isDrawing, currentPoints, tool, color, strokeWidth]);
+  }, [elements, isDrawing, currentPoints, tool, color, strokeWidth, canvasDimensions]);
 
   const getCanvasCoords = (e: React.MouseEvent<HTMLCanvasElement>) => {
     const canvas = canvasRef.current;
@@ -243,16 +269,16 @@ export const WhiteboardPanel: React.FC<WhiteboardPanelProps> = ({
         </div>
       </div>
 
-      {/* Interactive Canvas Viewport */}
-      <div className="flex-1 relative bg-gray-950 p-2 overflow-hidden flex items-center justify-center">
+      {/* Interactive Full-Width Canvas Viewport */}
+      <div ref={containerRef} className="flex-1 w-full h-full relative bg-gray-950 overflow-hidden flex items-center justify-center">
         <canvas
           ref={canvasRef}
-          width={450}
-          height={600}
+          width={canvasDimensions.width}
+          height={canvasDimensions.height}
           onMouseDown={handleMouseDown}
           onMouseMove={handleMouseMove}
           onMouseUp={handleMouseUp}
-          className="bg-gray-950 rounded-xl border border-gray-800 cursor-crosshair shadow-inner"
+          className="bg-gray-950 cursor-crosshair w-full h-full"
         />
       </div>
     </div>

@@ -173,14 +173,43 @@ const EditorPage: React.FC = () => {
     });
   };
 
+  const activeRecordingIdRef = useRef<string | null>(null);
+
+  const recordEvent = async (type: 'code' | 'chat' | 'presence', author: string, detail: string) => {
+    if (!activeRecordingIdRef.current) return;
+    try {
+      const apiHost = import.meta.env.VITE_API_URL || 'http://localhost:3001';
+      await fetch(`${apiHost}/api/recordings/event`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          recordingId: activeRecordingIdRef.current,
+          type,
+          author,
+          detail,
+        }),
+      });
+    } catch (err) {
+      // Ignore background recording event errors
+    }
+  };
+
   useEffect(() => {
     if (!username) return;
 
     const init = async () => {
       socketRef.current = await initSocket();
 
-      socketRef.current.on('connect_error', (err) => handleErrors(err));
-      socketRef.current.on('connect_failed', (err) => handleErrors(err));
+      const socket = socketRef.current;
+      socket.off('connect_error');
+      socket.off('connect_failed');
+      socket.off(SocketActions.JOINED);
+      socket.off(SocketActions.DISCONNECTED);
+      socket.off(SocketActions.CHAT_HISTORY);
+      socket.off(SocketActions.CHAT_BROADCAST);
+
+      socket.on('connect_error', (err) => handleErrors(err));
+      socket.on('connect_failed', (err) => handleErrors(err));
 
       function handleErrors(e: any) {
         console.error('socket error', e);
@@ -188,42 +217,50 @@ const EditorPage: React.FC = () => {
         navigate('/');
       }
 
-      socketRef.current.emit(SocketActions.JOIN, {
+      socket.emit(SocketActions.JOIN, {
         roomId,
         username,
       });
 
-      socketRef.current.on(
+      socket.on(
         SocketActions.JOINED,
         ({ clients: updatedClients, username: joinedUser }: JoinedPayload) => {
           if (joinedUser !== username) {
             toast.success(`${joinedUser} joined the room.`);
           }
           setClients(updatedClients);
+          recordEvent('presence', joinedUser, `${joinedUser} joined room`);
         },
       );
 
-      socketRef.current.on(
+      socket.on(
         SocketActions.DISCONNECTED,
         ({ socketId, username: leftUser }: DisconnectedPayload) => {
           if (leftUser) {
             toast.success(`${leftUser} left the room.`);
           }
           setClients((prev) => prev.filter((client) => client.socketId !== socketId));
+          if (leftUser) {
+            recordEvent('presence', leftUser, `${leftUser} left room`);
+          }
         },
       );
 
-      socketRef.current.on(
+      socket.on(
         SocketActions.CHAT_HISTORY,
         ({ messages }: ChatHistoryPayload) => {
           setChatMessages(messages);
         },
       );
 
-      socketRef.current.on(
+      socket.on(
         SocketActions.CHAT_BROADCAST,
         (msg: ChatMessage) => {
-          setChatMessages((prev) => [...prev, msg]);
+          setChatMessages((prev) => {
+            if (prev.some((m) => m.id === msg.id)) return prev;
+            return [...prev, msg];
+          });
+          recordEvent('chat', msg.senderName, msg.content);
         },
       );
     };
@@ -284,6 +321,7 @@ const EditorPage: React.FC = () => {
       }),
     });
     const data = await res.json();
+    activeRecordingIdRef.current = data.recordingId;
     return data.recordingId;
   };
 
@@ -294,6 +332,7 @@ const EditorPage: React.FC = () => {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ recordingId }),
     });
+    activeRecordingIdRef.current = null;
     return await res.json();
   };
 
@@ -566,8 +605,13 @@ const EditorPage: React.FC = () => {
                   username={username}
                   language={settings.language}
                   theme={settings.theme}
+                  fontSize={settings.fontSize}
+                  fontFamily={settings.fontFamily}
                   onCodeChange={(code) => {
                     codeRef.current = code;
+                    if (activeRecordingIdRef.current) {
+                      recordEvent('code', username, `Edited ${activeFile}`);
+                    }
                   }}
                 />
               </div>

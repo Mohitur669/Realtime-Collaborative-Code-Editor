@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useImperativeHandle, forwardRef, useMemo } from 'react';
-import CodeMirror from '@uiw/react-codemirror';
+import CodeMirror, { EditorView } from '@uiw/react-codemirror';
 import { loadLanguage, LanguageName } from '@uiw/codemirror-extensions-langs';
 import * as themes from '@uiw/codemirror-themes-all';
 import { Extension } from '@codemirror/state';
@@ -18,6 +18,8 @@ interface EditorProps {
   username: string;
   language: string;
   theme: string;
+  fontSize?: number;
+  fontFamily?: string;
   onCodeChange?: (code: string) => void;
 }
 
@@ -49,7 +51,7 @@ const getRandomColor = (name: string) => {
 };
 
 const Editor = forwardRef<EditorRef, EditorProps>(
-  ({ doc, provider, activeFilePath, username, language, theme, onCodeChange }, ref) => {
+  ({ doc, provider, activeFilePath, username, language, theme, fontSize = 14, fontFamily = 'monospace', onCodeChange }, ref) => {
     const [crdtExtension, setCrdtExtension] = useState<Extension | null>(null);
 
     useEffect(() => {
@@ -92,23 +94,47 @@ const Editor = forwardRef<EditorRef, EditorProps>(
     const targetLangName = mapLanguageName(language);
     const langExt = loadLanguage(targetLangName);
 
+    const fontTheme = useMemo(() => {
+      return EditorView.theme({
+        '&': {
+          fontSize: `${fontSize}px`,
+          fontFamily: fontFamily || 'monospace',
+        },
+        '.cm-content': {
+          fontFamily: fontFamily || 'monospace',
+          fontSize: `${fontSize}px`,
+        },
+        '.cm-gutters': {
+          fontSize: `${fontSize}px`,
+          fontFamily: fontFamily || 'monospace',
+        },
+        '.cm-line': {
+          fontSize: `${fontSize}px`,
+          fontFamily: fontFamily || 'monospace',
+        },
+      });
+    }, [fontSize, fontFamily]);
+
     const extensions = useMemo(() => {
-      const exts: Extension[] = [];
+      const exts: Extension[] = [fontTheme];
       if (langExt) exts.push(langExt);
       if (crdtExtension) exts.push(crdtExtension);
       return exts;
-    }, [langExt, crdtExtension]);
+    }, [langExt, crdtExtension, fontTheme]);
 
     const themesMap = themes as unknown as Record<string, Extension>;
     const selectedTheme = themesMap[theme] || themesMap.dracula;
 
     return (
-      <div className="h-full w-full overflow-hidden text-base">
+      <div
+        className="h-full w-full overflow-hidden"
+        style={{ fontSize: `${fontSize}px`, fontFamily: fontFamily || 'monospace' }}
+      >
         <CodeMirror
           height="100%"
           theme={selectedTheme}
           extensions={extensions}
-          className="h-full text-sm"
+          className="h-full"
         />
       </div>
     );
