@@ -9,13 +9,13 @@ interface ToolsPanelProps {
 }
 
 export const ToolsPanel: React.FC<ToolsPanelProps> = ({ activeTab, onSelectTab, children }) => {
-  const tabs: { id: ToolTab; label: string; icon: string }[] = [
-    { id: 'chat', label: 'Chat', icon: '💬' },
-    { id: 'ai', label: 'AI', icon: '🤖' },
-    { id: 'call', label: 'Call', icon: '📞' },
-    { id: 'whiteboard', label: 'Board', icon: '🎨' },
-    { id: 'recordings', label: 'Rec', icon: '📹' },
-    { id: 'settings', label: 'Config', icon: '⚙️' },
+  const tabs: { id: ToolTab; label: string }[] = [
+    { id: 'chat', label: 'Chat' },
+    { id: 'ai', label: 'AI' },
+    { id: 'call', label: 'Call' },
+    { id: 'whiteboard', label: 'Board' },
+    { id: 'recordings', label: 'Rec' },
+    { id: 'settings', label: 'Config' },
   ];
 
   return (
@@ -29,14 +29,13 @@ export const ToolsPanel: React.FC<ToolsPanelProps> = ({ activeTab, onSelectTab, 
               key={tab.id}
               onClick={() => onSelectTab(tab.id)}
               title={tab.label}
-              className={`flex items-center justify-center gap-1 px-2.5 py-2 text-xs font-semibold border-b-2 transition-all whitespace-nowrap flex-1 min-w-0 ${
+              className={`flex items-center justify-center gap-1 px-3 py-2 text-xs font-semibold border-b-2 transition-all whitespace-nowrap flex-1 min-w-0 ${
                 isActive
                   ? 'border-green-500 text-green-400 bg-gray-900'
                   : 'border-transparent text-gray-400 hover:text-gray-200 hover:bg-gray-900/50'
               }`}
             >
-              <span className="flex-shrink-0">{tab.icon}</span>
-              <span className="truncate hidden sm:inline">{tab.label}</span>
+              <span className="truncate">{tab.label}</span>
             </button>
           );
         })}

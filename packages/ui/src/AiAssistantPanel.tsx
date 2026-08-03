@@ -46,7 +46,7 @@ export const AiAssistantPanel: React.FC<AiAssistantPanelProps> = ({
       {/* Header */}
       <div className="p-3 border-b border-gray-800 flex items-center justify-between">
         <div className="flex items-center gap-2">
-          <span className="text-xs font-bold uppercase tracking-wider text-purple-400">🤖 AI Pair Programmer</span>
+          <span className="text-xs font-bold uppercase tracking-wider text-purple-400">AI Pair Programmer</span>
           <span className="px-2 py-0.5 bg-purple-500/10 border border-purple-500/20 text-purple-300 rounded text-2xs font-mono">
             Copilot Ready
           </span>
@@ -67,7 +67,7 @@ export const AiAssistantPanel: React.FC<AiAssistantPanelProps> = ({
                 : 'bg-gray-950/60 text-gray-400 border-gray-800 hover:border-gray-700'
             }`}
           >
-            <span>💡</span> Explain Code
+            Explain Code
           </button>
 
           <button
@@ -81,7 +81,7 @@ export const AiAssistantPanel: React.FC<AiAssistantPanelProps> = ({
                 : 'bg-gray-950/60 text-gray-400 border-gray-800 hover:border-gray-700'
             }`}
           >
-            <span>🛠</span> Refactor
+            Refactor
           </button>
 
           <button
@@ -95,7 +95,7 @@ export const AiAssistantPanel: React.FC<AiAssistantPanelProps> = ({
                 : 'bg-gray-950/60 text-gray-400 border-gray-800 hover:border-gray-700'
             }`}
           >
-            <span>🐛</span> Fix Bugs
+            Fix Bugs
           </button>
 
           <button
@@ -106,7 +106,7 @@ export const AiAssistantPanel: React.FC<AiAssistantPanelProps> = ({
                 : 'bg-gray-950/60 text-gray-400 border-gray-800 hover:border-gray-700'
             }`}
           >
-            <span>⚡</span> Custom Prompt
+            Custom Prompt
           </button>
         </div>
 
@@ -140,13 +140,13 @@ export const AiAssistantPanel: React.FC<AiAssistantPanelProps> = ({
                   onClick={handleCopy}
                   className="px-3 py-1.5 bg-gray-800 hover:bg-gray-700 text-gray-300 text-xs font-semibold rounded-lg border border-gray-700"
                 >
-                  📋 Copy
+                  Copy
                 </button>
                 <button
                   onClick={() => onInsertCode(response.result)}
                   className="px-3 py-1.5 bg-purple-500 hover:bg-purple-400 text-gray-950 text-xs font-semibold rounded-lg"
                 >
-                  📥 Insert into Editor
+                  Insert into Editor
                 </button>
               </div>
             </div>

@@ -153,7 +153,7 @@ export const RecordingsPanel: React.FC<RecordingsPanelProps> = ({
                 onClick={() => setSelectedRecording(null)}
                 className="px-3 py-1.5 bg-gray-800 hover:bg-gray-700 text-gray-300 font-semibold text-xs rounded-lg transition-colors whitespace-nowrap border border-gray-700"
               >
-                ✕ Close
+                Close
               </button>
             </div>
 
@@ -177,7 +177,7 @@ export const RecordingsPanel: React.FC<RecordingsPanelProps> = ({
                   onClick={() => setIsPlaying(!isPlaying)}
                   className="px-3 py-1.5 bg-green-500 hover:bg-green-400 text-gray-950 font-semibold rounded-lg text-xs transition-colors whitespace-nowrap"
                 >
-                  {isPlaying ? '⏸ Pause' : '▶ Play'}
+                  {isPlaying ? 'Pause' : 'Play'}
                 </button>
 
                 <div className="flex flex-wrap items-center gap-1">
@@ -203,8 +203,8 @@ export const RecordingsPanel: React.FC<RecordingsPanelProps> = ({
               {visibleEvents.map((evt, idx) => (
                 <div key={idx} className="p-2 bg-gray-900/60 rounded-lg border border-gray-800/60 text-2xs flex flex-wrap items-center justify-between gap-2">
                   <div className="flex items-center gap-2 overflow-hidden min-w-0 flex-1">
-                    <span>
-                      {evt.type === 'code' ? '📝' : evt.type === 'chat' ? '💬' : '👥'}
+                    <span className="font-mono text-3xs text-green-400 uppercase">
+                      [{evt.type}]
                     </span>
                     <span className="font-bold text-gray-300 truncate">{evt.author}:</span>
                     <span className="text-gray-400 truncate">{evt.detail}</span>
@@ -244,7 +244,7 @@ export const RecordingsPanel: React.FC<RecordingsPanelProps> = ({
                     </span>
                   </div>
                   <button className="px-3 py-1.5 bg-gray-800 hover:bg-gray-700 text-gray-300 text-xs font-semibold rounded-lg border border-gray-700 whitespace-nowrap">
-                    ▶ Play
+                    Play
                   </button>
                 </div>
               ))}

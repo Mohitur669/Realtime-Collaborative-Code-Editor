@@ -25,22 +25,22 @@ const getFileIcon = (fileName: string) => {
   switch (ext) {
     case 'js':
     case 'jsx':
-      return { icon: '🟨', color: 'text-amber-400', tag: 'JS' };
+      return { color: 'text-amber-400', tag: 'JS' };
     case 'ts':
     case 'tsx':
-      return { icon: '🔷', color: 'text-blue-400', tag: 'TS' };
+      return { color: 'text-blue-400', tag: 'TS' };
     case 'py':
-      return { icon: '🐍', color: 'text-yellow-400', tag: 'PY' };
+      return { color: 'text-yellow-400', tag: 'PY' };
     case 'html':
-      return { icon: '🌐', color: 'text-orange-400', tag: 'HTML' };
+      return { color: 'text-orange-400', tag: 'HTML' };
     case 'css':
-      return { icon: '🎨', color: 'text-sky-400', tag: 'CSS' };
+      return { color: 'text-sky-400', tag: 'CSS' };
     case 'json':
-      return { icon: '📦', color: 'text-green-400', tag: 'JSON' };
+      return { color: 'text-green-400', tag: 'JSON' };
     case 'md':
-      return { icon: '📝', color: 'text-purple-400', tag: 'MD' };
+      return { color: 'text-purple-400', tag: 'MD' };
     default:
-      return { icon: '📄', color: 'text-gray-400', tag: 'TXT' };
+      return { color: 'text-gray-400', tag: 'TXT' };
   }
 };
 
@@ -137,8 +137,7 @@ export const FileTree: React.FC<FileTreeProps> = ({
                 {/* Active Indicator Bar */}
                 {isActive && <div className="absolute left-0 top-1.5 bottom-1.5 w-1 bg-green-500 rounded-r" />}
 
-                <div className="flex items-center gap-2.5 truncate pl-1">
-                  <span className="text-sm">{meta.icon}</span>
+                <div className="flex items-center gap-2 truncate pl-1">
                   <span className="truncate font-mono text-xs">{filePath}</span>
                 </div>
 

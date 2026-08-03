@@ -46,14 +46,14 @@ export const CallPanel: React.FC<CallPanelProps> = ({ username, onFetchToken }) 
       <div className="flex-1 p-4 flex flex-col justify-between overflow-y-auto">
         {!isConfigured && (
           <div className="p-3 bg-amber-500/10 border border-amber-500/20 rounded-xl text-amber-300 text-xs mb-4">
-            ⚠️ LiveKit credentials not set in environment. Running in dev fallback mode. Set <code className="font-mono font-bold">LIVEKIT_API_KEY</code> to enable full SFU stream routing.
+            LiveKit credentials not set in environment. Running in dev fallback mode. Set <code className="font-mono font-bold">LIVEKIT_API_KEY</code> to enable full SFU stream routing.
           </div>
         )}
 
         {!joined ? (
           <div className="flex-1 flex flex-col items-center justify-center text-center space-y-4 my-auto">
-            <div className="w-16 h-16 bg-gray-800 rounded-full flex items-center justify-center text-2xl border border-gray-700">
-              🎙️
+            <div className="w-16 h-16 bg-gray-800 rounded-full flex items-center justify-center text-xs font-mono font-bold border border-gray-700 text-green-400">
+              AV
             </div>
             <div>
               <h4 className="font-bold text-gray-100 text-sm">Join Audio / Video Call</h4>
@@ -77,8 +77,8 @@ export const CallPanel: React.FC<CallPanelProps> = ({ username, onFetchToken }) 
                 {username.substring(0, 2).toUpperCase()}
               </div>
               <span className="text-xs font-semibold text-gray-200">{username} (You)</span>
-              <span className="text-2xs text-green-400 mt-1">
-                {screenShare ? '🖥️ Sharing Screen' : micOn ? '🎙️ Mic Active' : '🔇 Muted'}
+              <span className="text-2xs text-green-400 mt-1 font-mono">
+                {screenShare ? 'Sharing Screen' : micOn ? 'Mic Active' : 'Muted'}
               </span>
 
               {token && (
@@ -97,7 +97,7 @@ export const CallPanel: React.FC<CallPanelProps> = ({ username, onFetchToken }) 
                 }`}
                 title={micOn ? 'Mute Mic' : 'Unmute Mic'}
               >
-                {micOn ? '🎙️ Mic On' : '🔇 Muted'}
+                {micOn ? 'Mic On' : 'Muted'}
               </button>
 
               <button
@@ -107,7 +107,7 @@ export const CallPanel: React.FC<CallPanelProps> = ({ username, onFetchToken }) 
                 }`}
                 title={camOn ? 'Turn Off Camera' : 'Turn On Camera'}
               >
-                {camOn ? '📹 Cam On' : '📷 Cam Off'}
+                {camOn ? 'Cam On' : 'Cam Off'}
               </button>
 
               <button
@@ -117,7 +117,7 @@ export const CallPanel: React.FC<CallPanelProps> = ({ username, onFetchToken }) 
                 }`}
                 title="Share Screen"
               >
-                🖥️ Share
+                Share
               </button>
 
               <button

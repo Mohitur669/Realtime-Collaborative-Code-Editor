@@ -98,13 +98,13 @@ const FilePreview: React.FC<FilePreviewProps> = ({
             onClick={onAppend}
             className="px-4 py-2 bg-gray-800 hover:bg-gray-700 border border-gray-700 text-gray-200 font-bold rounded-xl text-xs transition-colors"
           >
-            ➕ Append to Bottom
+            Append to Bottom
           </button>
           <button
             onClick={onReplace}
             className="px-4 py-2 bg-green-500 hover:bg-green-400 text-gray-950 font-bold rounded-xl text-xs transition-colors shadow-md shadow-green-500/20"
           >
-            🔄 Replace Editor Content
+            Replace Editor Content
           </button>
           <button
             onClick={handleClose}
