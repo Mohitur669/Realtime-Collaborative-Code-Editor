@@ -55,6 +55,20 @@ html, body, #root {
   top: -4px;
 }
 
+/* Resizable Panel Handles Styling */
+[data-panel-resize-handle-id] {
+  touch-action: none;
+  user-select: none;
+  cursor: col-resize !important;
+  z-index: 10;
+}
+
+[data-panel-resize-handle-id]:hover,
+[data-panel-resize-handle-id][data-resize-handle-state="hover"],
+[data-panel-resize-handle-id][data-resize-handle-state="drag"] {
+  background-color: rgba(34, 197, 94, 0.4) !important;
+}
+
 /* Custom Sleek Dark Scrollbars */
 ::-webkit-scrollbar {
   width: 6px;

@@ -482,7 +482,9 @@ const EditorPage: React.FC = () => {
             />
           </Panel>
 
-          <PanelResizeHandle className="w-1 bg-gray-800 hover:bg-green-500/50 transition-colors cursor-col-resize" />
+          <PanelResizeHandle className="w-1.5 bg-gray-900 border-x border-gray-800/80 hover:bg-green-500/30 hover:border-green-500/40 transition-all cursor-col-resize flex items-center justify-center group focus:outline-none select-none">
+            <div className="w-0.5 h-7 bg-gray-700 rounded-full group-hover:bg-green-400 transition-colors" />
+          </PanelResizeHandle>
 
           {/* Main Editor Center Panel */}
           <Panel defaultSize={57} minSize={30}>
@@ -551,7 +553,9 @@ const EditorPage: React.FC = () => {
             </div>
           </Panel>
 
-          <PanelResizeHandle className="w-1 bg-gray-800 hover:bg-green-500/50 transition-colors cursor-col-resize" />
+          <PanelResizeHandle className="w-1.5 bg-gray-900 border-x border-gray-800/80 hover:bg-green-500/30 hover:border-green-500/40 transition-all cursor-col-resize flex items-center justify-center group focus:outline-none select-none">
+            <div className="w-0.5 h-7 bg-gray-700 rounded-full group-hover:bg-green-400 transition-colors" />
+          </PanelResizeHandle>
 
           {/* Right Tools & Customization Panel */}
           <Panel defaultSize={25} minSize={18} maxSize={40}>
