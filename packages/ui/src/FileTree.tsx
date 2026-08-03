@@ -84,29 +84,13 @@ export const FileTree: React.FC<FileTreeProps> = ({
           </span>
         </div>
 
-        <div className="flex items-center gap-1.5">
-          <button
-            onClick={() => setIsCreating(!isCreating)}
-            className="px-2 py-1 bg-gray-800 hover:bg-gray-700 text-gray-300 rounded text-[11px] font-semibold transition-colors border border-gray-700"
-            title="Create New File"
-          >
-            + File
-          </button>
-          <button
-            onClick={onExportZip}
-            className="px-2 py-1 bg-gray-800 hover:bg-gray-700 text-gray-300 rounded text-[11px] font-semibold transition-colors border border-gray-700"
-            title="Export Project Zip"
-          >
-            Export
-          </button>
-          <label
-            className="px-2 py-1 bg-gray-800 hover:bg-gray-700 text-gray-300 rounded text-[11px] font-semibold transition-colors border border-gray-700 cursor-pointer"
-            title="Import Project Zip"
-          >
-            Import
-            <input type="file" accept=".zip" onChange={handleImport} className="hidden" />
-          </label>
-        </div>
+        <button
+          onClick={() => setIsCreating(!isCreating)}
+          className="px-2.5 py-1 bg-gray-800 hover:bg-gray-700 text-green-400 rounded text-xs font-semibold transition-colors border border-gray-700 flex items-center gap-1"
+          title="Create New File"
+        >
+          + File
+        </button>
       </div>
 
       {/* New File Creation Form */}
@@ -182,6 +166,24 @@ export const FileTree: React.FC<FileTreeProps> = ({
             );
           })
         )}
+      </div>
+
+      {/* Export / Import Zip Action Row at Bottom */}
+      <div className="p-2 bg-gray-950 border-t border-gray-800 flex items-center justify-between gap-2">
+        <button
+          onClick={onExportZip}
+          className="flex-1 py-1.5 px-2 bg-gray-900 hover:bg-gray-800 text-gray-300 hover:text-gray-100 rounded-lg text-xs font-semibold transition-colors border border-gray-800 text-center"
+          title="Export Project Zip"
+        >
+          Export ZIP
+        </button>
+        <label
+          className="flex-1 py-1.5 px-2 bg-gray-900 hover:bg-gray-800 text-gray-300 hover:text-gray-100 rounded-lg text-xs font-semibold transition-colors border border-gray-800 cursor-pointer text-center"
+          title="Import Project Zip"
+        >
+          Import ZIP
+          <input type="file" accept=".zip" onChange={handleImport} className="hidden" />
+        </label>
       </div>
 
       {/* Footer Info */}
