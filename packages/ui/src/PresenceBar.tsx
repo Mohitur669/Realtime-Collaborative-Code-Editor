@@ -51,11 +51,10 @@ export const PresenceBar: React.FC<PresenceBarProps> = ({ users, theme = 'dracul
         {onToggleTheme && (
           <button
             onClick={onToggleTheme}
-            className="px-2 py-0.5 bg-gray-800 hover:bg-gray-700 text-gray-300 text-xs font-medium rounded border border-gray-700 transition-colors flex items-center gap-1.5 cursor-pointer select-none"
-            title={`Editor Theme: ${theme}. Click to switch theme mode.`}
+            className="w-6 h-6 bg-gray-800 hover:bg-gray-700 rounded-md border border-gray-700 transition-colors flex items-center justify-center cursor-pointer select-none"
+            title={isLight ? 'Switch to Dark Mode' : 'Switch to Light Mode'}
           >
-            <span className={`w-2 h-2 rounded-full ${isLight ? 'bg-amber-400' : 'bg-blue-400'}`}></span>
-            <span>{isLight ? 'Light Mode' : 'Dark Mode'}</span>
+            <span className={`w-2.5 h-2.5 rounded-full ${isLight ? 'bg-amber-400' : 'bg-blue-400'}`} />
           </button>
         )}
       </div>
