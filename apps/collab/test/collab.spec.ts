@@ -28,23 +28,37 @@ describe('CRDT Collaboration Server (Hocuspocus + Yjs)', () => {
     const doc1 = new Y.Doc();
     const doc2 = new Y.Doc();
 
+    const WSClass = (WebSocket as any).default || WebSocket;
+
     const provider1 = new HocuspocusProvider({
       url: `ws://127.0.0.1:${port}`,
       name: 'crdt-test-room',
       document: doc1,
-      WebSocketPolyfill: WebSocket as any,
+      WebSocketPolyfill: WSClass,
     });
 
     const provider2 = new HocuspocusProvider({
       url: `ws://127.0.0.1:${port}`,
       name: 'crdt-test-room',
       document: doc2,
-      WebSocketPolyfill: WebSocket as any,
+      WebSocketPolyfill: WSClass,
     });
 
+    const waitForSynced = (provider: HocuspocusProvider) =>
+      new Promise<void>((res) => {
+        if (provider.isSynced) return res();
+        const handler = (data: any) => {
+          if (data === true || data?.state === true || provider.isSynced) {
+            provider.off('synced', handler);
+            res();
+          }
+        };
+        provider.on('synced', handler);
+      });
+
     await Promise.all([
-      new Promise<void>((res) => provider1.on('synced', () => res())),
-      new Promise<void>((res) => provider2.on('synced', () => res())),
+      waitForSynced(provider1),
+      waitForSynced(provider2),
     ]);
 
     const yText1 = doc1.getText('codemirror');

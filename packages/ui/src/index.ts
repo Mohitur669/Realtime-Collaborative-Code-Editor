@@ -5,3 +5,4 @@ export * from './PresenceBar';
 export * from './ToolsPanel';
 export * from './EditorSettingsPanel';
 export * from './ChatPanel';
+export * from './CallPanel';

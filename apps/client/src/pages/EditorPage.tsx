@@ -10,6 +10,7 @@ import {
   DisconnectedPayload,
   ChatMessage,
   ChatHistoryPayload,
+  LiveKitTokenResponse,
 } from '@codesync/shared-types';
 import { initSocket } from '../socket';
 import { Socket } from 'socket.io-client';
@@ -21,6 +22,7 @@ import {
   ToolTab,
   EditorSettingsPanel,
   ChatPanel,
+  CallPanel,
 } from '@codesync/ui';
 import { Group as PanelGroup, Panel, Separator as PanelResizeHandle } from 'react-resizable-panels';
 import * as Y from 'yjs';
@@ -59,7 +61,6 @@ const EditorPage: React.FC = () => {
   const { settings, updateSettings } = useSettingsStore();
   const [clients, setClients] = useState<ClientInfo[]>([]);
   const [chatMessages, setChatMessages] = useState<ChatMessage[]>([]);
-  const [unreadChatCount, setUnreadChatCount] = useState<number>(0);
 
   const socketRef = useRef<Socket | null>(null);
   const codeRef = useRef<string>('');
@@ -168,9 +169,6 @@ const EditorPage: React.FC = () => {
         SocketActions.CHAT_BROADCAST,
         (msg: ChatMessage) => {
           setChatMessages((prev) => [...prev, msg]);
-          if (activeTabRef.current !== 'chat' && msg.senderName !== username) {
-            setUnreadChatCount((count) => count + 1);
-          }
         },
       );
     };
@@ -195,9 +193,6 @@ const EditorPage: React.FC = () => {
 
   const handleSelectTab = (tab: ToolTab) => {
     setActiveTab(tab);
-    if (tab === 'chat') {
-      setUnreadChatCount(0);
-    }
   };
 
   const handleSendChatMessage = (content: string) => {
@@ -208,6 +203,19 @@ const EditorPage: React.FC = () => {
         senderName: username,
       });
     }
+  };
+
+  const handleFetchLiveKitToken = async (): Promise<LiveKitTokenResponse> => {
+    const apiHost = import.meta.env.VITE_API_URL || 'http://localhost:3000';
+    const res = await fetch(`${apiHost}/api/livekit/token`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        roomName: roomId || 'default-room',
+        participantName: username,
+      }),
+    });
+    return (await res.json()) as LiveKitTokenResponse;
   };
 
   const copyRoomId = async () => {
@@ -469,6 +477,13 @@ const EditorPage: React.FC = () => {
                   roomUsers={roomUsernames}
                 />
               )}
+              {activeTab === 'call' && (
+                <CallPanel
+                  roomId={roomId || 'default-room'}
+                  username={username}
+                  onFetchToken={handleFetchLiveKitToken}
+                />
+              )}
               {activeTab === 'settings' && (
                 <EditorSettingsPanel
                   settings={settings}
@@ -479,9 +494,6 @@ const EditorPage: React.FC = () => {
               )}
               {activeTab === 'ai' && (
                 <div className="text-xs text-gray-400 italic">AI assistant coming in Phase 10...</div>
-              )}
-              {activeTab === 'call' && (
-                <div className="text-xs text-gray-400 italic">A/V call panel coming in Phase 8...</div>
               )}
               {activeTab === 'whiteboard' && (
                 <div className="text-xs text-gray-400 italic">Shared whiteboard coming in Phase 11...</div>

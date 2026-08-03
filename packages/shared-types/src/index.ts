@@ -69,3 +69,14 @@ export interface SendChatMessagePayload {
 export interface ChatHistoryPayload {
   messages: ChatMessage[];
 }
+
+export interface LiveKitTokenRequest {
+  roomName: string;
+  participantName: string;
+}
+
+export interface LiveKitTokenResponse {
+  token: string;
+  wsUrl: string;
+  isConfigured: boolean;
+}
