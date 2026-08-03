@@ -467,9 +467,9 @@ const EditorPage: React.FC = () => {
 
       {/* Main Resizable Panes Layout */}
       <div className="flex-1 overflow-hidden">
-        <PanelGroup orientation="horizontal" id="sync-code-editor-layout-v3" className="h-full w-full">
+        <PanelGroup orientation="horizontal" id="sync-code-editor-layout-v4" className="h-full w-full">
           {/* File Tree Sidebar Panel */}
-          <Panel defaultSize={20} minSize={15} maxSize={35}>
+          <Panel id="file-tree" defaultSize="20%" minSize="15%" maxSize="35%">
             <FileTree
               files={fileList}
               activeFile={activeFile}
@@ -482,12 +482,12 @@ const EditorPage: React.FC = () => {
             />
           </Panel>
 
-          <PanelResizeHandle className="flex-shrink-0 w-2 h-full bg-gray-900 border-x border-gray-800/80 hover:bg-green-500/30 hover:border-green-500/40 transition-all cursor-col-resize flex items-center justify-center group focus:outline-none select-none z-20 pointer-events-auto">
-            <div className="w-0.5 h-7 bg-gray-700 rounded-full group-hover:bg-green-400 transition-colors pointer-events-none" />
+          <PanelResizeHandle className="flex-shrink-0 w-1.5 bg-gray-900 border-x border-gray-800/50 hover:bg-green-500/40 transition-all cursor-col-resize flex items-center justify-center group focus:outline-none select-none z-20">
+            <div className="w-0.5 h-8 bg-gray-700 rounded-full group-hover:bg-green-400 transition-colors pointer-events-none" />
           </PanelResizeHandle>
 
           {/* Main Editor Center Panel */}
-          <Panel defaultSize={55} minSize={40}>
+          <Panel id="editor" defaultSize="55%" minSize="30%">
             <div className="flex flex-col h-full bg-gray-950">
               {/* File Tab Header */}
               <div className="px-4 py-2 bg-gray-900 border-b border-gray-800 flex items-center justify-between">
@@ -553,12 +553,12 @@ const EditorPage: React.FC = () => {
             </div>
           </Panel>
 
-          <PanelResizeHandle className="flex-shrink-0 w-2 h-full bg-gray-900 border-x border-gray-800/80 hover:bg-green-500/30 hover:border-green-500/40 transition-all cursor-col-resize flex items-center justify-center group focus:outline-none select-none z-20 pointer-events-auto">
-            <div className="w-0.5 h-7 bg-gray-700 rounded-full group-hover:bg-green-400 transition-colors pointer-events-none" />
+          <PanelResizeHandle className="flex-shrink-0 w-1.5 bg-gray-900 border-x border-gray-800/50 hover:bg-green-500/40 transition-all cursor-col-resize flex items-center justify-center group focus:outline-none select-none z-20">
+            <div className="w-0.5 h-8 bg-gray-700 rounded-full group-hover:bg-green-400 transition-colors pointer-events-none" />
           </PanelResizeHandle>
 
           {/* Right Tools & Customization Panel */}
-          <Panel defaultSize={25} minSize={20} maxSize={45}>
+          <Panel id="tools" defaultSize="25%" minSize="18%" maxSize="45%">
             <ToolsPanel activeTab={activeTab} onSelectTab={handleSelectTab}>
               {activeTab === 'chat' && (
                 <ChatPanel
