@@ -19,7 +19,7 @@ export const ToolsPanel: React.FC<ToolsPanelProps> = ({ activeTab, onSelectTab, 
   ];
 
   return (
-    <div className="flex flex-col h-full bg-gray-900 border-l border-gray-800 text-gray-200 select-none">
+    <div className="flex flex-col h-full min-w-[260px] overflow-x-hidden bg-gray-900 border-l border-gray-800 text-gray-200 select-none">
       {/* Header Tabs */}
       <div className="flex border-b border-gray-800 bg-gray-950 overflow-x-auto no-scrollbar">
         {tabs.map((tab) => {

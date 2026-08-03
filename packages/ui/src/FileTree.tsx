@@ -74,7 +74,7 @@ export const FileTree: React.FC<FileTreeProps> = ({
   };
 
   return (
-    <div className="flex flex-col h-full bg-gray-950 border-r border-gray-800 text-gray-200 select-none">
+    <div className="flex flex-col h-full min-w-[200px] overflow-x-hidden bg-gray-950 border-r border-gray-800 text-gray-200 select-none">
       {/* Explorer Header */}
       <div className="p-3 bg-gray-900 border-b border-gray-800 flex items-center justify-between">
         <div className="flex items-center gap-2">

@@ -467,9 +467,9 @@ const EditorPage: React.FC = () => {
 
       {/* Main Resizable Panes Layout */}
       <div className="flex-1 overflow-hidden">
-        <PanelGroup orientation="horizontal" className="h-full w-full">
+        <PanelGroup orientation="horizontal" id="sync-code-editor-layout-v3" className="h-full w-full">
           {/* File Tree Sidebar Panel */}
-          <Panel defaultSize={18} minSize={12} maxSize={30}>
+          <Panel defaultSize={20} minSize={15} maxSize={35}>
             <FileTree
               files={fileList}
               activeFile={activeFile}
@@ -487,7 +487,7 @@ const EditorPage: React.FC = () => {
           </PanelResizeHandle>
 
           {/* Main Editor Center Panel */}
-          <Panel defaultSize={57} minSize={30}>
+          <Panel defaultSize={55} minSize={40}>
             <div className="flex flex-col h-full bg-gray-950">
               {/* File Tab Header */}
               <div className="px-4 py-2 bg-gray-900 border-b border-gray-800 flex items-center justify-between">
@@ -558,7 +558,7 @@ const EditorPage: React.FC = () => {
           </PanelResizeHandle>
 
           {/* Right Tools & Customization Panel */}
-          <Panel defaultSize={25} minSize={18} maxSize={40}>
+          <Panel defaultSize={25} minSize={20} maxSize={45}>
             <ToolsPanel activeTab={activeTab} onSelectTab={handleSelectTab}>
               {activeTab === 'chat' && (
                 <ChatPanel
