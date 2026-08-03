@@ -240,7 +240,7 @@ const EditorPage: React.FC = () => {
   };
 
   const handleFetchLiveKitToken = async (): Promise<LiveKitTokenResponse> => {
-    const apiHost = import.meta.env.VITE_API_URL || 'http://localhost:3000';
+    const apiHost = import.meta.env.VITE_API_URL || 'http://localhost:3001';
     const res = await fetch(`${apiHost}/api/livekit/token`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -253,7 +253,7 @@ const EditorPage: React.FC = () => {
   };
 
   const handleStartRecording = async (title?: string): Promise<string> => {
-    const apiHost = import.meta.env.VITE_API_URL || 'http://localhost:3000';
+    const apiHost = import.meta.env.VITE_API_URL || 'http://localhost:3001';
     const res = await fetch(`${apiHost}/api/recordings/start`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -267,7 +267,7 @@ const EditorPage: React.FC = () => {
   };
 
   const handleStopRecording = async (recordingId: string): Promise<SessionRecording> => {
-    const apiHost = import.meta.env.VITE_API_URL || 'http://localhost:3000';
+    const apiHost = import.meta.env.VITE_API_URL || 'http://localhost:3001';
     const res = await fetch(`${apiHost}/api/recordings/stop`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -277,7 +277,7 @@ const EditorPage: React.FC = () => {
   };
 
   const handleFetchRecordings = async (): Promise<SessionRecording[]> => {
-    const apiHost = import.meta.env.VITE_API_URL || 'http://localhost:3000';
+    const apiHost = import.meta.env.VITE_API_URL || 'http://localhost:3001';
     const res = await fetch(`${apiHost}/api/recordings/room/${roomId || 'default-room'}`);
     const data = await res.json();
     return data.recordings || [];
@@ -288,7 +288,7 @@ const EditorPage: React.FC = () => {
     action: 'explain' | 'generate' | 'refactor' | 'fix',
     contextCode?: string,
   ): Promise<AiCompletionResponse> => {
-    const apiHost = import.meta.env.VITE_API_URL || 'http://localhost:3000';
+    const apiHost = import.meta.env.VITE_API_URL || 'http://localhost:3001';
     const res = await fetch(`${apiHost}/api/ai/completion`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
