@@ -10,6 +10,10 @@
     "lint": "eslint \"src/**/*.ts\""
   },
   "devDependencies": {
+    "@types/react": "^18.3.18",
     "typescript": "^5.4.5"
+  },
+  "dependencies": {
+    "react": "^18.3.1"
   }
 }

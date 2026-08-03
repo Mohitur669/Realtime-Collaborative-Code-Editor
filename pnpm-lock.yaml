@@ -96,6 +96,12 @@ importers:
       '@uiw/react-codemirror':
         specifier: ^4.23.8
         version: 4.25.11(@babel/runtime@8.0.0)(@codemirror/autocomplete@6.20.3)(@codemirror/language@6.12.4)(@codemirror/lint@6.9.7)(@codemirror/search@6.7.1)(@codemirror/state@6.7.1)(@codemirror/theme-one-dark@6.1.3)(@codemirror/view@6.43.7)(codemirror@6.0.2)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      file-saver:
+        specifier: ^2.0.5
+        version: 2.0.5
+      jszip:
+        specifier: ^3.10.1
+        version: 3.10.1
       react:
         specifier: ^18.3.1
         version: 18.3.1
@@ -130,6 +136,9 @@ importers:
         specifier: ^5.0.2
         version: 5.0.14(@types/react@18.3.31)(react@18.3.1)
     devDependencies:
+      '@types/file-saver':
+        specifier: ^2.0.7
+        version: 2.0.7
       '@types/react':
         specifier: ^18.3.18
         version: 18.3.31
@@ -167,23 +176,23 @@ importers:
         specifier: workspace:*
         version: link:../../packages/shared-types
       '@hocuspocus/extension-database':
-        specifier: ^4.4.0
-        version: 4.4.0(y-protocols@1.0.7(yjs@13.6.31))(yjs@13.6.31)
+        specifier: ^2.13.5
+        version: 2.15.3(y-protocols@1.0.7(yjs@13.6.31))(yjs@13.6.31)
       '@hocuspocus/server':
-        specifier: ^4.4.0
-        version: 4.4.0(y-protocols@1.0.7(yjs@13.6.31))(yjs@13.6.31)
+        specifier: ^2.13.5
+        version: 2.15.3(y-protocols@1.0.7(yjs@13.6.31))(yjs@13.6.31)
       yjs:
-        specifier: ^13.6.31
+        specifier: ^13.6.23
         version: 13.6.31
     devDependencies:
       '@hocuspocus/provider':
-        specifier: ^4.4.0
-        version: 4.4.0(y-protocols@1.0.7(yjs@13.6.31))(yjs@13.6.31)
+        specifier: ^2.13.5
+        version: 2.15.3(y-protocols@1.0.7(yjs@13.6.31))(yjs@13.6.31)
       '@types/node':
         specifier: ^22.10.2
         version: 22.20.1
       '@types/ws':
-        specifier: ^8.18.1
+        specifier: ^8.5.13
         version: 8.18.1
       typescript:
         specifier: ^5.4.5
@@ -192,7 +201,7 @@ importers:
         specifier: ^2.1.8
         version: 2.1.9(@types/node@22.20.1)(lightningcss@1.33.0)
       ws:
-        specifier: ^8.21.1
+        specifier: ^8.18.0
         version: 8.21.1
 
   packages/shared-types:
@@ -202,7 +211,14 @@ importers:
         version: 5.9.3
 
   packages/ui:
+    dependencies:
+      react:
+        specifier: ^18.3.1
+        version: 18.3.1
     devDependencies:
+      '@types/react':
+        specifier: ^18.3.18
+        version: 18.3.31
       typescript:
         specifier: ^5.4.5
         version: 5.9.3
@@ -701,12 +717,21 @@ packages:
     resolution: {integrity: sha512-d9zaMRSTIKDLhctzH12MtXvJKSSUhaHcjV+2Z+GK+EEY7XKpP5yR4x+N3TAcHTcu963nIr+TMcCb4DBCYX1z6Q==}
     engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
 
+  '@hocuspocus/common@2.15.3':
+    resolution: {integrity: sha512-Rzh1HF0a2o/tf90A3w2XNdXd9Ym3aQzMDfD3lAUONCX9B9QOdqdyiORrj6M25QEaJrEIbXFy8LtAFcL0wRdWzA==}
+
   '@hocuspocus/common@4.4.0':
     resolution: {integrity: sha512-cPSlPu/ws2JzBHW6OzctyaQMyDCq/YUS4nhXSbyMdkQwJzhjCkvfmmRnVtcmgLR3TBLaNwToNDwR/mNaJFOYsg==}
 
-  '@hocuspocus/extension-database@4.4.0':
-    resolution: {integrity: sha512-N7ZP29cEqK5JWQQIkuSxnAYND9MB2EmrM9neFlHXz60VJ6L4zhvqAtG+m3XHPXPxx1sGKVcljhLlg1xba4E/DQ==}
+  '@hocuspocus/extension-database@2.15.3':
+    resolution: {integrity: sha512-+PVlPwfdVyOase68WEBb105ZwglhCLVeGpyNa3uwnmH+Ers7OKGLma2SDMKn3Vcb5oHzTzEGx7jNt+32KTEKXA==}
     peerDependencies:
+      yjs: ^13.6.8
+
+  '@hocuspocus/provider@2.15.3':
+    resolution: {integrity: sha512-oadN05m+KL4ylNKVo5YspNG4MXkT2Y+FUFzrgigpQeTjQibkPUwCNmUnkUxMgrGRgxb+O0lJCfirFIJMxedctA==}
+    peerDependencies:
+      y-protocols: ^1.0.6
       yjs: ^13.6.8
 
   '@hocuspocus/provider@4.4.0':
@@ -715,9 +740,8 @@ packages:
       y-protocols: ^1.0.6
       yjs: ^13.6.8
 
-  '@hocuspocus/server@4.4.0':
-    resolution: {integrity: sha512-eVSnx+76CN81vaRol+OlT8FyyGFOBF9Z+kdJQhjVXRpj3kIAI1TzuRHKiZN1vkUogdHfmOAN5Bhs5v7V/qhMkQ==}
-    engines: {node: '>=22'}
+  '@hocuspocus/server@2.15.3':
+    resolution: {integrity: sha512-Ju4ty4/7JtmvivcP7gKReOLf8KrFwN7Yx/5VhXYh4TRULy4kSo2fsDVUaluPp0neZa6PbVhizJuzlOim73IEbQ==}
     peerDependencies:
       y-protocols: ^1.0.6
       yjs: ^13.6.8
@@ -1104,6 +1128,9 @@ packages:
   '@types/estree@1.0.9':
     resolution: {integrity: sha512-GhdPgy1el4/ImP05X05Uw4cw2/M93BCUmnEvWZNStlCzEKME4Fkk+YpoA5OiHNQmoS7Cafb8Xa3Pya8m1Qrzeg==}
 
+  '@types/file-saver@2.0.7':
+    resolution: {integrity: sha512-dNKVfHd/jk0SkR/exKGj2ggkB45MAkzvWCaqLUUgkyjITkGNzH8H+yUwr+BLJUBjZOe9w8X3wgmXhZDRg1ED6A==}
+
   '@types/methods@1.1.4':
     resolution: {integrity: sha512-ymXWVrDiCxTBE3+RIrrP533E70eA+9qu7zdWoHuOmGujkYtzf4HQF96b8nwHLqhuf4ykX61IGRIB38CC6/sImQ==}
 
@@ -1364,8 +1391,8 @@ packages:
     resolution: {integrity: sha512-Izi8RQcffqCeNVgFigKli1ssklIbpHnCYc6AknXGYoB6grJqyeby7jv12JUQgmTAnIDnbck1uxksT4dzN3PWBA==}
     engines: {node: '>=12'}
 
-  async-mutex@0.5.0:
-    resolution: {integrity: sha512-1A94B18jkJ3DYq284ohPxoXbfTA5HsQ7/Mf4DEhcyLx3Bz27Rh59iScbB6EPiP+B+joue6YCxcMXSbFC1tZKwA==}
+  async-lock@1.4.1:
+    resolution: {integrity: sha512-Az2ZTpuytrtqENulXwO3GGv1Bztugx6TT37NIo7imr/Qo0gsYiGtSdBa2B6fsXhTpVZDNfu1Qn3pk531e3q+nQ==}
 
   asynckit@0.4.0:
     resolution: {integrity: sha512-Oei9OH4tRh0YqU3GxhX79dM/mwVgvbZJaSNaRk+bshkj0S5cfHcgYakreBjrHwatXKbz+IoIdYLxrKim2MjW0Q==}
@@ -1524,6 +1551,9 @@ packages:
   core-js-pure@3.49.0:
     resolution: {integrity: sha512-XM4RFka59xATyJv/cS3O3Kml72hQXUeGRuuTmMYFxwzc9/7C8OYTaIR/Ji+Yt8DXzsFLNhat15cE/JP15HrCgw==}
 
+  core-util-is@1.0.3:
+    resolution: {integrity: sha512-ZQBvi1DcpJ4GDqanjucZ2Hj3wEO5pZDS89BWbkcrvdxksJorwUDDZamX9ldFkp9aw2lmBDLgkObEA4DWNJ9FYQ==}
+
   cors@2.8.5:
     resolution: {integrity: sha512-KIHbLJqu73RGr/hnbrO9uBeixNGuvSQjul/jdFvS/KFSIH1hWVd1ng7zOHx+YrEfInLG7q4n6GHQ9cDtxv/P6g==}
     engines: {node: '>= 0.10'}
@@ -1538,14 +1568,6 @@ packages:
   cross-spawn@7.0.6:
     resolution: {integrity: sha512-uV2QOWP2nWzsy2aMp8aRibhi9dlzF5Hgh5SHaB9OiTGEyDTiJJyx0uy51QXdyWbtAHNua4XJzUKca3OzKUd3vA==}
     engines: {node: '>= 8'}
-
-  crossws@0.4.10:
-    resolution: {integrity: sha512-pz3oubH/dt12KjqsUB0IuXW4nwRDQ583iDsP4555Cpdqx0NoU7pGlWBcayyFI8f/l/idRpgjMEfwuOxSWJYlIA==}
-    peerDependencies:
-      srvx: '>=0.11.5'
-    peerDependenciesMeta:
-      srvx:
-        optional: true
 
   crypt@0.0.2:
     resolution: {integrity: sha512-mCxBlsHFYh9C+HVpiEacem8FEBnMXgU9gy4zmNC+SXAZNB/1idgp/aulFJ4FgCi7GPEVbfyng092GqL2k2rmow==}
@@ -1769,6 +1791,9 @@ packages:
     resolution: {integrity: sha512-7Gps/XWymbLk2QLYK4NzpMOrYjMhdIxXuIvy2QBsLE6ljuodKvdkWs/cpyJJ3CVIVpH0Oi1Hvg1ovbMzLdFBBg==}
     engines: {node: ^10.12.0 || >=12.0.0}
 
+  file-saver@2.0.5:
+    resolution: {integrity: sha512-P9bmyZ3h/PRG+Nzga+rbdI4OEpNDzAVyy74uVO9ATgzLK6VtAsYybF/+TOCvrc0MO793d6+42lLyZTw7/ArVzA==}
+
   file-type@20.4.1:
     resolution: {integrity: sha512-hw9gNZXUfZ02Jo0uafWLaFVPter5/k2rfcrjFJJHX/77xtSDOfJuEFb6oKlFV86FLP1SuyHMW1PSk0U9M5tKkQ==}
     engines: {node: '>=18'}
@@ -1893,6 +1918,9 @@ packages:
     resolution: {integrity: sha512-hsBTNUqQTDwkWtcdYI2i06Y/nUBEsNEDJKjWdigLvegy8kDuJAS8uRlpkkcQpyEXL0Z/pjDy5HBmMjRCJ2gq+g==}
     engines: {node: '>= 4'}
 
+  immediate@3.0.6:
+    resolution: {integrity: sha512-XXOFtyqDjNDAQxVfYxuF7g9Il/IbWmmlQg2MYKOH8ExIT1qg6xc4zyS3HaEEATgs1btfzxq15ciUiY7gjSXRGQ==}
+
   import-fresh@3.3.1:
     resolution: {integrity: sha512-TR3KfrTZTYLPB6jUjfx6MF9WcWrHL9su5TObK4ZkYgBdWKPOFoSoQIdEuTuR82pmtxH2spWG9h6etwfr1pLBqQ==}
     engines: {node: '>=6'}
@@ -1942,6 +1970,9 @@ packages:
   is-retina@1.0.3:
     resolution: {integrity: sha512-/tCmbIETZwCd8uHWO+GvbRa7jxwHFHdfetHfiwoP0aN9UDf3prUJMtKn7iBFYipYhqY1bSTjur8hC/Dakt8eyw==}
 
+  isarray@1.0.0:
+    resolution: {integrity: sha512-VLghIWNM6ELQzo7zwmcg0NmTVyWKYjvIeM83yjp0wRDTmUnrM678fQbcKBo6n2CJEF0szoG//ytg+TKla89ALQ==}
+
   isexe@2.0.0:
     resolution: {integrity: sha512-RHxMLp9lnKHGHRng9QFhRCMbYAcVpn69smSGcq3f36xjgVVWThj4qqLbTLlq7Ssj8B+fIQ1EuCEGI2lKsyQeIw==}
 
@@ -1982,6 +2013,9 @@ packages:
     engines: {node: '>=6'}
     hasBin: true
 
+  jszip@3.10.1:
+    resolution: {integrity: sha512-xXDvecyTpGLrqFrvkrUSoxxfJI5AH7U8zxxtVclpsUtMCq4JQ290LY8AW5c7Ggnr/Y/oK+bQMbqK2qmtk3pN4g==}
+
   keyv@4.5.4:
     resolution: {integrity: sha512-oxVHkHR/EJf2CNXnWxRLW6mg7JyCCUcG0DtEGmL2ctUo1PNTin1PUil+r/+4r5MpVgC/fn1kjsx7mjSujKqIpw==}
 
@@ -1997,6 +2031,9 @@ packages:
     resolution: {integrity: sha512-DeXj9X5xDCjgKLU/7RR+/HQEVzuuEUiwldwOGsHK/sfAfELGWEyTcf0x+uOvCvK3O2zPmZePXWL85vtia6GyZw==}
     engines: {node: '>=16'}
     hasBin: true
+
+  lie@3.3.0:
+    resolution: {integrity: sha512-UaiMJzeWRlEujzAuw5LokY1L5ecNQYZKfmyZ9L7wDHb/p5etKaxXhohBcrw0EYby+G/NA52vRSN4N39dxHAIwQ==}
 
   lightningcss-android-arm64@1.33.0:
     resolution: {integrity: sha512-gEpRTalKdosp4Bb8qWtc2iOgE5SeIHlpS1up9bFq2wAyYhl1UdTObYiHe98zEM9SQvSoqQZ1IQD0JNpg3Ml5pg==}
@@ -2222,6 +2259,9 @@ packages:
     resolution: {integrity: sha512-LaNjtRWUBY++zB5nE/NwcaoMylSPk+S+ZHNB1TzdbMJMny6dynpAGt7X/tl/QYq3TIeE6nxHppbo2LGymrG5Pw==}
     engines: {node: '>=10'}
 
+  pako@1.0.11:
+    resolution: {integrity: sha512-4hLB8Py4zZce5s4yd9XzopqwVv/yGNhV1Bl8NTmCq1763HeK2+EwVTv+leGeL13Dnh2wfbqowVPXCIO0z4taYw==}
+
   parent-module@1.0.1:
     resolution: {integrity: sha512-GQ2EWRpQV8/o+Aw8YqtfZZPfNRWZYkbidE9k5rpl/hC3vtHHBfGm2Ifi6qWV+coDGkrUKZAxE3Lot5kcsRlh+g==}
     engines: {node: '>=6'}
@@ -2333,6 +2373,9 @@ packages:
     engines: {node: '>=14'}
     hasBin: true
 
+  process-nextick-args@2.0.1:
+    resolution: {integrity: sha512-3ouUOpQhtgrbOa17J7+uxOTpITYWaGP7/AhoR3+A+/1e9skrzelGi/dXzEYyvbxubEF6Wn2ypscTKiKJFFn1ag==}
+
   prop-types@15.8.1:
     resolution: {integrity: sha512-oj87CgZICdulUohogVAR7AjlC0327U4el4L6eAvOqCeudMDVU0NThNaV+b9Df4dXgSP1gXMTnPdhfe/2qDH5cg==}
 
@@ -2410,6 +2453,9 @@ packages:
   read-cache@1.0.0:
     resolution: {integrity: sha512-Owdv/Ft7IjOgm/i0xvNDZ1LrRANRfew4b2prF3OWMQLxLfu3bS8FVhCsrSCMK4lR56Y9ya+AThoTpDCTxCmpRA==}
 
+  readable-stream@2.3.8:
+    resolution: {integrity: sha512-8p0AUk4XODgIewSi0l8Epjs+EVnWiK7NoDIEGU0HhE7+ZyY8D1IMY7odu5lRrFXGg71L15KG8QrPmum45RTtdA==}
+
   readable-stream@3.6.2:
     resolution: {integrity: sha512-9u/sniCrY3D5WdsERHzHE4G2YCXqoG5FTHUiCC4SIbr6XcLZBY05ya9EKjYek9O5xOAwjGq+1JdGBAS7Q9ScoA==}
     engines: {node: '>= 6'}
@@ -2450,6 +2496,9 @@ packages:
   rxjs@7.8.2:
     resolution: {integrity: sha512-dhKf903U/PQZY6boNNtAGdWbG85WAbjT/1xYoZIC7FAY0yWapOBQVsVrDl58W86//e1VpMNBtRV4MaXfdMySFA==}
 
+  safe-buffer@5.1.2:
+    resolution: {integrity: sha512-Gd2UZBJDkXlY7GbJxfsE8/nvKkUEU1G38c1siN6QP6a9PT9MmHB8GnpscSmMJSoF8LOIrt8ud/wPtojys4G6+g==}
+
   safe-buffer@5.2.1:
     resolution: {integrity: sha512-rp3So07KcdmmKbGvgaNxQSJr7bGVSVk5S9Eq1F+ppbRo70+YeaDxkw5Dd8NPN+GD6bjnYm2VuPuCXmpuYvmCXQ==}
 
@@ -2470,6 +2519,9 @@ packages:
   serve-static@1.16.3:
     resolution: {integrity: sha512-x0RTqQel6g5SY7Lg6ZreMmsOzncHFU7nhnRWkKgWuMTu5NN0DR5oruckMqRvacAN9d5w6ARnRBXl9xhDCgfMeA==}
     engines: {node: '>= 0.8.0'}
+
+  setimmediate@1.0.5:
+    resolution: {integrity: sha512-MATJdZp8sLqDl/68LfQmbP8zKPLQNV6BIZoIgrscFDQ+RsvK/BxeDQOgyxKKoh0y/8h3BqVFnCqQ/gd+reiIXA==}
 
   setprototypeof@1.2.0:
     resolution: {integrity: sha512-E5LDX7Wrp85Kil5bhZv46j8jOeboKq5JMmYM3gVGdGH8xFpPWXUMsNrlODCrkoxMEeNi/XZIwuRvY4XNwYMJpw==}
@@ -2537,6 +2589,9 @@ packages:
   streamsearch@1.1.0:
     resolution: {integrity: sha512-Mcc5wHehp9aXz1ax6bZUyY5afg9u2rv5cqQI3mRrYkGC8rW2hM02jWuwjtL++LS5qinSyhj2QfLyNsuc+VsExg==}
     engines: {node: '>=10.0.0'}
+
+  string_decoder@1.1.1:
+    resolution: {integrity: sha512-n/ShnvDi6FHbbVfviro+WojiFzv+s8MPMHBczVePfUpDJLwoLT0ht1l4YwBCbi8pJAveEEdnkHyPyTP/mzRfwg==}
 
   string_decoder@1.3.0:
     resolution: {integrity: sha512-hkRX8U1WjJFd8LsDJ2yQ/wWWxaopEsABU1XfkM8A+j0+85JAGppt16cr1Whg6KIbb4okU6Mql6BOj+uup/wKeA==}
@@ -3436,17 +3491,34 @@ snapshots:
 
   '@eslint/js@8.57.1': {}
 
+  '@hocuspocus/common@2.15.3':
+    dependencies:
+      lib0: 0.2.117
+
   '@hocuspocus/common@4.4.0':
     dependencies:
       lib0: 0.2.117
 
-  '@hocuspocus/extension-database@4.4.0(y-protocols@1.0.7(yjs@13.6.31))(yjs@13.6.31)':
+  '@hocuspocus/extension-database@2.15.3(y-protocols@1.0.7(yjs@13.6.31))(yjs@13.6.31)':
     dependencies:
-      '@hocuspocus/server': 4.4.0(y-protocols@1.0.7(yjs@13.6.31))(yjs@13.6.31)
+      '@hocuspocus/server': 2.15.3(y-protocols@1.0.7(yjs@13.6.31))(yjs@13.6.31)
       yjs: 13.6.31
     transitivePeerDependencies:
-      - srvx
+      - bufferutil
+      - utf-8-validate
       - y-protocols
+
+  '@hocuspocus/provider@2.15.3(y-protocols@1.0.7(yjs@13.6.31))(yjs@13.6.31)':
+    dependencies:
+      '@hocuspocus/common': 2.15.3
+      '@lifeomic/attempt': 3.1.0
+      lib0: 0.2.117
+      ws: 8.21.1
+      y-protocols: 1.0.7(yjs@13.6.31)
+      yjs: 13.6.31
+    transitivePeerDependencies:
+      - bufferutil
+      - utf-8-validate
 
   '@hocuspocus/provider@4.4.0(y-protocols@1.0.7(yjs@13.6.31))(yjs@13.6.31)':
     dependencies:
@@ -3456,17 +3528,19 @@ snapshots:
       y-protocols: 1.0.7(yjs@13.6.31)
       yjs: 13.6.31
 
-  '@hocuspocus/server@4.4.0(y-protocols@1.0.7(yjs@13.6.31))(yjs@13.6.31)':
+  '@hocuspocus/server@2.15.3(y-protocols@1.0.7(yjs@13.6.31))(yjs@13.6.31)':
     dependencies:
-      '@hocuspocus/common': 4.4.0
-      async-mutex: 0.5.0
-      crossws: 0.4.10
+      '@hocuspocus/common': 2.15.3
+      async-lock: 1.4.1
       kleur: 4.1.5
       lib0: 0.2.117
+      uuid: 11.1.1
+      ws: 8.21.1
       y-protocols: 1.0.7(yjs@13.6.31)
       yjs: 13.6.31
     transitivePeerDependencies:
-      - srvx
+      - bufferutil
+      - utf-8-validate
 
   '@humanwhocodes/config-array@0.13.0':
     dependencies:
@@ -3847,6 +3921,8 @@ snapshots:
       '@types/node': 22.20.1
 
   '@types/estree@1.0.9': {}
+
+  '@types/file-saver@2.0.7': {}
 
   '@types/methods@1.1.4': {}
 
@@ -4373,9 +4449,7 @@ snapshots:
 
   assertion-error@2.0.1: {}
 
-  async-mutex@0.5.0:
-    dependencies:
-      tslib: 2.8.1
+  async-lock@1.4.1: {}
 
   asynckit@0.4.0: {}
 
@@ -4544,6 +4618,8 @@ snapshots:
 
   core-js-pure@3.49.0: {}
 
+  core-util-is@1.0.3: {}
+
   cors@2.8.5:
     dependencies:
       object-assign: 4.1.1
@@ -4561,8 +4637,6 @@ snapshots:
       path-key: 3.1.1
       shebang-command: 2.0.0
       which: 2.0.2
-
-  crossws@0.4.10: {}
 
   crypt@0.0.2: {}
 
@@ -4871,6 +4945,8 @@ snapshots:
     dependencies:
       flat-cache: 3.2.0
 
+  file-saver@2.0.5: {}
+
   file-type@20.4.1:
     dependencies:
       '@tokenizer/inflate': 0.2.7
@@ -5013,6 +5089,8 @@ snapshots:
 
   ignore@5.3.2: {}
 
+  immediate@3.0.6: {}
+
   import-fresh@3.3.1:
     dependencies:
       parent-module: 1.0.1
@@ -5051,6 +5129,8 @@ snapshots:
 
   is-retina@1.0.3: {}
 
+  isarray@1.0.0: {}
+
   isexe@2.0.0: {}
 
   isomorphic.js@0.2.5: {}
@@ -5075,6 +5155,13 @@ snapshots:
 
   json5@2.2.3: {}
 
+  jszip@3.10.1:
+    dependencies:
+      lie: 3.3.0
+      pako: 1.0.11
+      readable-stream: 2.3.8
+      setimmediate: 1.0.5
+
   keyv@4.5.4:
     dependencies:
       json-buffer: 3.0.1
@@ -5089,6 +5176,10 @@ snapshots:
   lib0@0.2.117:
     dependencies:
       isomorphic.js: 0.2.5
+
+  lie@3.3.0:
+    dependencies:
+      immediate: 3.0.6
 
   lightningcss-android-arm64@1.33.0:
     optional: true
@@ -5270,6 +5361,8 @@ snapshots:
     dependencies:
       p-limit: 3.1.0
 
+  pako@1.0.11: {}
+
   parent-module@1.0.1:
     dependencies:
       callsites: 3.1.0
@@ -5342,6 +5435,8 @@ snapshots:
   prelude-ls@1.2.1: {}
 
   prettier@3.9.6: {}
+
+  process-nextick-args@2.0.1: {}
 
   prop-types@15.8.1:
     dependencies:
@@ -5422,6 +5517,16 @@ snapshots:
     dependencies:
       pify: 2.3.0
 
+  readable-stream@2.3.8:
+    dependencies:
+      core-util-is: 1.0.3
+      inherits: 2.0.4
+      isarray: 1.0.0
+      process-nextick-args: 2.0.1
+      safe-buffer: 5.1.2
+      string_decoder: 1.1.1
+      util-deprecate: 1.0.2
+
   readable-stream@3.6.2:
     dependencies:
       inherits: 2.0.4
@@ -5489,6 +5594,8 @@ snapshots:
     dependencies:
       tslib: 2.8.1
 
+  safe-buffer@5.1.2: {}
+
   safe-buffer@5.2.1: {}
 
   safer-buffer@2.1.2: {}
@@ -5525,6 +5632,8 @@ snapshots:
       send: 0.19.2
     transitivePeerDependencies:
       - supports-color
+
+  setimmediate@1.0.5: {}
 
   setprototypeof@1.2.0: {}
 
@@ -5628,6 +5737,10 @@ snapshots:
   std-env@3.10.0: {}
 
   streamsearch@1.1.0: {}
+
+  string_decoder@1.1.1:
+    dependencies:
+      safe-buffer: 5.1.2
 
   string_decoder@1.3.0:
     dependencies:

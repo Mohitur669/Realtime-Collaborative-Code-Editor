@@ -1,10 +1,13 @@
-import { Server } from '@hocuspocus/server';
+import * as HocuspocusServerModule from '@hocuspocus/server';
 import { Database } from '@hocuspocus/extension-database';
+
+const mod: any = HocuspocusServerModule;
+const HocuspocusClass = mod.Hocuspocus || mod.default?.Hocuspocus || mod.Server?.constructor;
 
 // In-memory snapshot persistence store (persists across reconnects/intervals, replaced by Postgres in Phase 12)
 export const docStore = new Map<string, Uint8Array>();
 
-export const server = new Server({
+export const server = new HocuspocusClass({
   port: Number(process.env.HOCUSPOCUS_PORT || 1234),
   extensions: [
     new Database({
@@ -19,7 +22,8 @@ export const server = new Server({
 });
 
 if (process.env.NODE_ENV !== 'test') {
-  server.listen().then(() => {
-    console.log(`Hocuspocus Collab Server running on port ${process.env.HOCUSPOCUS_PORT || 1234}`);
+  const port = Number(process.env.HOCUSPOCUS_PORT || 1234);
+  server.listen(port).then(() => {
+    console.log(`Hocuspocus Collab Server running on port ${port}`);
   });
 }

@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, useMemo } from 'react';
 import toast from 'react-hot-toast';
 import Client from '../components/Client';
 import Editor, { EditorRef } from '../components/Editor';
@@ -7,6 +7,12 @@ import { SocketActions, ClientInfo, JoinedPayload, DisconnectedPayload } from '@
 import { initSocket } from '../socket';
 import { Socket } from 'socket.io-client';
 import { useLocation, useNavigate, Navigate, useParams } from 'react-router-dom';
+import { FileTree } from '@codesync/ui';
+import * as Y from 'yjs';
+import { HocuspocusProvider } from '@hocuspocus/provider';
+import { IndexeddbPersistence } from 'y-indexeddb';
+import JSZip from 'jszip';
+import { saveAs } from 'file-saver';
 
 const LANGUAGES = [
   { label: 'JavaScript', value: 'javascript' },
@@ -51,6 +57,45 @@ const EditorPage: React.FC = () => {
 
   const username = location.state?.username;
 
+  // Yjs Multi-file CRDT workspace initialization
+  const { doc, provider } = useMemo(() => {
+    const ydoc = new Y.Doc();
+    const wsUrl = import.meta.env.VITE_COLLAB_WS_URL || 'ws://localhost:1234';
+    const hocusProvider = new HocuspocusProvider({
+      url: wsUrl,
+      name: roomId || 'default-room',
+      document: ydoc,
+    });
+    new IndexeddbPersistence(roomId || 'default-room', ydoc);
+    return { doc: ydoc, provider: hocusProvider };
+  }, [roomId]);
+
+  const [fileList, setFileList] = useState<string[]>([]);
+  const [activeFile, setActiveFile] = useState<string>('main.js');
+
+  useEffect(() => {
+    const filesArray = doc.getArray<string>('projectFiles');
+
+    const updateFilesList = () => {
+      const current = filesArray.toArray();
+      if (current.length === 0) {
+        doc.transact(() => {
+          filesArray.push(['main.js']);
+        });
+        setFileList(['main.js']);
+      } else {
+        setFileList(current);
+      }
+    };
+
+    updateFilesList();
+    filesArray.observe(updateFilesList);
+
+    return () => {
+      filesArray.unobserve(updateFilesList);
+    };
+  }, [doc]);
+
   useEffect(() => {
     if (!username) return;
 
@@ -73,18 +118,11 @@ const EditorPage: React.FC = () => {
 
       socketRef.current.on(
         SocketActions.JOINED,
-        ({ clients: updatedClients, username: joinedUser, socketId }: JoinedPayload) => {
+        ({ clients: updatedClients, username: joinedUser }: JoinedPayload) => {
           if (joinedUser !== username) {
             toast.success(`${joinedUser} joined the room.`);
           }
           setClients(updatedClients);
-
-          if (socketRef.current && codeRef.current) {
-            socketRef.current.emit(SocketActions.SYNC_CODE, {
-              code: codeRef.current,
-              socketId,
-            });
-          }
         },
       );
 
@@ -107,8 +145,9 @@ const EditorPage: React.FC = () => {
         socketRef.current.off(SocketActions.DISCONNECTED);
         socketRef.current.disconnect();
       }
+      provider.destroy();
     };
-  }, [roomId, username, navigate]);
+  }, [roomId, username, navigate, provider]);
 
   if (!username) {
     return <Navigate to="/" />;
@@ -151,12 +190,6 @@ const EditorPage: React.FC = () => {
   const updateEditorCode = (newCode: string) => {
     editorInstanceRef.current?.setCode(newCode);
     codeRef.current = newCode;
-    if (socketRef.current && roomId) {
-      socketRef.current.emit(SocketActions.CODE_CHANGE, {
-        roomId,
-        code: newCode,
-      });
-    }
   };
 
   const handleAppendCode = () => {
@@ -173,10 +206,121 @@ const EditorPage: React.FC = () => {
     resetFileInput();
   };
 
+  // File tree CRUD operations synced live via Yjs
+  const handleCreateFile = (filePath: string) => {
+    const filesArray = doc.getArray<string>('projectFiles');
+    if (!filesArray.toArray().includes(filePath)) {
+      doc.transact(() => {
+        filesArray.push([filePath]);
+      });
+      setActiveFile(filePath);
+      toast.success(`Created file ${filePath}`);
+    }
+  };
+
+  const handleDeleteFile = (filePath: string) => {
+    const filesArray = doc.getArray<string>('projectFiles');
+    const current = filesArray.toArray();
+    const index = current.indexOf(filePath);
+    if (index !== -1 && current.length > 1) {
+      doc.transact(() => {
+        filesArray.delete(index, 1);
+        const yText = doc.getText(`file:${filePath}`);
+        yText.delete(0, yText.length);
+      });
+      const remaining = current.filter((f) => f !== filePath);
+      if (activeFile === filePath) {
+        setActiveFile(remaining[0]);
+      }
+      toast.success(`Deleted file ${filePath}`);
+    }
+  };
+
+  const handleRenameFile = (oldPath: string, newPath: string) => {
+    const filesArray = doc.getArray<string>('projectFiles');
+    const current = filesArray.toArray();
+    const index = current.indexOf(oldPath);
+    if (index !== -1 && newPath && !current.includes(newPath)) {
+      const oldYText = doc.getText(`file:${oldPath}`);
+      const content = oldYText.toString();
+      doc.transact(() => {
+        filesArray.delete(index, 1);
+        filesArray.push([newPath]);
+        const newYText = doc.getText(`file:${newPath}`);
+        newYText.insert(0, content);
+        oldYText.delete(0, oldYText.length);
+      });
+      if (activeFile === oldPath) {
+        setActiveFile(newPath);
+      }
+    }
+  };
+
+  // Export Project to Zip
+  const handleExportZip = async () => {
+    const zip = new JSZip();
+    fileList.forEach((filePath) => {
+      const yText = doc.getText(`file:${filePath}`);
+      zip.file(filePath, yText.toString());
+    });
+    const blob = await zip.generateAsync({ type: 'blob' });
+    saveAs(blob, `project-${roomId || 'codesync'}.zip`);
+    toast.success('Exported project zip');
+  };
+
+  // Import Zip to Project
+  const handleImportZip = async (file: File) => {
+    try {
+      const zip = await JSZip.loadAsync(file);
+      const filesArray = doc.getArray<string>('projectFiles');
+      
+      const newPaths: string[] = [];
+      const entries = Object.entries(zip.files);
+
+      for (const [relativePath, zipEntry] of entries) {
+        if (!zipEntry.dir) {
+          const content = await zipEntry.async('string');
+          newPaths.push(relativePath);
+          const yText = doc.getText(`file:${relativePath}`);
+          doc.transact(() => {
+            yText.delete(0, yText.length);
+            yText.insert(0, content);
+          });
+        }
+      }
+
+      doc.transact(() => {
+        filesArray.delete(0, filesArray.length);
+        filesArray.push(newPaths);
+      });
+
+      if (newPaths.length > 0) {
+        setActiveFile(newPaths[0]);
+      }
+      toast.success(`Imported ${newPaths.length} files from zip`);
+    } catch (err) {
+      toast.error('Failed to import zip');
+    }
+  };
+
   return (
     <div className="flex h-screen bg-gray-950 text-gray-100 overflow-hidden">
-      {/* Sidebar */}
-      <div className="w-64 bg-gray-900 border-r border-gray-800 flex flex-col p-4 justify-between select-none">
+      {/* File Tree Sidebar */}
+      <div className="w-56 bg-gray-900 border-r border-gray-800">
+        <FileTree
+          files={fileList}
+          activeFile={activeFile}
+          onSelectFile={setActiveFile}
+          onCreateFile={handleCreateFile}
+          onDeleteFile={handleDeleteFile}
+          onRenameFile={handleRenameFile}
+          onExportZip={handleExportZip}
+          onImportZip={handleImportZip}
+        />
+      </div>
+
+      {/* Main Settings & Users Sidebar */}
+      <div className="w-56 bg-gray-900 border-r border-gray-800 flex flex-col p-4 justify-between select-none">
         <div className="flex flex-col flex-1 overflow-hidden">
           <div className="flex items-center gap-3 mb-6 pb-4 border-b border-gray-800">
             <div className="w-8 h-8 bg-green-500 rounded-lg flex items-center justify-center font-bold text-gray-950 text-sm">
@@ -274,7 +418,9 @@ const EditorPage: React.FC = () => {
       <div className="flex-1 flex flex-col h-full overflow-hidden bg-gray-950">
         <Editor
           ref={editorInstanceRef}
-          roomId={roomId || ''}
+          doc={doc}
+          provider={provider}
+          activeFilePath={activeFile}
           username={username}
           language={lang}
           theme={theme}

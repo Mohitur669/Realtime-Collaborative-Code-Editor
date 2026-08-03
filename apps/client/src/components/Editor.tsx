@@ -5,7 +5,6 @@ import * as themes from '@uiw/codemirror-themes-all';
 import { Extension } from '@codemirror/state';
 import * as Y from 'yjs';
 import { HocuspocusProvider } from '@hocuspocus/provider';
-import { IndexeddbPersistence } from 'y-indexeddb';
 import { yCollab } from 'y-codemirror.next';
 
 export interface EditorRef {
@@ -13,7 +12,9 @@ export interface EditorRef {
 }
 
 interface EditorProps {
-  roomId: string;
+  doc: Y.Doc;
+  provider: HocuspocusProvider;
+  activeFilePath: string;
   username: string;
   language: string;
   theme: string;
@@ -48,23 +49,8 @@ const getRandomColor = (name: string) => {
 };
 
 const Editor = forwardRef<EditorRef, EditorProps>(
-  ({ roomId, username, language, theme, onCodeChange }, ref) => {
+  ({ doc, provider, activeFilePath, username, language, theme, onCodeChange }, ref) => {
     const [crdtExtension, setCrdtExtension] = useState<Extension | null>(null);
-
-    const { doc, provider } = useMemo(() => {
-      const ydoc = new Y.Doc();
-      const wsUrl = import.meta.env.VITE_COLLAB_WS_URL || 'ws://localhost:1234';
-      const hocusProvider = new HocuspocusProvider({
-        url: wsUrl,
-        name: roomId,
-        document: ydoc,
-      });
-
-      // IndexedDB persistence for offline edit resilience
-      new IndexeddbPersistence(roomId, ydoc);
-
-      return { doc: ydoc, provider: hocusProvider };
-    }, [roomId]);
 
     useEffect(() => {
       if (!provider || !provider.awareness) return;
@@ -76,7 +62,7 @@ const Editor = forwardRef<EditorRef, EditorProps>(
         colorLight: userColor + '33',
       });
 
-      const yText = doc.getText('codemirror');
+      const yText = doc.getText(`file:${activeFilePath}`);
       const collab = yCollab(yText, provider.awareness);
       setCrdtExtension(collab);
 
@@ -90,13 +76,12 @@ const Editor = forwardRef<EditorRef, EditorProps>(
 
       return () => {
         yText.unobserve(observer);
-        provider.destroy();
       };
-    }, [doc, provider, username, onCodeChange]);
+    }, [doc, provider, activeFilePath, username, onCodeChange]);
 
     useImperativeHandle(ref, () => ({
       setCode: (newCode: string) => {
-        const yText = doc.getText('codemirror');
+        const yText = doc.getText(`file:${activeFilePath}`);
         doc.transact(() => {
           yText.delete(0, yText.length);
           yText.insert(0, newCode);
