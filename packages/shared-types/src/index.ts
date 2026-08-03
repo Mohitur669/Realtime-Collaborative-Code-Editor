@@ -146,3 +146,16 @@ export interface RoomSnapshotDTO {
   snapshot: string; // Base64 encoded uint8array state
   updatedAt: number;
 }
+
+export interface AuthLoginRequest {
+  username: string;
+  password?: string;
+}
+
+export interface AuthLoginResponse {
+  token: string;
+  user: {
+    id: string;
+    username: string;
+  };
+}

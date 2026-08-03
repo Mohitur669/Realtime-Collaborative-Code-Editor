@@ -5,6 +5,7 @@ import { LiveKitController } from './livekit.controller';
 import { RecordingsController } from './recordings.controller';
 import { AiController } from './ai.controller';
 import { PersistenceController } from './persistence.controller';
+import { AuthController } from './auth.controller';
 
 @Module({
   imports: [],
@@ -14,6 +15,7 @@ import { PersistenceController } from './persistence.controller';
     RecordingsController,
     AiController,
     PersistenceController,
+    AuthController,
   ],
   providers: [RoomGateway],
 })
