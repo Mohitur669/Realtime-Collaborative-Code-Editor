@@ -139,3 +139,10 @@ export interface WhiteboardElement {
 export interface WhiteboardState {
   elements: WhiteboardElement[];
 }
+
+export interface RoomSnapshotDTO {
+  roomId: string;
+  documentName: string;
+  snapshot: string; // Base64 encoded uint8array state
+  updatedAt: number;
+}
