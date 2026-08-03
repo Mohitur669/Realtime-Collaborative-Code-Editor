@@ -6,3 +6,4 @@ export * from './ToolsPanel';
 export * from './EditorSettingsPanel';
 export * from './ChatPanel';
 export * from './CallPanel';
+export * from './RecordingsPanel';

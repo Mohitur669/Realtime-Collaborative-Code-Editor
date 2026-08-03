@@ -80,3 +80,33 @@ export interface LiveKitTokenResponse {
   wsUrl: string;
   isConfigured: boolean;
 }
+
+export interface RecordingEvent {
+  timestamp: number;
+  type: 'code' | 'chat' | 'presence';
+  author: string;
+  detail: string;
+}
+
+export interface SessionRecording {
+  id: string;
+  roomId: string;
+  title: string;
+  createdAt: number;
+  durationSeconds: number;
+  eventCount: number;
+  events: RecordingEvent[];
+}
+
+export interface StartRecordingRequest {
+  roomId: string;
+  title?: string;
+}
+
+export interface StopRecordingRequest {
+  recordingId: string;
+}
+
+export interface RecordingListResponse {
+  recordings: SessionRecording[];
+}

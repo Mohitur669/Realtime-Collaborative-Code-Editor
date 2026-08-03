@@ -11,6 +11,7 @@ import {
   ChatMessage,
   ChatHistoryPayload,
   LiveKitTokenResponse,
+  SessionRecording,
 } from '@codesync/shared-types';
 import { initSocket } from '../socket';
 import { Socket } from 'socket.io-client';
@@ -23,6 +24,7 @@ import {
   EditorSettingsPanel,
   ChatPanel,
   CallPanel,
+  RecordingsPanel,
 } from '@codesync/ui';
 import { Group as PanelGroup, Panel, Separator as PanelResizeHandle } from 'react-resizable-panels';
 import * as Y from 'yjs';
@@ -216,6 +218,37 @@ const EditorPage: React.FC = () => {
       }),
     });
     return (await res.json()) as LiveKitTokenResponse;
+  };
+
+  const handleStartRecording = async (title?: string): Promise<string> => {
+    const apiHost = import.meta.env.VITE_API_URL || 'http://localhost:3000';
+    const res = await fetch(`${apiHost}/api/recordings/start`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        roomId: roomId || 'default-room',
+        title,
+      }),
+    });
+    const data = await res.json();
+    return data.recordingId;
+  };
+
+  const handleStopRecording = async (recordingId: string): Promise<SessionRecording> => {
+    const apiHost = import.meta.env.VITE_API_URL || 'http://localhost:3000';
+    const res = await fetch(`${apiHost}/api/recordings/stop`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ recordingId }),
+    });
+    return await res.json();
+  };
+
+  const handleFetchRecordings = async (): Promise<SessionRecording[]> => {
+    const apiHost = import.meta.env.VITE_API_URL || 'http://localhost:3000';
+    const res = await fetch(`${apiHost}/api/recordings/room/${roomId || 'default-room'}`);
+    const data = await res.json();
+    return data.recordings || [];
   };
 
   const copyRoomId = async () => {
@@ -499,7 +532,13 @@ const EditorPage: React.FC = () => {
                 <div className="text-xs text-gray-400 italic">Shared whiteboard coming in Phase 11...</div>
               )}
               {activeTab === 'recordings' && (
-                <div className="text-xs text-gray-400 italic">Recordings tab coming in Phase 9...</div>
+                <RecordingsPanel
+                  roomId={roomId || 'default-room'}
+                  currentUsername={username}
+                  onStartRecording={handleStartRecording}
+                  onStopRecording={handleStopRecording}
+                  onFetchRecordings={handleFetchRecordings}
+                />
               )}
             </ToolsPanel>
           </Panel>
