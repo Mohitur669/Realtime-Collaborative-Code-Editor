@@ -9,8 +9,12 @@
 # testing
 /coverage
 yarn.lock
-# production
+
+# production & build outputs
 /build
+dist
+.turbo
+scratch
 
 # misc
 .env
