@@ -110,3 +110,15 @@ export interface StopRecordingRequest {
 export interface RecordingListResponse {
   recordings: SessionRecording[];
 }
+
+export interface AiCompletionRequest {
+  prompt: string;
+  contextCode?: string;
+  action?: 'explain' | 'generate' | 'refactor' | 'fix';
+}
+
+export interface AiCompletionResponse {
+  result: string;
+  action: string;
+  timestamp: number;
+}

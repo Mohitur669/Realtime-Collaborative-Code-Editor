@@ -12,6 +12,7 @@ import {
   ChatHistoryPayload,
   LiveKitTokenResponse,
   SessionRecording,
+  AiCompletionResponse,
 } from '@codesync/shared-types';
 import { initSocket } from '../socket';
 import { Socket } from 'socket.io-client';
@@ -25,6 +26,7 @@ import {
   ChatPanel,
   CallPanel,
   RecordingsPanel,
+  AiAssistantPanel,
 } from '@codesync/ui';
 import { Group as PanelGroup, Panel, Separator as PanelResizeHandle } from 'react-resizable-panels';
 import * as Y from 'yjs';
@@ -249,6 +251,27 @@ const EditorPage: React.FC = () => {
     const res = await fetch(`${apiHost}/api/recordings/room/${roomId || 'default-room'}`);
     const data = await res.json();
     return data.recordings || [];
+  };
+
+  const handleAiCompletion = async (
+    prompt: string,
+    action: 'explain' | 'generate' | 'refactor' | 'fix',
+    contextCode?: string,
+  ): Promise<AiCompletionResponse> => {
+    const apiHost = import.meta.env.VITE_API_URL || 'http://localhost:3000';
+    const res = await fetch(`${apiHost}/api/ai/completion`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ prompt, action, contextCode }),
+    });
+    return await res.json();
+  };
+
+  const handleInsertAiCode = (snippet: string) => {
+    const current = codeRef.current || '';
+    const updated = current ? `${current}\n\n${snippet}` : snippet;
+    updateEditorCode(updated);
+    toast.success('Inserted AI snippet into editor');
   };
 
   const copyRoomId = async () => {
@@ -526,7 +549,11 @@ const EditorPage: React.FC = () => {
                 />
               )}
               {activeTab === 'ai' && (
-                <div className="text-xs text-gray-400 italic">AI assistant coming in Phase 10...</div>
+                <AiAssistantPanel
+                  activeCode={codeRef.current}
+                  onCompletion={handleAiCompletion}
+                  onInsertCode={handleInsertAiCode}
+                />
               )}
               {activeTab === 'whiteboard' && (
                 <div className="text-xs text-gray-400 italic">Shared whiteboard coming in Phase 11...</div>
