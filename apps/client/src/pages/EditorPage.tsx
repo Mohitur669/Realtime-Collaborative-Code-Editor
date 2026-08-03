@@ -467,7 +467,7 @@ const EditorPage: React.FC = () => {
 
       {/* Main Resizable Panes Layout */}
       <div className="flex-1 overflow-hidden">
-        <PanelGroup orientation="horizontal">
+        <PanelGroup orientation="horizontal" className="h-full w-full">
           {/* File Tree Sidebar Panel */}
           <Panel defaultSize={18} minSize={12} maxSize={30}>
             <FileTree

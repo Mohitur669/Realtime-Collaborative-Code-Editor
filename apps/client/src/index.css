@@ -2,11 +2,74 @@
 @tailwind components;
 @tailwind utilities;
 
-body {
+html, body, #root {
+  height: 100%;
+  width: 100%;
   margin: 0;
+  padding: 0;
+  overflow: hidden;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+/* Ensure CodeMirror expands to fill 100% height of editor panel */
+.cm-theme {
+  height: 100% !important;
+}
+
+.cm-editor {
+  height: 100% !important;
+  font-size: 14px;
+}
+
+.cm-scroller {
+  height: 100% !important;
+  overflow: auto !important;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace !important;
+}
+
+/* Yjs Collaborative Carets & Remote Selections */
+.cm-ySelection {
+  background-color: rgba(34, 197, 94, 0.3);
+}
+
+.cm-ySelectionCaret {
+  border-left: 2px solid #22c55e;
+  margin-left: -1px;
+  margin-right: -1px;
+  box-sizing: border-box;
+  display: inline;
+  position: relative;
+}
+
+.cm-ySelectionCaretDot {
+  border-radius: 50%;
+  width: 6px;
+  height: 6px;
+  background-color: #22c55e;
+  margin-left: -3px;
+  position: absolute;
+  top: -4px;
+}
+
+/* Custom Sleek Dark Scrollbars */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #030712;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #1f2937;
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #374151;
 }
