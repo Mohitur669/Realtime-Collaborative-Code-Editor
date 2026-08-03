@@ -2,18 +2,31 @@ export enum SocketActions {
   JOIN = 'join',
   JOINED = 'joined',
   DISCONNECTED = 'disconnected',
+  LEAVE = 'leave',
   CODE_CHANGE = 'code-change',
   SYNC_CODE = 'sync-code',
-  LEAVE = 'leave',
+  CHAT_SEND = 'chat-message:send',
+  CHAT_BROADCAST = 'chat-message:broadcast',
+  CHAT_HISTORY = 'chat-history',
 }
 
-export interface ClientInfo {
+export interface User {
   socketId: string;
   username: string;
 }
 
+export interface Room {
+  roomId: string;
+  users: User[];
+}
+
 export interface JoinPayload {
   roomId: string;
+  username: string;
+}
+
+export interface ClientInfo {
+  socketId: string;
   username: string;
 }
 
@@ -24,7 +37,7 @@ export interface JoinedPayload {
 }
 
 export interface CodeChangePayload {
-  roomId?: string;
+  roomId: string;
   code: string;
 }
 
@@ -35,16 +48,24 @@ export interface SyncCodePayload {
 
 export interface DisconnectedPayload {
   socketId: string;
-  username?: string;
-}
-
-export interface User {
-  id: string;
   username: string;
 }
 
-export interface Room {
+export interface ChatMessage {
   id: string;
-  name?: string;
-  users: User[];
+  roomId: string;
+  senderId: string;
+  senderName: string;
+  content: string;
+  timestamp: number;
+}
+
+export interface SendChatMessagePayload {
+  roomId: string;
+  content: string;
+  senderName: string;
+}
+
+export interface ChatHistoryPayload {
+  messages: ChatMessage[];
 }

@@ -6,4 +6,4 @@ export const clientInfo = {
   ui: UI_NAME,
 };
 
-export const dummyUser: User = { id: '1', username: 'guest' };
+export const dummyUser: User = { socketId: 's1', username: 'guest' };

@@ -3,7 +3,14 @@ import toast from 'react-hot-toast';
 import Client from '../components/Client';
 import Editor, { EditorRef } from '../components/Editor';
 import FilePreview from '../components/FilePreview';
-import { SocketActions, ClientInfo, JoinedPayload, DisconnectedPayload } from '@codesync/shared-types';
+import {
+  SocketActions,
+  ClientInfo,
+  JoinedPayload,
+  DisconnectedPayload,
+  ChatMessage,
+  ChatHistoryPayload,
+} from '@codesync/shared-types';
 import { initSocket } from '../socket';
 import { Socket } from 'socket.io-client';
 import { useLocation, useNavigate, Navigate, useParams } from 'react-router-dom';
@@ -13,6 +20,7 @@ import {
   ToolsPanel,
   ToolTab,
   EditorSettingsPanel,
+  ChatPanel,
 } from '@codesync/ui';
 import { Group as PanelGroup, Panel, Separator as PanelResizeHandle } from 'react-resizable-panels';
 import * as Y from 'yjs';
@@ -50,6 +58,8 @@ const THEMES = [
 const EditorPage: React.FC = () => {
   const { settings, updateSettings } = useSettingsStore();
   const [clients, setClients] = useState<ClientInfo[]>([]);
+  const [chatMessages, setChatMessages] = useState<ChatMessage[]>([]);
+  const [unreadChatCount, setUnreadChatCount] = useState<number>(0);
 
   const socketRef = useRef<Socket | null>(null);
   const codeRef = useRef<string>('');
@@ -63,6 +73,8 @@ const EditorPage: React.FC = () => {
   const editorInstanceRef = useRef<EditorRef | null>(null);
 
   const [activeTab, setActiveTab] = useState<ToolTab>('settings');
+  const activeTabRef = useRef<ToolTab>(activeTab);
+  activeTabRef.current = activeTab;
 
   const username = location.state?.username;
 
@@ -144,6 +156,23 @@ const EditorPage: React.FC = () => {
           setClients((prev) => prev.filter((client) => client.socketId !== socketId));
         },
       );
+
+      socketRef.current.on(
+        SocketActions.CHAT_HISTORY,
+        ({ messages }: ChatHistoryPayload) => {
+          setChatMessages(messages);
+        },
+      );
+
+      socketRef.current.on(
+        SocketActions.CHAT_BROADCAST,
+        (msg: ChatMessage) => {
+          setChatMessages((prev) => [...prev, msg]);
+          if (activeTabRef.current !== 'chat' && msg.senderName !== username) {
+            setUnreadChatCount((count) => count + 1);
+          }
+        },
+      );
     };
 
     init();
@@ -152,6 +181,8 @@ const EditorPage: React.FC = () => {
       if (socketRef.current) {
         socketRef.current.off(SocketActions.JOINED);
         socketRef.current.off(SocketActions.DISCONNECTED);
+        socketRef.current.off(SocketActions.CHAT_HISTORY);
+        socketRef.current.off(SocketActions.CHAT_BROADCAST);
         socketRef.current.disconnect();
       }
       provider.destroy();
@@ -161,6 +192,23 @@ const EditorPage: React.FC = () => {
   if (!username) {
     return <Navigate to="/" />;
   }
+
+  const handleSelectTab = (tab: ToolTab) => {
+    setActiveTab(tab);
+    if (tab === 'chat') {
+      setUnreadChatCount(0);
+    }
+  };
+
+  const handleSendChatMessage = (content: string) => {
+    if (socketRef.current) {
+      socketRef.current.emit(SocketActions.CHAT_SEND, {
+        roomId,
+        content,
+        senderName: username,
+      });
+    }
+  };
 
   const copyRoomId = async () => {
     try {
@@ -316,6 +364,8 @@ const EditorPage: React.FC = () => {
     activeFile,
   }));
 
+  const roomUsernames = clients.map((c) => c.username);
+
   return (
     <div className="flex flex-col h-screen bg-gray-950 text-gray-100 overflow-hidden">
       {/* Presence Bar */}
@@ -410,7 +460,15 @@ const EditorPage: React.FC = () => {
 
           {/* Right Tools & Customization Panel */}
           <Panel defaultSize={25} minSize={18} maxSize={40}>
-            <ToolsPanel activeTab={activeTab} onSelectTab={setActiveTab}>
+            <ToolsPanel activeTab={activeTab} onSelectTab={handleSelectTab}>
+              {activeTab === 'chat' && (
+                <ChatPanel
+                  messages={chatMessages}
+                  currentUsername={username}
+                  onSendMessage={handleSendChatMessage}
+                  roomUsers={roomUsernames}
+                />
+              )}
               {activeTab === 'settings' && (
                 <EditorSettingsPanel
                   settings={settings}
@@ -418,9 +476,6 @@ const EditorPage: React.FC = () => {
                   languages={LANGUAGES}
                   themes={THEMES}
                 />
-              )}
-              {activeTab === 'chat' && (
-                <div className="text-xs text-gray-400 italic">Chat panel coming in Phase 7...</div>
               )}
               {activeTab === 'ai' && (
                 <div className="text-xs text-gray-400 italic">AI assistant coming in Phase 10...</div>

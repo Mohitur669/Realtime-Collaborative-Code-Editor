@@ -1,7 +1,4 @@
-import type { Room } from '@codesync/shared-types';
+import { Room } from '@codesync/shared-types';
 
-export const apiInfo = {
-  name: 'API App Stub',
-};
-
-export const dummyRoom: Room = { id: 'room-1', users: [] };
+export const API_NAME = '@codesync/api';
+export const dummyRoom: Room = { roomId: 'room-1', users: [] };

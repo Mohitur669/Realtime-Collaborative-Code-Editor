@@ -16,21 +16,26 @@ exports.RoomGateway = void 0;
 const websockets_1 = require("@nestjs/websockets");
 const socket_io_1 = require("socket.io");
 const shared_types_1 = require("@codesync/shared-types");
+const crypto_1 = require("crypto");
 let RoomGateway = class RoomGateway {
     server;
     userSocketMap = {};
+    roomChatHistory = new Map();
     handleConnection(client) {
-        // Client connected
+        console.log(`Client connected: ${client.id}`);
     }
     handleDisconnect(client) {
-        const rooms = Array.from(client.rooms);
+        const username = this.userSocketMap[client.id];
+        delete this.userSocketMap[client.id];
+        // Find rooms client was in
+        const rooms = Array.from(client.rooms).filter((r) => r !== client.id);
         rooms.forEach((roomId) => {
-            client.in(roomId).emit(shared_types_1.SocketActions.DISCONNECTED, {
+            client.to(roomId).emit(shared_types_1.SocketActions.DISCONNECTED, {
                 socketId: client.id,
-                username: this.userSocketMap[client.id],
+                username,
             });
         });
-        delete this.userSocketMap[client.id];
+        console.log(`Client disconnected: ${client.id}`);
     }
     getAllConnectedClients(roomId) {
         const room = this.server.sockets.adapter.rooms.get(roomId);
@@ -38,31 +43,42 @@ let RoomGateway = class RoomGateway {
             return [];
         return Array.from(room).map((socketId) => ({
             socketId,
-            username: this.userSocketMap[socketId] || 'Guest',
+            username: this.userSocketMap[socketId] || 'Anonymous',
         }));
     }
-    async handleJoin(client, payload) {
+    handleJoin(client, payload) {
         const { roomId, username } = payload;
         this.userSocketMap[client.id] = username;
-        await client.join(roomId);
+        client.join(roomId);
         const clients = this.getAllConnectedClients(roomId);
-        clients.forEach(({ socketId }) => {
-            this.server.to(socketId).emit(shared_types_1.SocketActions.JOINED, {
-                clients,
-                username,
-                socketId: client.id,
-            });
+        // Notify everyone in the room
+        this.server.in(roomId).emit(shared_types_1.SocketActions.JOINED, {
+            clients,
+            username,
+            socketId: client.id,
         });
+        // Send Chat history to newly joined user
+        const history = this.roomChatHistory.get(roomId) || [];
+        client.emit(shared_types_1.SocketActions.CHAT_HISTORY, { messages: history });
     }
-    handleCodeChange(client, payload) {
-        const { roomId, code } = payload;
-        if (roomId) {
-            client.in(roomId).emit(shared_types_1.SocketActions.CODE_CHANGE, { code });
+    handleChatMessage(client, payload) {
+        const { roomId, content, senderName } = payload;
+        const chatMsg = {
+            id: (0, crypto_1.randomUUID)(),
+            roomId,
+            senderId: client.id,
+            senderName: senderName || this.userSocketMap[client.id] || 'Anonymous',
+            content,
+            timestamp: Date.now(),
+        };
+        if (!this.roomChatHistory.has(roomId)) {
+            this.roomChatHistory.set(roomId, []);
         }
-    }
-    handleSyncCode(_client, payload) {
-        const { socketId, code } = payload;
-        this.server.to(socketId).emit(shared_types_1.SocketActions.CODE_CHANGE, { code });
+        const history = this.roomChatHistory.get(roomId);
+        history.push(chatMsg);
+        if (history.length > 100)
+            history.shift(); // maintain 100 msg ring buffer
+        this.server.in(roomId).emit(shared_types_1.SocketActions.CHAT_BROADCAST, chatMsg);
     }
 };
 exports.RoomGateway = RoomGateway;
@@ -76,24 +92,16 @@ __decorate([
     __param(1, (0, websockets_1.MessageBody)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [socket_io_1.Socket, Object]),
-    __metadata("design:returntype", Promise)
+    __metadata("design:returntype", void 0)
 ], RoomGateway.prototype, "handleJoin", null);
 __decorate([
-    (0, websockets_1.SubscribeMessage)(shared_types_1.SocketActions.CODE_CHANGE),
+    (0, websockets_1.SubscribeMessage)(shared_types_1.SocketActions.CHAT_SEND),
     __param(0, (0, websockets_1.ConnectedSocket)()),
     __param(1, (0, websockets_1.MessageBody)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [socket_io_1.Socket, Object]),
     __metadata("design:returntype", void 0)
-], RoomGateway.prototype, "handleCodeChange", null);
-__decorate([
-    (0, websockets_1.SubscribeMessage)(shared_types_1.SocketActions.SYNC_CODE),
-    __param(0, (0, websockets_1.ConnectedSocket)()),
-    __param(1, (0, websockets_1.MessageBody)()),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", [socket_io_1.Socket, Object]),
-    __metadata("design:returntype", void 0)
-], RoomGateway.prototype, "handleSyncCode", null);
+], RoomGateway.prototype, "handleChatMessage", null);
 exports.RoomGateway = RoomGateway = __decorate([
     (0, websockets_1.WebSocketGateway)({
         cors: {

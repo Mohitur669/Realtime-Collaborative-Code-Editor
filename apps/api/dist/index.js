@@ -1,8 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.dummyRoom = exports.apiInfo = void 0;
-exports.apiInfo = {
-    name: 'API App Stub',
-};
-exports.dummyRoom = { id: 'room-1', users: [] };
+exports.dummyRoom = exports.API_NAME = void 0;
+exports.API_NAME = '@codesync/api';
+exports.dummyRoom = { roomId: 'room-1', users: [] };
 //# sourceMappingURL=index.js.map

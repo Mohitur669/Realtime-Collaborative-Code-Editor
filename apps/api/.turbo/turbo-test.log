@@ -5,10 +5,18 @@
 
  RUN  v2.1.9 /Users/mohitur/Desktop/git-projects/code-editor/apps/api
 
- ✓ test/gateway.spec.ts (1 test) 85ms
+stdout | test/gateway.spec.ts > RoomGateway Integration & Chat Events > should allow two clients to join a room, send chat messages, and receive history
+Client connected: 2PxxfCp79PRZzFH4AAAC
+Client connected: zSeQSoe95h7OaqTHAAAD
+
+stdout | test/gateway.spec.ts > RoomGateway Integration & Chat Events
+Client disconnected: 2PxxfCp79PRZzFH4AAAC
+Client disconnected: zSeQSoe95h7OaqTHAAAD
+
+ ✓ test/gateway.spec.ts (1 test) 83ms
 
  Test Files  1 passed (1)
       Tests  1 passed (1)
-   Start at  22:13:31
-   Duration  415ms (transform 29ms, setup 0ms, collect 163ms, tests 85ms, environment 0ms, prepare 26ms)
+   Start at  22:22:45
+   Duration  504ms (transform 71ms, setup 0ms, collect 242ms, tests 83ms, environment 0ms, prepare 54ms)
 
