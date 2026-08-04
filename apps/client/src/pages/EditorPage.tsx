@@ -343,6 +343,14 @@ const EditorPage: React.FC = () => {
     return data.recordings || [];
   };
 
+  const handleDeleteRecording = async (recordingId: string): Promise<void> => {
+    const apiHost = import.meta.env.VITE_API_URL || 'http://localhost:3001';
+    await fetch(`${apiHost}/api/recordings/${recordingId}`, {
+      method: 'DELETE',
+    });
+    toast.success('Session recording deleted');
+  };
+
   const handleAiCompletion = async (
     prompt: string,
     action: 'explain' | 'generate' | 'refactor' | 'fix',
@@ -698,6 +706,7 @@ const EditorPage: React.FC = () => {
                   onStartRecording={handleStartRecording}
                   onStopRecording={handleStopRecording}
                   onFetchRecordings={handleFetchRecordings}
+                  onDeleteRecording={handleDeleteRecording}
                   onReplayCodeChange={handleReplayCodeChange}
                 />
               )}

@@ -1,4 +1,4 @@
-import { Controller, Post, Get, Body, Param, NotFoundException } from '@nestjs/common';
+import { Controller, Post, Get, Delete, Body, Param, NotFoundException } from '@nestjs/common';
 import {
   StartRecordingRequest,
   StopRecordingRequest,
@@ -103,5 +103,19 @@ export class RecordingsController {
       if (found) return found;
     }
     throw new NotFoundException('Recording not found');
+  }
+
+  @Delete(':recordingId')
+  deleteRecording(@Param('recordingId') recordingId: string) {
+    let deleted = false;
+    for (const [roomId, list] of this.completedRecordings.entries()) {
+      const filtered = list.filter((r) => r.id !== recordingId);
+      if (filtered.length !== list.length) {
+        this.completedRecordings.set(roomId, filtered);
+        deleted = true;
+        break;
+      }
+    }
+    return { success: deleted };
   }
 }

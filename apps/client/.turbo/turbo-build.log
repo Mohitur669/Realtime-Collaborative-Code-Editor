@@ -8,8 +8,8 @@ transforming...
 rendering chunks...
 computing gzip size...
 dist/index.html                     0.54 kB │ gzip:   0.36 kB
-dist/assets/index-CgRSG8N9.css     29.76 kB │ gzip:   5.96 kB
-dist/assets/index-Qr9mpiIH.js   2,236.52 kB │ gzip: 750.47 kB
+dist/assets/index-Cu_WRLCE.css     29.65 kB │ gzip:   5.95 kB
+dist/assets/index-DcKjX3Kc.js   2,238.01 kB │ gzip: 750.84 kB
 
 (!) Some chunks are larger than 500 kB after minification. Consider:
 - Using dynamic import() to code-split the application

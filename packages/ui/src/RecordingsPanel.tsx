@@ -7,6 +7,7 @@ interface RecordingsPanelProps {
   onStartRecording: (title?: string) => Promise<string>;
   onStopRecording: (recordingId: string) => Promise<SessionRecording>;
   onFetchRecordings: () => Promise<SessionRecording[]>;
+  onDeleteRecording?: (recordingId: string) => Promise<void>;
   onReplayCodeChange?: (code: string) => void;
 }
 
@@ -15,6 +16,7 @@ export const RecordingsPanel: React.FC<RecordingsPanelProps> = ({
   onStartRecording,
   onStopRecording,
   onFetchRecordings,
+  onDeleteRecording,
   onReplayCodeChange,
 }) => {
   const [activeRecordingId, setActiveRecordingId] = useState<string | null>(null);
@@ -98,6 +100,34 @@ export const RecordingsPanel: React.FC<RecordingsPanelProps> = ({
     }
   };
 
+  const handleDownloadRecording = (rec: SessionRecording) => {
+    const jsonStr = JSON.stringify(rec, null, 2);
+    const blob = new Blob([jsonStr], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `${rec.title.replace(/\s+/g, '_')}_${rec.id}.json`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  };
+
+  const handleDeleteRecording = async (recId: string) => {
+    if (selectedRecording?.id === recId) {
+      setSelectedRecording(null);
+      setIsPlaying(false);
+    }
+    setRecordings((prev) => prev.filter((r) => r.id !== recId));
+    if (onDeleteRecording) {
+      try {
+        await onDeleteRecording(recId);
+      } catch (err) {
+        console.error('Failed to delete recording', err);
+      }
+    }
+  };
+
   const formatTime = (seconds: number) => {
     const mins = Math.floor(seconds / 60);
     const secs = seconds % 60;
@@ -132,7 +162,7 @@ export const RecordingsPanel: React.FC<RecordingsPanelProps> = ({
                 value={titleInput}
                 onChange={(e) => setTitleInput(e.target.value)}
                 placeholder="Recording Title (optional)..."
-                className="flex-1 min-w-[120px] bg-gray-900 border border-gray-800 rounded-lg px-3 py-1.5 text-xs text-gray-200 focus:outline-none focus:border-green-500"
+                className="flex-1 min-w-[120px] bg-gray-900 border border-gray-800 rounded-lg px-3 py-1.5 text-xs text-gray-200 focus:outline-none focus:border-indigo-500"
               />
               <button
                 onClick={handleStart}
@@ -164,15 +194,24 @@ export const RecordingsPanel: React.FC<RecordingsPanelProps> = ({
                   {new Date(selectedRecording.createdAt).toLocaleDateString()} • {selectedRecording.eventCount} events
                 </span>
               </div>
-              <button
-                onClick={() => {
-                  setSelectedRecording(null);
-                  setIsPlaying(false);
-                }}
-                className="px-3 py-1.5 bg-gray-800 hover:bg-gray-700 text-gray-300 font-semibold text-xs rounded-lg transition-colors whitespace-nowrap border border-gray-700"
-              >
-                Close
-              </button>
+              <div className="flex items-center gap-1">
+                <button
+                  onClick={() => handleDownloadRecording(selectedRecording)}
+                  className="px-2 py-1 bg-gray-800 hover:bg-gray-700 text-gray-300 font-semibold text-xs rounded-lg border border-gray-700 whitespace-nowrap"
+                  title="Download JSON"
+                >
+                  Download
+                </button>
+                <button
+                  onClick={() => {
+                    setSelectedRecording(null);
+                    setIsPlaying(false);
+                  }}
+                  className="px-2 py-1 bg-gray-800 hover:bg-gray-700 text-gray-300 font-semibold text-xs rounded-lg transition-colors whitespace-nowrap border border-gray-700"
+                >
+                  Close
+                </button>
+              </div>
             </div>
 
             {/* Scrubber & Controls */}
@@ -268,17 +307,40 @@ export const RecordingsPanel: React.FC<RecordingsPanelProps> = ({
                       Duration: {formatTime(rec.durationSeconds)} • {rec.eventCount} events
                     </span>
                   </div>
-                  <button
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      setSelectedRecording(rec);
-                      setPlaybackTime(0);
-                      setIsPlaying(true);
-                    }}
-                    className="px-3 py-1.5 bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-semibold rounded-lg shadow-sm whitespace-nowrap"
-                  >
-                    Play
-                  </button>
+                  <div className="flex items-center gap-1.5">
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setSelectedRecording(rec);
+                        setPlaybackTime(0);
+                        setIsPlaying(true);
+                      }}
+                      className="px-2.5 py-1 bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-semibold rounded-lg shadow-sm whitespace-nowrap"
+                      title="Play Session Replay"
+                    >
+                      Play
+                    </button>
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleDownloadRecording(rec);
+                      }}
+                      className="px-2.5 py-1 bg-gray-800 hover:bg-gray-700 text-gray-300 text-xs font-semibold rounded-lg border border-gray-700 whitespace-nowrap"
+                      title="Download Session JSON"
+                    >
+                      Download
+                    </button>
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleDeleteRecording(rec.id);
+                      }}
+                      className="px-2.5 py-1 bg-red-600/20 hover:bg-red-600/30 text-red-400 border border-red-500/30 text-xs font-semibold rounded-lg whitespace-nowrap"
+                      title="Delete Session"
+                    >
+                      Delete
+                    </button>
+                  </div>
                 </div>
               ))}
             </div>
