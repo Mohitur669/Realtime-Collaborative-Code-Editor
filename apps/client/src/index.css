@@ -175,3 +175,11 @@ html, body, #root {
 [data-app-theme="light"] ::-webkit-scrollbar-thumb:hover {
   background: #94a3b8 !important;
 }
+
+/* Universal Typography & Font Proportion Sync */
+[data-app-theme] input,
+[data-app-theme] select,
+[data-app-theme] textarea,
+[data-app-theme] button {
+  font-family: inherit;
+}

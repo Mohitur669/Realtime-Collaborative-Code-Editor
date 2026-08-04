@@ -38,7 +38,7 @@ export const EditorSettingsPanel: React.FC<EditorSettingsPanelProps> = ({
           <h3 className="text-xs font-bold uppercase tracking-wider text-gray-400">Editor Configurations</h3>
           <p className="text-2xs text-gray-500 mt-0.5">Customize font, theme, syntax, and keybindings</p>
         </div>
-        <span className="px-2 py-0.5 bg-green-500/10 border border-green-500/20 text-green-400 rounded text-2xs font-mono">
+        <span className="px-2 py-0.5 bg-indigo-500/10 border border-indigo-500/20 text-indigo-400 rounded text-2xs font-mono">
           Saved
         </span>
       </div>
@@ -52,7 +52,7 @@ export const EditorSettingsPanel: React.FC<EditorSettingsPanelProps> = ({
         <select
           value={settings.fontFamily}
           onChange={(e) => onChangeSettings({ fontFamily: e.target.value })}
-          className="w-full bg-gray-900 border border-gray-800 rounded-lg px-3 py-2 text-xs text-gray-200 focus:outline-none focus:border-green-500 font-mono cursor-pointer"
+          className="w-full bg-gray-900 border border-gray-800 rounded-lg px-3 py-2 text-xs text-gray-200 focus:outline-none focus:border-indigo-500 font-mono cursor-pointer"
         >
           {MONOSPACE_FONTS.map((font) => (
             <option key={font.value} value={font.value} className="bg-gray-900 text-gray-200">
@@ -66,7 +66,7 @@ export const EditorSettingsPanel: React.FC<EditorSettingsPanelProps> = ({
       <div className="p-3.5 bg-gray-950/80 rounded-xl border border-gray-800 space-y-2">
         <div className="flex justify-between items-center text-xs font-semibold text-gray-300">
           <span>Font Size</span>
-          <span className="px-2 py-0.5 bg-gray-900 border border-gray-800 rounded text-2xs font-mono text-green-400 font-bold">
+          <span className="px-2 py-0.5 bg-gray-900 border border-gray-800 rounded text-2xs font-mono text-indigo-400 font-bold">
             {settings.fontSize}px
           </span>
         </div>
@@ -76,7 +76,7 @@ export const EditorSettingsPanel: React.FC<EditorSettingsPanelProps> = ({
           max="24"
           value={settings.fontSize}
           onChange={(e) => onChangeSettings({ fontSize: Number(e.target.value) })}
-          className="w-full accent-green-500 bg-gray-900 h-1.5 rounded-lg cursor-pointer"
+          className="w-full accent-indigo-500 bg-gray-900 h-1.5 rounded-lg cursor-pointer"
         />
       </div>
 
@@ -89,7 +89,7 @@ export const EditorSettingsPanel: React.FC<EditorSettingsPanelProps> = ({
         <select
           value={settings.language}
           onChange={(e) => onChangeSettings({ language: e.target.value })}
-          className="w-full bg-gray-900 border border-gray-800 rounded-lg px-3 py-2 text-xs text-gray-200 focus:outline-none focus:border-green-500 font-mono cursor-pointer"
+          className="w-full bg-gray-900 border border-gray-800 rounded-lg px-3 py-2 text-xs text-gray-200 focus:outline-none focus:border-indigo-500 font-mono cursor-pointer"
         >
           {languages.map((l) => (
             <option key={l.value} value={l.value} className="bg-gray-900 text-gray-200">
@@ -108,7 +108,7 @@ export const EditorSettingsPanel: React.FC<EditorSettingsPanelProps> = ({
         <select
           value={settings.theme}
           onChange={(e) => onChangeSettings({ theme: e.target.value })}
-          className="w-full bg-gray-900 border border-gray-800 rounded-lg px-3 py-2 text-xs text-gray-200 focus:outline-none focus:border-green-500 font-mono cursor-pointer"
+          className="w-full bg-gray-900 border border-gray-800 rounded-lg px-3 py-2 text-xs text-gray-200 focus:outline-none focus:border-indigo-500 font-mono cursor-pointer"
         >
           {themes.map((t) => (
             <option key={t.value} value={t.value} className="bg-gray-900 text-gray-200">
@@ -129,9 +129,9 @@ export const EditorSettingsPanel: React.FC<EditorSettingsPanelProps> = ({
             <button
               key={mode}
               onClick={() => onChangeSettings({ keybinding: mode })}
-              className={`py-1.5 text-xs font-bold capitalize rounded-lg border transition-all ${
+              className={`py-1.5 text-xs font-semibold capitalize rounded-lg border transition-all ${
                 settings.keybinding === mode
-                  ? 'bg-green-500 text-gray-950 border-green-400'
+                  ? 'bg-indigo-600 text-white border-indigo-500 shadow-sm'
                   : 'bg-gray-900 text-gray-400 border-gray-800 hover:text-gray-200'
               }`}
             >

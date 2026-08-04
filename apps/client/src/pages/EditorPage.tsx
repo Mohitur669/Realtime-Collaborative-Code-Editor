@@ -529,7 +529,11 @@ const EditorPage: React.FC = () => {
   };
 
   return (
-    <div data-app-theme={appTheme} className="flex flex-col h-screen bg-gray-950 text-gray-100 overflow-hidden font-sans transition-colors">
+    <div
+      data-app-theme={appTheme}
+      style={{ fontFamily: settings.fontFamily, fontSize: `${settings.fontSize}px` }}
+      className="flex flex-col h-screen bg-gray-950 text-gray-100 overflow-hidden transition-colors"
+    >
       {/* Presence Bar */}
       <PresenceBar
         users={presenceUsers}
