@@ -18,7 +18,14 @@ interface FileTreeProps {
   onRenameFile: (oldPath: string, newPath: string) => void;
   onExportZip: () => void;
   onImportZip: (file: File) => void;
+  onUploadClick?: () => void;
 }
+
+const UploadIcon = () => (
+  <svg className="w-3.5 h-3.5 fill-none stroke-current stroke-2" viewBox="0 0 24 24">
+    <path strokeLinecap="round" strokeLinejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5m-13.5-9L12 3m0 0l4.5 4.5M12 3v13.5" />
+  </svg>
+);
 
 const getFileIcon = (fileName: string) => {
   const ext = fileName.split('.').pop()?.toLowerCase();
@@ -52,6 +59,7 @@ export const FileTree: React.FC<FileTreeProps> = ({
   onDeleteFile,
   onExportZip,
   onImportZip,
+  onUploadClick,
 }) => {
   const [newFileName, setNewFileName] = useState('');
   const [isCreating, setIsCreating] = useState(false);
@@ -82,13 +90,24 @@ export const FileTree: React.FC<FileTreeProps> = ({
           <span className="text-[10px] font-mono text-gray-500">({files.length})</span>
         </div>
 
-        <button
-          onClick={() => setIsCreating(!isCreating)}
-          className="p-1 hover:bg-gray-800 text-gray-400 hover:text-indigo-400 rounded transition-colors text-xs font-semibold"
-          title="Create New File"
-        >
-          <span className="text-sm leading-none">+</span>
-        </button>
+        <div className="flex items-center gap-1">
+          {onUploadClick && (
+            <button
+              onClick={onUploadClick}
+              className="p-1 hover:bg-gray-800 text-gray-400 hover:text-indigo-400 rounded transition-colors text-xs font-semibold"
+              title="Upload File"
+            >
+              <UploadIcon />
+            </button>
+          )}
+          <button
+            onClick={() => setIsCreating(!isCreating)}
+            className="p-1 hover:bg-gray-800 text-gray-400 hover:text-indigo-400 rounded transition-colors text-xs font-semibold"
+            title="Create New File"
+          >
+            <span className="text-sm leading-none">+</span>
+          </button>
+        </div>
       </div>
 
       {/* New File Creation Form */}

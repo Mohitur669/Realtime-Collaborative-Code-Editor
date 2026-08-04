@@ -659,6 +659,7 @@ const EditorPage: React.FC = () => {
               onRenameFile={handleRenameFile}
               onExportZip={handleExportZip}
               onImportZip={handleImportZip}
+              onUploadClick={() => fileInputRef.current?.click()}
             />
           </Panel>
 
@@ -684,12 +685,6 @@ const EditorPage: React.FC = () => {
                     onChange={handleFileUpload}
                     ref={fileInputRef}
                   />
-                  <button
-                    onClick={() => fileInputRef.current?.click()}
-                    className="px-3 py-1.5 bg-gray-800 hover:bg-gray-700 text-gray-300 text-xs font-semibold rounded-lg border border-gray-700 transition-colors whitespace-nowrap"
-                  >
-                    Upload File
-                  </button>
                   <button
                     onClick={copyRoomId}
                     className="px-3 py-1.5 bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-semibold rounded-lg transition-colors whitespace-nowrap shadow-sm"
