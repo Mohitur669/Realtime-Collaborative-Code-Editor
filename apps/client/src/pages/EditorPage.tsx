@@ -271,6 +271,15 @@ const EditorPage: React.FC = () => {
             return [...prev, msg];
           });
           recordEvent('chat', msg.senderName, msg.content);
+
+          // Notify specifically when current user is @mentioned by someone else
+          const isMentioned = new RegExp(`@${username}\\b`, 'i').test(msg.content);
+          if (msg.senderName !== username && isMentioned) {
+            toast(`@${username} You were mentioned by ${msg.senderName}: "${msg.content}"`, {
+              icon: '💬',
+              duration: 5000,
+            });
+          }
         },
       );
 
