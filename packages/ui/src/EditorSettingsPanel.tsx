@@ -38,9 +38,6 @@ export const EditorSettingsPanel: React.FC<EditorSettingsPanelProps> = ({
           <h3 className="text-xs font-bold uppercase tracking-wider text-gray-400">Editor Configurations</h3>
           <p className="text-2xs text-gray-500 mt-0.5">Customize font, theme, syntax, and keybindings</p>
         </div>
-        <span className="px-2 py-0.5 bg-indigo-500/10 border border-indigo-500/20 text-indigo-400 rounded text-2xs font-mono">
-          Saved
-        </span>
       </div>
 
       {/* Font Family Config Card */}
