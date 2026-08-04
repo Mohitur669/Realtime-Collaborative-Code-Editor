@@ -23,9 +23,9 @@ const PauseIcon = () => (
   </svg>
 );
 
-const RecIcon = () => (
+const DownloadIcon = () => (
   <svg className="w-3.5 h-3.5 fill-none stroke-current stroke-2" viewBox="0 0 24 24">
-    <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 10.5l4.72-4.72a.75.75 0 011.28.53v11.38a.75.75 0 01-1.28.53l-4.72-4.72M4.5 18.75h9a2.25 2.25 0 002.25-2.25v-9a2.25 2.25 0 00-2.25-2.25h-9A2.25 2.25 0 002.25 7.5v9a2.25 2.25 0 002.25 2.25z" />
+    <path strokeLinecap="round" strokeLinejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3" />
   </svg>
 );
 
@@ -291,7 +291,7 @@ export const RecordingsPanel: React.FC<RecordingsPanelProps> = ({
                   className="p-1.5 bg-gray-800 hover:bg-gray-700 text-indigo-400 rounded-lg border border-gray-700 transition-colors"
                   title="Download Video Recording (.webm)"
                 >
-                  <RecIcon />
+                  <DownloadIcon />
                 </button>
                 <button
                   onClick={() => {
@@ -404,7 +404,7 @@ export const RecordingsPanel: React.FC<RecordingsPanelProps> = ({
                       className="p-1.5 bg-gray-800 hover:bg-gray-700 text-indigo-400 rounded-lg border border-gray-700 transition-colors"
                       title="Download Video Recording (.webm)"
                     >
-                      <RecIcon />
+                      <DownloadIcon />
                     </button>
                     {onDeleteRecording && (
                       <button
