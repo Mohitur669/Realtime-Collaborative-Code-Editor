@@ -124,7 +124,7 @@ export const UsersPanel: React.FC<UsersPanelProps> = ({
                       )}
                     </div>
                     <span className="text-2xs text-gray-500 font-mono block truncate">
-                      ID: {client.socketId.substring(0, 8)} • {isMuted ? 'Muted' : 'Active'}
+                      Status: {isMuted ? 'Muted' : 'Active'}
                     </span>
                   </div>
                 </div>

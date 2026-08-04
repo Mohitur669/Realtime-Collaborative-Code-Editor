@@ -319,7 +319,7 @@ const VideoIcon = () => (
               <div className="min-w-0">
                 <h4 className="text-xs font-bold text-indigo-400 truncate">{selectedRecording.title}</h4>
                 <span className="text-2xs text-gray-400 block truncate">
-                  {new Date(selectedRecording.createdAt).toLocaleDateString()} • {selectedRecording.eventCount} events
+                  {new Date(selectedRecording.createdAt).toLocaleDateString()}
                 </span>
               </div>
               <div className="flex items-center gap-1">
@@ -397,22 +397,6 @@ const VideoIcon = () => (
                 </div>
               </div>
             </div>
-
-            {/* Event Timeline Stream */}
-            <div className="space-y-1.5 max-h-40 overflow-y-auto pr-1">
-              {visibleEvents.map((evt, idx) => (
-                <div key={idx} className="p-2 bg-gray-900/60 rounded-lg border border-gray-800/60 text-2xs flex flex-wrap items-center justify-between gap-2">
-                  <div className="flex items-center gap-2 overflow-hidden min-w-0 flex-1">
-                    <span className="font-mono text-3xs text-indigo-400 uppercase">
-                      [{evt.type}]
-                    </span>
-                    <span className="font-bold text-gray-300 truncate">{evt.author}:</span>
-                    <span className="text-gray-400 truncate">{evt.detail}</span>
-                  </div>
-                  <span className="font-mono text-gray-500 ml-2 whitespace-nowrap">{formatTime(evt.timestamp)}</span>
-                </div>
-              ))}
-            </div>
           </div>
         )}
 
@@ -440,7 +424,7 @@ const VideoIcon = () => (
                   <div className="space-y-0.5 min-w-0 flex-1">
                     <h5 className="text-xs font-semibold text-gray-200 truncate">{rec.title}</h5>
                     <span className="text-2xs text-gray-400 font-mono block truncate">
-                      Duration: {formatTime(rec.durationSeconds)} • {rec.eventCount} events
+                      Duration: {formatTime(rec.durationSeconds)}
                     </span>
                   </div>
                   <div className="flex items-center gap-1.5">
