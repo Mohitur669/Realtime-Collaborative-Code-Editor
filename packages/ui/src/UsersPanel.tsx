@@ -46,7 +46,14 @@ export const UsersPanel: React.FC<UsersPanelProps> = ({
     (c, idx, self) => idx === self.findIndex((item) => item.username === c.username)
   );
 
-  const filteredClients = uniqueClients.filter((c) =>
+  // Sort so host/admin is always at the top
+  const sortedClients = [...uniqueClients].sort((a, b) => {
+    if (a.username === hostName) return -1;
+    if (b.username === hostName) return 1;
+    return 0;
+  });
+
+  const filteredClients = sortedClients.filter((c) =>
     c.username.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
@@ -63,14 +70,9 @@ export const UsersPanel: React.FC<UsersPanelProps> = ({
             Room Participants ({uniqueClients.length})
           </h4>
           <p className="text-2xs text-gray-500 mt-0.5">
-            Host: <span className="text-indigo-400 font-semibold">{hostName}</span> {isCreator ? '(You are Host)' : ''}
+            Host: <span className="text-indigo-400 font-semibold">{hostName}</span>
           </p>
         </div>
-        {isCreator && (
-          <span className="px-2 py-0.5 bg-indigo-500/10 border border-indigo-500/20 text-indigo-400 rounded text-2xs font-mono">
-            Admin Controls Active
-          </span>
-        )}
       </div>
 
       {/* Search Filter input if participants > 5 */}
