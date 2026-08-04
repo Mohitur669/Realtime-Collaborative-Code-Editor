@@ -23,9 +23,9 @@ const PauseIcon = () => (
   </svg>
 );
 
-const DownloadIcon = () => (
+const RecIcon = () => (
   <svg className="w-3.5 h-3.5 fill-none stroke-current stroke-2" viewBox="0 0 24 24">
-    <path strokeLinecap="round" strokeLinejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3" />
+    <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 10.5l4.72-4.72a.75.75 0 011.28.53v11.38a.75.75 0 01-1.28.53l-4.72-4.72M4.5 18.75h9a2.25 2.25 0 002.25-2.25v-9a2.25 2.25 0 00-2.25-2.25h-9A2.25 2.25 0 002.25 7.5v9a2.25 2.25 0 002.25 2.25z" />
   </svg>
 );
 
@@ -78,7 +78,7 @@ export const RecordingsPanel: React.FC<RecordingsPanelProps> = ({
             setIsPlaying(false);
             return selectedRecording.durationSeconds;
           }
-            return prev + 1;
+          return prev + 1;
         });
       }, 1000 / playbackSpeed);
     }
@@ -123,12 +123,6 @@ export const RecordingsPanel: React.FC<RecordingsPanelProps> = ({
       console.error('Failed to stop recording', err);
     }
   };
-
-const VideoIcon = () => (
-  <svg className="w-3.5 h-3.5 fill-none stroke-current stroke-2" viewBox="0 0 24 24">
-    <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 10.5l4.72-4.72a.75.75 0 011.28.53v11.38a.75.75 0 01-1.28.53l-4.72-4.72M4.5 18.75h9a2.25 2.25 0 002.25-2.25v-9a2.25 2.25 0 00-2.25-2.25h-9A2.25 2.25 0 002.25 7.5v9a2.25 2.25 0 002.25 2.25z" />
-  </svg>
-);
 
   const handleDownloadVideoRecording = (rec: SessionRecording) => {
     const canvas = document.createElement('canvas');
@@ -187,9 +181,9 @@ const VideoIcon = () => (
       const codeEvent = visible.filter((e) => e.type === 'code').pop();
 
       ctx.fillStyle = '#020617';
-      ctx.fillRect(20, 80, 580, 430);
+      ctx.fillRect(20, 80, 920, 430);
       ctx.strokeStyle = '#334155';
-      ctx.strokeRect(20, 80, 580, 430);
+      ctx.strokeRect(20, 80, 920, 430);
 
       ctx.fillStyle = '#38bdf8';
       ctx.font = 'bold 12px monospace';
@@ -202,43 +196,12 @@ const VideoIcon = () => (
         ctx.fillText(line, 35, 132 + idx * 20);
       });
 
-      ctx.fillStyle = '#020617';
-      ctx.fillRect(620, 80, 320, 430);
-      ctx.strokeRect(620, 80, 320, 430);
-
-      ctx.fillStyle = '#818cf8';
-      ctx.font = 'bold 12px sans-serif';
-      ctx.fillText('Activity Stream Timeline', 635, 105);
-
-      visible.slice(-7).forEach((evt, idx) => {
-        ctx.fillStyle = evt.type === 'code' ? '#818cf8' : evt.type === 'chat' ? '#34d399' : '#f59e0b';
-        ctx.font = 'bold 11px sans-serif';
-        ctx.fillText(`[${evt.type.toUpperCase()}] ${evt.author}:`, 635, 135 + idx * 42);
-        ctx.fillStyle = '#94a3b8';
-        ctx.font = '11px sans-serif';
-        const txt = evt.detail.length > 32 ? evt.detail.substring(0, 30) + '...' : evt.detail;
-        ctx.fillText(txt, 635, 153 + idx * 42);
-      });
-
       currentSec++;
       if (currentSec > maxSec) {
         clearInterval(interval);
         mediaRecorder.stop();
       }
     }, 100);
-  };
-
-  const handleDownloadRecording = (rec: SessionRecording) => {
-    const jsonStr = JSON.stringify(rec, null, 2);
-    const blob = new Blob([jsonStr], { type: 'application/json' });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = `${rec.title.replace(/\s+/g, '_')}_${rec.id}.json`;
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-    URL.revokeObjectURL(url);
   };
 
   const handleDeleteRecording = async (recId: string) => {
@@ -258,7 +221,7 @@ const VideoIcon = () => (
 
   const formatTime = (seconds: number) => {
     const mins = Math.floor(seconds / 60);
-    const secs = seconds % 60;
+    const secs = Math.floor(seconds % 60);
     return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
   };
 
@@ -279,42 +242,42 @@ const VideoIcon = () => (
       <div className="flex-1 p-4 flex flex-col space-y-4 overflow-y-auto min-w-0">
         {/* Record Controls Box */}
         <div className="p-3.5 bg-gray-950/80 rounded-xl border border-gray-800 space-y-3 min-w-0">
-          <h4 className="text-xs font-semibold text-gray-300 truncate">
-            {activeRecordingId ? 'Active Recording in Progress' : 'Start New Recording'}
-          </h4>
-
           {!activeRecordingId ? (
-            <div className="flex flex-wrap items-center gap-2">
+            <div className="space-y-2">
               <input
                 type="text"
                 value={titleInput}
                 onChange={(e) => setTitleInput(e.target.value)}
-                placeholder="Recording Title (optional)..."
-                className="flex-1 min-w-[120px] bg-gray-900 border border-gray-800 rounded-lg px-3 py-1.5 text-xs text-gray-200 focus:outline-none focus:border-indigo-500"
+                placeholder="Recording Title (optional)"
+                className="w-full bg-gray-900 border border-gray-800 rounded-lg px-3 py-1.5 text-xs text-gray-200 focus:outline-none focus:border-red-500 font-mono"
               />
               <button
                 onClick={handleStart}
-                className="px-3 py-1.5 bg-red-600 hover:bg-red-500 text-white font-semibold text-xs rounded-lg transition-colors flex items-center gap-1.5 shadow-sm whitespace-nowrap"
+                className="w-full px-3 py-1.5 bg-red-600 hover:bg-red-500 text-white font-semibold rounded-lg text-xs transition-all shadow-md shadow-red-600/20 flex items-center justify-center gap-2"
               >
-                <span className="w-2 h-2 rounded-full bg-white"></span> Record
+                <span className="w-2 h-2 rounded-full bg-white animate-ping"></span>
+                Start Recording
               </button>
             </div>
           ) : (
             <div className="flex flex-wrap items-center justify-between gap-2">
-              <span className="text-xs text-gray-400 font-mono">Duration: {formatTime(recordingSeconds)}</span>
+              <div>
+                <span className="text-xs font-semibold text-gray-200 block truncate">Recording Active...</span>
+                <span className="text-2xs font-mono text-gray-400">{formatTime(recordingSeconds)}</span>
+              </div>
               <button
                 onClick={handleStop}
-                className="px-3 py-1.5 bg-gray-800 hover:bg-gray-700 text-red-400 border border-red-500/30 font-semibold text-xs rounded-lg transition-colors whitespace-nowrap"
+                className="px-3 py-1.5 bg-gray-800 hover:bg-gray-700 text-red-400 border border-red-500/30 text-xs font-semibold rounded-lg transition-colors whitespace-nowrap"
               >
-                ■ Stop & Save
+                Stop Recording
               </button>
             </div>
           )}
         </div>
 
-        {/* Selected Replay Player view */}
+        {/* Selected Recording Replay Viewport */}
         {selectedRecording && (
-          <div className="p-3.5 bg-gray-950/90 rounded-xl border border-indigo-500/30 space-y-3 min-w-0">
+          <div className="p-3.5 bg-gray-950 rounded-xl border border-indigo-500/30 space-y-3 min-w-0">
             <div className="flex flex-wrap items-center justify-between border-b border-gray-800 pb-2 gap-2">
               <div className="min-w-0">
                 <h4 className="text-xs font-bold text-indigo-400 truncate">{selectedRecording.title}</h4>
@@ -326,16 +289,9 @@ const VideoIcon = () => (
                 <button
                   onClick={() => handleDownloadVideoRecording(selectedRecording)}
                   className="p-1.5 bg-gray-800 hover:bg-gray-700 text-indigo-400 rounded-lg border border-gray-700 transition-colors"
-                  title="Download Session Video (.webm)"
+                  title="Download Video Recording (.webm)"
                 >
-                  <VideoIcon />
-                </button>
-                <button
-                  onClick={() => handleDownloadRecording(selectedRecording)}
-                  className="p-1.5 bg-gray-800 hover:bg-gray-700 text-gray-300 rounded-lg border border-gray-700 transition-colors"
-                  title="Download Session JSON"
-                >
-                  <DownloadIcon />
+                  <RecIcon />
                 </button>
                 <button
                   onClick={() => {
@@ -446,30 +402,22 @@ const VideoIcon = () => (
                         handleDownloadVideoRecording(rec);
                       }}
                       className="p-1.5 bg-gray-800 hover:bg-gray-700 text-indigo-400 rounded-lg border border-gray-700 transition-colors"
-                      title="Download Session Video (.webm)"
+                      title="Download Video Recording (.webm)"
                     >
-                      <VideoIcon />
+                      <RecIcon />
                     </button>
-                    <button
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        handleDownloadRecording(rec);
-                      }}
-                      className="p-1.5 bg-gray-800 hover:bg-gray-700 text-gray-300 rounded-lg border border-gray-700 transition-colors"
-                      title="Download Session JSON"
-                    >
-                      <DownloadIcon />
-                    </button>
-                    <button
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        handleDeleteRecording(rec.id);
-                      }}
-                      className="p-1.5 bg-red-600/20 hover:bg-red-600/30 text-red-400 border border-red-500/30 rounded-lg transition-colors"
-                      title="Delete Session"
-                    >
-                      <TrashIcon />
-                    </button>
+                    {onDeleteRecording && (
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleDeleteRecording(rec.id);
+                        }}
+                        className="p-1.5 bg-red-600/20 hover:bg-red-600/30 text-red-400 border border-red-500/30 rounded-lg transition-colors"
+                        title="Delete Recording"
+                      >
+                        <TrashIcon />
+                      </button>
+                    )}
                   </div>
                 </div>
               ))}
