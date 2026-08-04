@@ -320,7 +320,18 @@ const EditorPage: React.FC = () => {
 
     init();
 
+    const handleBeforeUnload = () => {
+      if (socketRef.current) {
+        socketRef.current.disconnect();
+      }
+    };
+
+    window.addEventListener('beforeunload', handleBeforeUnload);
+    window.addEventListener('pagehide', handleBeforeUnload);
+
     return () => {
+      window.removeEventListener('beforeunload', handleBeforeUnload);
+      window.removeEventListener('pagehide', handleBeforeUnload);
       if (socketRef.current) {
         socketRef.current.off(SocketActions.JOINED);
         socketRef.current.off(SocketActions.DISCONNECTED);
