@@ -7,6 +7,38 @@ interface CallPanelProps {
   onFetchToken: () => Promise<LiveKitTokenResponse>;
 }
 
+const MicIcon = ({ active }: { active: boolean }) => (
+  <svg className="w-4 h-4 fill-none stroke-current stroke-2" viewBox="0 0 24 24">
+    {active ? (
+      <path strokeLinecap="round" strokeLinejoin="round" d="M12 18.75a6 6 0 006-6v-1.5m-6 7.5a6 6 0 01-6-6v-1.5m6 7.5v3.75m-3.75 0h7.5M12 15.75a3 3 0 003-3V6a3 3 0 00-6 0v6.75a3 3 0 003 3z" />
+    ) : (
+      <path strokeLinecap="round" strokeLinejoin="round" d="M12 18.75a6 6 0 006-6v-1.5m-6 7.5a6 6 0 01-6-6v-1.5m6 7.5v3.75m-3.75 0h7.5M12 15.75a3 3 0 003-3V6a3 3 0 00-6 0v6.75a3 3 0 003 3zM3 3l18 18" />
+    )}
+  </svg>
+);
+
+const CameraIcon = ({ active }: { active: boolean }) => (
+  <svg className="w-4 h-4 fill-none stroke-current stroke-2" viewBox="0 0 24 24">
+    {active ? (
+      <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 10.5l4.72-4.72a.75.75 0 011.28.53v11.38a.75.75 0 01-1.28.53l-4.72-4.72M4.5 18.75h9a2.25 2.25 0 002.25-2.25v-9a2.25 2.25 0 00-2.25-2.25h-9A2.25 2.25 0 002.25 7.5v9a2.25 2.25 0 002.25 2.25z" />
+    ) : (
+      <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 10.5l4.72-4.72a.75.75 0 011.28.53v11.38a.75.75 0 01-1.28.53l-4.72-4.72M4.5 18.75h9a2.25 2.25 0 002.25-2.25v-9a2.25 2.25 0 00-2.25-2.25h-9A2.25 2.25 0 002.25 7.5v9a2.25 2.25 0 002.25 2.25zM3 3l18 18" />
+    )}
+  </svg>
+);
+
+const ScreenShareIcon = () => (
+  <svg className="w-4 h-4 fill-none stroke-current stroke-2" viewBox="0 0 24 24">
+    <path strokeLinecap="round" strokeLinejoin="round" d="M7.217 10.907a2.25 2.25 0 100 2.186m0-2.186c.18.324.283.696.283 1.093s-.103.77-.283 1.093m0-2.186l9.566-5.314m-9.566 7.5l9.566 5.314m0 0a2.25 2.25 0 100-4.5 2.25 2.25 0 000 4.5z" />
+  </svg>
+);
+
+const PhoneOffIcon = () => (
+  <svg className="w-4 h-4 fill-none stroke-current stroke-2" viewBox="0 0 24 24">
+    <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15M12 9l-3 3m0 0l3 3m-3-3h12" />
+  </svg>
+);
+
 export const CallPanel: React.FC<CallPanelProps> = ({ username, onFetchToken }) => {
   const [joined, setJoined] = useState(false);
   const [isConfigured, setIsConfigured] = useState(true);
@@ -88,44 +120,44 @@ export const CallPanel: React.FC<CallPanelProps> = ({ username, onFetchToken }) 
               )}
             </div>
 
-            {/* Controls Bar */}
-            <div className="flex flex-wrap items-center justify-center gap-2 pt-2">
+            {/* Controls Bar — minimal icon buttons */}
+            <div className="flex items-center justify-center gap-3 pt-2">
               <button
                 onClick={() => setMicOn(!micOn)}
-                className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-colors ${
-                  micOn ? 'bg-gray-800 text-gray-200 border border-gray-700 hover:bg-gray-700' : 'bg-red-600/20 text-red-400 border border-red-500/30'
+                className={`p-2.5 rounded-full transition-all border shadow-sm ${
+                  micOn ? 'bg-gray-800 text-gray-200 border-gray-700 hover:bg-gray-700' : 'bg-red-600/20 text-red-400 border-red-500/30'
                 }`}
                 title={micOn ? 'Mute Mic' : 'Unmute Mic'}
               >
-                {micOn ? 'Mic On' : 'Muted'}
+                <MicIcon active={micOn} />
               </button>
 
               <button
                 onClick={() => setCamOn(!camOn)}
-                className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-colors ${
-                  camOn ? 'bg-gray-800 text-gray-200 border border-gray-700 hover:bg-gray-700' : 'bg-red-600/20 text-red-400 border border-red-500/30'
+                className={`p-2.5 rounded-full transition-all border shadow-sm ${
+                  camOn ? 'bg-gray-800 text-gray-200 border-gray-700 hover:bg-gray-700' : 'bg-red-600/20 text-red-400 border-red-500/30'
                 }`}
                 title={camOn ? 'Turn Off Camera' : 'Turn On Camera'}
               >
-                {camOn ? 'Cam On' : 'Cam Off'}
+                <CameraIcon active={camOn} />
               </button>
 
               <button
                 onClick={() => setScreenShare(!screenShare)}
-                className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-colors ${
-                  screenShare ? 'bg-indigo-600 text-white' : 'bg-gray-800 text-gray-200 border border-gray-700 hover:bg-gray-700'
+                className={`p-2.5 rounded-full transition-all border shadow-sm ${
+                  screenShare ? 'bg-indigo-600 text-white border-indigo-500' : 'bg-gray-800 text-gray-200 border-gray-700 hover:bg-gray-700'
                 }`}
-                title="Share Screen"
+                title={screenShare ? 'Stop Sharing Screen' : 'Share Screen'}
               >
-                Share
+                <ScreenShareIcon />
               </button>
 
               <button
                 onClick={handleLeaveCall}
-                className="px-3 py-1.5 bg-red-600 hover:bg-red-500 text-white font-semibold rounded-lg text-xs transition-colors shadow-sm"
+                className="p-2.5 bg-red-600 hover:bg-red-500 text-white rounded-full transition-all shadow-md shadow-red-600/20"
                 title="Leave Call"
               >
-                Leave
+                <PhoneOffIcon />
               </button>
             </div>
           </div>
