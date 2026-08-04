@@ -5,23 +5,25 @@
 
  RUN  v2.1.9 /Users/mohitur/Desktop/git-projects/code-editor/apps/api
 
- ✓ test/auth.spec.ts (3 tests) 92ms
- ✓ test/persistence.spec.ts (1 test) 91ms
- ✓ test/ai.spec.ts (2 tests) 96ms
- ✓ test/recordings.spec.ts (1 test) 96ms
+ ✓ test/auth.spec.ts (3 tests) 97ms
+ ✓ test/ai.spec.ts (2 tests) 98ms
+ ✓ test/recordings.spec.ts (1 test) 101ms
+ ✓ test/persistence.spec.ts (1 test) 99ms
+ ✓ test/livekit.spec.ts (1 test) 57ms
 stdout | test/gateway.spec.ts > RoomGateway Integration & Chat Events > should allow two clients to join a room, send chat messages, and receive history
-Client connected: -nNxK5DEKWj1oxx8AAAC
-Client connected: K5qQbonXGJrxrF-UAAAD
+Client connected: -7H0UcKYJgE18QXWAAAC
 
- ✓ test/livekit.spec.ts (1 test) 68ms
+stdout | test/gateway.spec.ts > RoomGateway Integration & Chat Events > should allow two clients to join a room, send chat messages, and receive history
+Client connected: 7rUrG5D7UwjsXYU-AAAD
+
 stdout | test/gateway.spec.ts > RoomGateway Integration & Chat Events
-Client disconnected: -nNxK5DEKWj1oxx8AAAC
-Client disconnected: K5qQbonXGJrxrF-UAAAD
+Client disconnected: -7H0UcKYJgE18QXWAAAC
+Client disconnected: 7rUrG5D7UwjsXYU-AAAD
 
- ✓ test/gateway.spec.ts (1 test) 120ms
+ ✓ test/gateway.spec.ts (1 test) 117ms
 
  Test Files  6 passed (6)
       Tests  9 passed (9)
-   Start at  22:20:02
-   Duration  638ms (transform 109ms, setup 0ms, collect 1.32s, tests 564ms, environment 0ms, prepare 309ms)
+   Start at  22:24:52
+   Duration  706ms (transform 260ms, setup 0ms, collect 1.59s, tests 569ms, environment 1ms, prepare 342ms)
 

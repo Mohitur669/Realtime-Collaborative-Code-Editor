@@ -141,16 +141,19 @@ export const RecordingsPanel: React.FC<RecordingsPanelProps> = ({
 
         {/* Selected Replay Player view */}
         {selectedRecording && (
-          <div className="p-3.5 bg-gray-950/90 rounded-xl border border-green-500/30 space-y-3 min-w-0">
+          <div className="p-3.5 bg-gray-950/90 rounded-xl border border-indigo-500/30 space-y-3 min-w-0">
             <div className="flex flex-wrap items-center justify-between border-b border-gray-800 pb-2 gap-2">
               <div className="min-w-0">
-                <h4 className="text-xs font-bold text-green-400 truncate">{selectedRecording.title}</h4>
+                <h4 className="text-xs font-bold text-indigo-400 truncate">{selectedRecording.title}</h4>
                 <span className="text-2xs text-gray-400 block truncate">
                   {new Date(selectedRecording.createdAt).toLocaleDateString()} • {selectedRecording.eventCount} events
                 </span>
               </div>
               <button
-                onClick={() => setSelectedRecording(null)}
+                onClick={() => {
+                  setSelectedRecording(null);
+                  setIsPlaying(false);
+                }}
                 className="px-3 py-1.5 bg-gray-800 hover:bg-gray-700 text-gray-300 font-semibold text-xs rounded-lg transition-colors whitespace-nowrap border border-gray-700"
               >
                 Close
@@ -169,13 +172,20 @@ export const RecordingsPanel: React.FC<RecordingsPanelProps> = ({
                 max={selectedRecording.durationSeconds}
                 value={playbackTime}
                 onChange={(e) => setPlaybackTime(Number(e.target.value))}
-                className="w-full h-1.5 bg-gray-800 rounded-lg appearance-none cursor-pointer accent-green-500"
+                className="w-full h-1.5 bg-gray-800 rounded-lg appearance-none cursor-pointer accent-indigo-500"
               />
 
               <div className="flex flex-wrap items-center justify-between pt-1 gap-2">
                 <button
-                  onClick={() => setIsPlaying(!isPlaying)}
-                  className="px-3 py-1.5 bg-green-500 hover:bg-green-400 text-gray-950 font-semibold rounded-lg text-xs transition-colors whitespace-nowrap"
+                  onClick={() => {
+                    if (selectedRecording && playbackTime >= selectedRecording.durationSeconds) {
+                      setPlaybackTime(0);
+                      setIsPlaying(true);
+                    } else {
+                      setIsPlaying(!isPlaying);
+                    }
+                  }}
+                  className="px-3 py-1.5 bg-indigo-600 hover:bg-indigo-500 text-white font-semibold rounded-lg text-xs transition-colors whitespace-nowrap shadow-sm"
                 >
                   {isPlaying ? 'Pause' : 'Play'}
                 </button>
@@ -187,7 +197,7 @@ export const RecordingsPanel: React.FC<RecordingsPanelProps> = ({
                       onClick={() => setPlaybackSpeed(speed)}
                       className={`px-3 py-1.5 rounded-lg text-xs font-semibold font-mono transition-colors ${
                         playbackSpeed === speed
-                          ? 'bg-gray-700 text-green-400 border border-green-500/40'
+                          ? 'bg-gray-700 text-indigo-400 border border-indigo-500/40'
                           : 'bg-gray-900 text-gray-400 hover:text-gray-200'
                       }`}
                     >
@@ -203,7 +213,7 @@ export const RecordingsPanel: React.FC<RecordingsPanelProps> = ({
               {visibleEvents.map((evt, idx) => (
                 <div key={idx} className="p-2 bg-gray-900/60 rounded-lg border border-gray-800/60 text-2xs flex flex-wrap items-center justify-between gap-2">
                   <div className="flex items-center gap-2 overflow-hidden min-w-0 flex-1">
-                    <span className="font-mono text-3xs text-green-400 uppercase">
+                    <span className="font-mono text-3xs text-indigo-400 uppercase">
                       [{evt.type}]
                     </span>
                     <span className="font-bold text-gray-300 truncate">{evt.author}:</span>
@@ -231,10 +241,10 @@ export const RecordingsPanel: React.FC<RecordingsPanelProps> = ({
                   onClick={() => {
                     setSelectedRecording(rec);
                     setPlaybackTime(0);
-                    setIsPlaying(false);
+                    setIsPlaying(true);
                   }}
                   className={`p-3 bg-gray-950/70 hover:bg-gray-950 border rounded-xl cursor-pointer transition-all flex flex-wrap items-center justify-between gap-2 ${
-                    selectedRecording?.id === rec.id ? 'border-green-500/50 bg-green-500/5' : 'border-gray-800 hover:border-gray-700'
+                    selectedRecording?.id === rec.id ? 'border-indigo-500/50 bg-indigo-500/5' : 'border-gray-800 hover:border-gray-700'
                   }`}
                 >
                   <div className="space-y-0.5 min-w-0 flex-1">
@@ -243,7 +253,15 @@ export const RecordingsPanel: React.FC<RecordingsPanelProps> = ({
                       Duration: {formatTime(rec.durationSeconds)} • {rec.eventCount} events
                     </span>
                   </div>
-                  <button className="px-3 py-1.5 bg-gray-800 hover:bg-gray-700 text-gray-300 text-xs font-semibold rounded-lg border border-gray-700 whitespace-nowrap">
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setSelectedRecording(rec);
+                      setPlaybackTime(0);
+                      setIsPlaying(true);
+                    }}
+                    className="px-3 py-1.5 bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-semibold rounded-lg shadow-sm whitespace-nowrap"
+                  >
                     Play
                   </button>
                 </div>
