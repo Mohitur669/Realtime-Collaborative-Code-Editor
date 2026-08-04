@@ -42,13 +42,13 @@ const Home: React.FC = () => {
             <h2 className="text-2xl font-bold tracking-tight text-gray-100">Sync Code</h2>
           </div>
           <h4 className="text-sm font-medium text-gray-400 mb-6 text-center">
-            Generate new room or paste invitation ROOM ID
+            Generate new room or paste invitation room ID
           </h4>
           <div className="w-full space-y-4">
             <input
               type="text"
               className="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-xl text-gray-100 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-green-500 text-sm"
-              placeholder="ROOM ID"
+              placeholder="Room ID"
               onChange={(e) => setRoomId(e.target.value)}
               value={roomId}
               onKeyUp={handleInputEnter}
@@ -56,7 +56,7 @@ const Home: React.FC = () => {
             <input
               type="text"
               className="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-xl text-gray-100 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-green-500 text-sm"
-              placeholder="USERNAME"
+              placeholder="Username"
               onChange={(e) => setUsername(e.target.value)}
               value={username}
               onKeyUp={handleInputEnter}

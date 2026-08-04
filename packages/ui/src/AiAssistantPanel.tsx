@@ -46,7 +46,7 @@ export const AiAssistantPanel: React.FC<AiAssistantPanelProps> = ({
       {/* Header */}
       <div className="p-3 border-b border-gray-800 flex items-center justify-between">
         <div className="flex items-center gap-2">
-          <span className="text-xs font-bold uppercase tracking-wider text-purple-400">AI Pair Programmer</span>
+          <span className="text-xs font-bold tracking-wider text-purple-400">Ai Pair Programmer</span>
           <span className="text-[10px] font-mono text-purple-400/80">Copilot Ready</span>
         </div>
       </div>
@@ -130,7 +130,7 @@ export const AiAssistantPanel: React.FC<AiAssistantPanelProps> = ({
         {response && (
           <div className="p-3.5 bg-gray-950 rounded-xl border border-purple-500/30 space-y-3">
             <div className="flex flex-wrap items-center justify-between border-b border-gray-800 pb-2 gap-2">
-              <span className="text-2xs font-mono font-bold uppercase tracking-wider text-purple-400">
+              <span className="text-2xs font-mono font-bold tracking-wider text-purple-400">
                 Response ({response.action})
               </span>
               <div className="flex flex-wrap items-center gap-2">

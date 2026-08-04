@@ -30,7 +30,7 @@ const FilePreview: React.FC<FilePreviewProps> = ({
         {/* Modal Header */}
         <div className="px-6 py-3.5 border-b border-gray-800 flex justify-between items-center bg-gray-950">
           <div className="flex items-center gap-3">
-            <h3 className="text-sm font-bold text-gray-100 uppercase tracking-wider">File Diff & Preview</h3>
+            <h3 className="text-sm font-bold text-gray-100 tracking-wider">File Diff & Preview</h3>
             <div className="flex items-center bg-gray-900 border border-gray-800 rounded-lg p-0.5">
               <button
                 onClick={() => setViewMode('diff')}
@@ -65,7 +65,7 @@ const FilePreview: React.FC<FilePreviewProps> = ({
             <div className="grid grid-cols-2 gap-4 h-full">
               {/* Left Diff Section: Existing Code */}
               <div className="flex flex-col bg-gray-900/80 rounded-xl border border-red-500/30 overflow-hidden">
-                <div className="px-3 py-1.5 bg-red-500/10 border-b border-red-500/20 text-red-400 font-bold text-2xs uppercase tracking-wider flex items-center justify-between">
+                <div className="px-3 py-1.5 bg-red-500/10 border-b border-red-500/20 text-red-400 font-bold text-2xs tracking-wider flex items-center justify-between">
                   <span>Current Editor Code</span>
                   <span>{currentCode.split('\n').length} lines</span>
                 </div>
@@ -76,7 +76,7 @@ const FilePreview: React.FC<FilePreviewProps> = ({
 
               {/* Right Diff Section: Incoming Code */}
               <div className="flex flex-col bg-gray-900/80 rounded-xl border border-green-500/30 overflow-hidden">
-                <div className="px-3 py-1.5 bg-green-500/10 border-b border-green-500/20 text-green-400 font-bold text-2xs uppercase tracking-wider flex items-center justify-between">
+                <div className="px-3 py-1.5 bg-green-500/10 border-b border-green-500/20 text-green-400 font-bold text-2xs tracking-wider flex items-center justify-between">
                   <span>Uploaded File Code (New)</span>
                   <span>{fileContent.split('\n').length} lines</span>
                 </div>

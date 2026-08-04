@@ -37,7 +37,7 @@ export const PresenceBar: React.FC<PresenceBarProps> = ({ users, theme = 'dracul
   return (
     <div className="flex flex-wrap items-center gap-2 px-3 py-2 bg-gray-900/90 dark:bg-gray-900/90 light:bg-gray-100 border-b border-gray-800 dark:border-gray-800 light:border-gray-200 backdrop-blur justify-between min-w-0 transition-colors">
       <div className="flex flex-wrap items-center gap-2 min-w-0">
-        <span className="text-xs font-semibold uppercase tracking-wider text-gray-400 dark:text-gray-400 light:text-gray-600 whitespace-nowrap">Live Presence</span>
+        <span className="text-xs font-semibold tracking-wider text-gray-400 dark:text-gray-400 light:text-gray-600 whitespace-nowrap">Live Presence</span>
         <div className="flex -space-x-2 overflow-hidden">
           {uniqueUsers.map((u) => (
             <div

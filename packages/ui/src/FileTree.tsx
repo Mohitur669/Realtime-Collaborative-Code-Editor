@@ -32,22 +32,22 @@ const getFileIcon = (fileName: string) => {
   switch (ext) {
     case 'js':
     case 'jsx':
-      return { color: 'text-amber-400', tag: 'JS' };
+      return { color: 'text-amber-400', tag: 'Js' };
     case 'ts':
     case 'tsx':
-      return { color: 'text-blue-400', tag: 'TS' };
+      return { color: 'text-blue-400', tag: 'Ts' };
     case 'py':
-      return { color: 'text-yellow-400', tag: 'PY' };
+      return { color: 'text-yellow-400', tag: 'Py' };
     case 'html':
-      return { color: 'text-orange-400', tag: 'HTML' };
+      return { color: 'text-orange-400', tag: 'Html' };
     case 'css':
-      return { color: 'text-sky-400', tag: 'CSS' };
+      return { color: 'text-sky-400', tag: 'Css' };
     case 'json':
-      return { color: 'text-green-400', tag: 'JSON' };
+      return { color: 'text-green-400', tag: 'Json' };
     case 'md':
-      return { color: 'text-purple-400', tag: 'MD' };
+      return { color: 'text-purple-400', tag: 'Md' };
     default:
-      return { color: 'text-gray-400', tag: 'TXT' };
+      return { color: 'text-gray-400', tag: 'Txt' };
   }
 };
 
@@ -86,7 +86,7 @@ export const FileTree: React.FC<FileTreeProps> = ({
       {/* Explorer Header */}
       <div className="px-3 py-2 bg-gray-900 border-b border-gray-800 flex items-center justify-between">
         <div className="flex items-center gap-1.5">
-          <span className="text-[11px] font-bold uppercase tracking-wider text-gray-400">Explorer</span>
+          <span className="text-[11px] font-bold tracking-wider text-gray-400">Explorer</span>
           <span className="text-[10px] font-mono text-gray-500">({files.length})</span>
         </div>
 

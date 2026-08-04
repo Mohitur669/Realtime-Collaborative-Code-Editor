@@ -267,10 +267,10 @@ const VideoIcon = () => (
       {/* Header */}
       <div className="p-3 border-b border-gray-800 flex flex-wrap items-center justify-between gap-2">
         <div className="flex items-center gap-2 flex-wrap min-w-0">
-          <span className="text-xs font-bold uppercase tracking-wider text-gray-400 truncate">Session Recordings</span>
+          <span className="text-xs font-bold tracking-wider text-gray-400 truncate">Session Recordings</span>
           {activeRecordingId && (
             <span className="flex items-center gap-1.5 px-2 py-0.5 bg-red-500/20 text-red-400 border border-red-500/30 rounded-full text-2xs font-bold animate-pulse whitespace-nowrap">
-              <span className="w-2 h-2 rounded-full bg-red-500"></span> REC {formatTime(recordingSeconds)}
+              <span className="w-2 h-2 rounded-full bg-red-500"></span> Rec {formatTime(recordingSeconds)}
             </span>
           )}
         </div>
@@ -402,7 +402,7 @@ const VideoIcon = () => (
 
         {/* Saved Recordings List */}
         <div className="space-y-2 min-w-0">
-          <h4 className="text-xs font-bold uppercase tracking-wider text-gray-500 truncate">Saved Replays ({recordings.length})</h4>
+          <h4 className="text-xs font-bold tracking-wider text-gray-500 truncate">Saved Replays ({recordings.length})</h4>
           {recordings.length === 0 ? (
             <div className="p-6 text-center text-xs text-gray-500 border border-dashed border-gray-800 rounded-xl">
               No session recordings yet. Click <span className="text-red-400 font-bold">Record</span> to capture live workspace events.

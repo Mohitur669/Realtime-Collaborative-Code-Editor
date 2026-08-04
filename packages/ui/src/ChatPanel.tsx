@@ -70,7 +70,7 @@ export const ChatPanel: React.FC<ChatPanelProps> = ({
   return (
     <div className="flex flex-col h-full bg-gray-900 text-gray-200">
       <div className="p-3 border-b border-gray-800 flex items-center justify-between">
-        <span className="text-xs font-bold uppercase tracking-wider text-gray-400">Room Chat</span>
+        <span className="text-xs font-bold tracking-wider text-gray-400">Room Chat</span>
         <span className="text-xs text-gray-500">{messages.length} messages</span>
       </div>
 

@@ -59,7 +59,7 @@ export const UsersPanel: React.FC<UsersPanelProps> = ({
       {/* Panel Header */}
       <div className="p-3 border-b border-gray-800 flex items-center justify-between flex-wrap gap-2">
         <div>
-          <h4 className="text-xs font-bold uppercase tracking-wider text-gray-400">
+          <h4 className="text-xs font-bold tracking-wider text-gray-400">
             Room Participants ({uniqueClients.length})
           </h4>
           <p className="text-2xs text-gray-500 mt-0.5">

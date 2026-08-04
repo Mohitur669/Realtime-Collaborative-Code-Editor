@@ -35,7 +35,7 @@ export const EditorSettingsPanel: React.FC<EditorSettingsPanelProps> = ({
       {/* Title */}
       <div className="pb-3 border-b border-gray-800 flex items-center justify-between">
         <div>
-          <h3 className="text-xs font-bold uppercase tracking-wider text-gray-400">Editor Configurations</h3>
+          <h3 className="text-xs font-bold tracking-wider text-gray-400">Editor Configurations</h3>
           <p className="text-2xs text-gray-500 mt-0.5">Customize font, theme, syntax, and keybindings</p>
         </div>
       </div>

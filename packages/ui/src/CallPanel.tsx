@@ -71,14 +71,14 @@ export const CallPanel: React.FC<CallPanelProps> = ({ username, onFetchToken }) 
   return (
     <div className="flex flex-col h-full bg-gray-900 text-gray-200">
       <div className="p-3 border-b border-gray-800 flex items-center justify-between">
-        <span className="text-xs font-bold uppercase tracking-wider text-gray-400">Audio / Video Call</span>
+        <span className="text-xs font-bold tracking-wider text-gray-400">Audio / Video Call</span>
         <span className="text-xs text-gray-500 font-mono">{joined ? 'Connected' : 'Disconnected'}</span>
       </div>
 
       <div className="flex-1 p-4 flex flex-col justify-between overflow-y-auto">
         {!isConfigured && (
           <div className="p-3 bg-amber-500/10 border border-amber-500/20 rounded-xl text-amber-300 text-xs mb-4">
-            LiveKit credentials not set in environment. Running in dev fallback mode. Set <code className="font-mono font-bold">LIVEKIT_API_KEY</code> to enable full SFU stream routing.
+            LiveKit credentials not set in environment. Running in dev fallback mode. Set <code className="font-mono font-bold">livekit_api_key</code> to enable full SFU stream routing.
           </div>
         )}
 
