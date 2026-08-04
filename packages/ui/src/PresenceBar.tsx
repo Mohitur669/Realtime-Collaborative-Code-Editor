@@ -14,6 +14,18 @@ interface PresenceBarProps {
   onToggleTheme?: () => void;
 }
 
+const SunIcon = () => (
+  <svg className="w-3.5 h-3.5 text-amber-400 fill-current" viewBox="0 0 24 24">
+    <path d="M12 7c-2.76 0-5 2.24-5 5s2.24 5 5 5 5-2.24 5-5-2.24-5-5-5zM2 13h2c.55 0 1-.45 1-1s-.45-1-1-1H2c-.55 0-1 .45-1 1s.45 1 1 1zm18 0h2c.55 0 1-.45 1-1s-.45-1-1-1h-2c-.55 0-1 .45-1 1s.45 1 1 1zM11 2v2c0 .55.45 1 1 1s1-.45 1-1V2c0-.55-.45-1-1-1s-1 .45-1 1zm0 18v2c0 .55.45 1 1 1s1-.45 1-1v-2c0-.55-.45-1-1-1s-1 .45-1 1zM5.99 4.58c-.39-.39-1.03-.39-1.41 0s-.39 1.03 0 1.41l1.06 1.06c.39.39 1.03.39 1.41 0s.39-1.03 0-1.41L5.99 4.58zm12.37 12.37c-.39-.39-1.03-.39-1.41 0s-.39 1.03 0 1.41l1.06 1.06c.39.39 1.03.39 1.41 0s.39-1.03 0-1.41l-1.06-1.06zm1.06-10.96c.39-.39.39-1.03 0-1.41s-1.03-.39-1.41 0l-1.06 1.06c-.39.39-.39 1.03 0 1.41s1.03.39 1.41 0l1.06-1.06zM7.05 18.36c.39-.39.39-1.03 0-1.41s-1.03-.39-1.41 0l-1.06 1.06c-.39.39-.39 1.03 0 1.41s1.03.39 1.41 0l1.06-1.06z"/>
+  </svg>
+);
+
+const MoonIcon = () => (
+  <svg className="w-3.5 h-3.5 text-indigo-400 fill-current" viewBox="0 0 24 24">
+    <path d="M12.3 2c.43 0 .77.35.7.78-.62 3.84 1.2 7.6 4.57 9.53 1.14.65 1.76 1.93 1.49 3.2-.67 3.19-3.23 5.62-6.52 6.17-4.32.72-8.38-2.07-9.28-6.32-.9-4.24 1.74-8.47 5.95-9.61 1.01-.27 2.08-.22 3.09.25z"/>
+  </svg>
+);
+
 export const PresenceBar: React.FC<PresenceBarProps> = ({ users, theme = 'dracula', onToggleTheme }) => {
   // Deduplicate users by username so same user doesn't show multiple times
   const uniqueUsers = users.filter(
@@ -23,9 +35,9 @@ export const PresenceBar: React.FC<PresenceBarProps> = ({ users, theme = 'dracul
   const isLight = theme === 'githubLight';
 
   return (
-    <div className="flex flex-wrap items-center gap-2 px-3 py-2 bg-gray-900/90 border-b border-gray-800 backdrop-blur justify-between min-w-0">
+    <div className="flex flex-wrap items-center gap-2 px-3 py-2 bg-gray-900/90 dark:bg-gray-900/90 light:bg-gray-100 border-b border-gray-800 dark:border-gray-800 light:border-gray-200 backdrop-blur justify-between min-w-0 transition-colors">
       <div className="flex flex-wrap items-center gap-2 min-w-0">
-        <span className="text-xs font-semibold uppercase tracking-wider text-gray-400 whitespace-nowrap">Live Presence</span>
+        <span className="text-xs font-semibold uppercase tracking-wider text-gray-400 dark:text-gray-400 light:text-gray-600 whitespace-nowrap">Live Presence</span>
         <div className="flex -space-x-2 overflow-hidden">
           {uniqueUsers.map((u) => (
             <div
@@ -43,18 +55,18 @@ export const PresenceBar: React.FC<PresenceBarProps> = ({ users, theme = 'dracul
         </div>
       </div>
       <div className="flex items-center gap-2 shrink-0">
-        <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-green-500/10 text-green-400 border border-green-500/20">
-          <span className="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse mr-1.5"></span>
+        <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
+          <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse mr-1.5"></span>
           CRDT Active
         </span>
 
         {onToggleTheme && (
           <button
             onClick={onToggleTheme}
-            className="w-6 h-6 bg-gray-800 hover:bg-gray-700 rounded-md border border-gray-700 transition-colors flex items-center justify-center cursor-pointer select-none"
+            className="w-7 h-7 bg-gray-800 dark:bg-gray-800 light:bg-gray-200 hover:bg-gray-700 dark:hover:bg-gray-700 light:hover:bg-gray-300 rounded-lg border border-gray-700 dark:border-gray-700 light:border-gray-300 transition-all flex items-center justify-center cursor-pointer select-none shadow-sm"
             title={isLight ? 'Switch to Dark Mode' : 'Switch to Light Mode'}
           >
-            <span className={`w-2.5 h-2.5 rounded-full ${isLight ? 'bg-amber-400' : 'bg-blue-400'}`} />
+            {isLight ? <SunIcon /> : <MoonIcon />}
           </button>
         )}
       </div>

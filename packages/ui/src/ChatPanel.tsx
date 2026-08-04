@@ -105,7 +105,7 @@ export const ChatPanel: React.FC<ChatPanelProps> = ({
                     hasMention
                       ? 'bg-amber-500/20 text-amber-200 border border-amber-500/30'
                       : isMe
-                      ? 'bg-green-500 text-gray-950 font-medium'
+                      ? 'bg-indigo-600 text-white font-medium'
                       : 'bg-gray-800 text-gray-200 border border-gray-700'
                   }`}
                 >
@@ -125,7 +125,7 @@ export const ChatPanel: React.FC<ChatPanelProps> = ({
             <div
               key={user}
               onClick={() => insertMention(user)}
-              className="px-3 py-1 text-xs hover:bg-gray-700 rounded cursor-pointer text-green-400 font-mono"
+              className="px-3 py-1 text-xs hover:bg-gray-700 rounded cursor-pointer text-indigo-400 font-mono"
             >
               @{user}
             </div>
@@ -140,11 +140,11 @@ export const ChatPanel: React.FC<ChatPanelProps> = ({
           placeholder="Type message... (@username)"
           value={input}
           onChange={handleInputChange}
-          className="flex-1 min-w-[120px] bg-gray-800 border border-gray-700 rounded-lg px-3 py-2 text-xs text-gray-100 focus:outline-none focus:ring-1 focus:ring-green-500"
+          className="flex-1 min-w-[120px] bg-gray-800 border border-gray-700 rounded-lg px-3 py-2 text-xs text-gray-100 focus:outline-none focus:ring-1 focus:ring-indigo-500"
         />
         <button
           type="submit"
-          className="px-3 py-1.5 bg-green-500 hover:bg-green-400 text-gray-950 font-semibold rounded-lg text-xs transition-colors"
+          className="px-3 py-1.5 bg-indigo-600 hover:bg-indigo-500 text-white font-semibold rounded-lg text-xs transition-colors"
         >
           Send
         </button>

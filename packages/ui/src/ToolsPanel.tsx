@@ -31,7 +31,7 @@ export const ToolsPanel: React.FC<ToolsPanelProps> = ({ activeTab, onSelectTab, 
               title={tab.label}
               className={`flex items-center justify-center gap-1 px-3 py-2 text-xs font-semibold border-b-2 transition-all whitespace-nowrap flex-1 min-w-0 ${
                 isActive
-                  ? 'border-green-500 text-green-400 bg-gray-900'
+                  ? 'border-indigo-500 text-indigo-400 bg-gray-900'
                   : 'border-transparent text-gray-400 hover:text-gray-200 hover:bg-gray-900/50'
               }`}
             >

@@ -64,7 +64,7 @@ const THEMES = [
 ];
 
 const EditorPage: React.FC = () => {
-  const { settings, updateSettings } = useSettingsStore();
+  const { settings, updateSettings, appTheme, toggleAppTheme } = useSettingsStore();
   const [clients, setClients] = useState<ClientInfo[]>([]);
   const [chatMessages, setChatMessages] = useState<ChatMessage[]>([]);
 
@@ -521,13 +521,15 @@ const EditorPage: React.FC = () => {
   const roomUsernames = clients.map((c) => c.username);
 
   const handleToggleTheme = () => {
-    const nextTheme = settings.theme === 'githubLight' ? 'dracula' : 'githubLight';
-    updateSettings({ theme: nextTheme });
-    toast.success(`Switched to ${nextTheme === 'githubLight' ? 'Light Mode' : 'Dark Mode'}`);
+    toggleAppTheme();
+    const isNextLight = appTheme === 'dark';
+    const nextCodeTheme = isNextLight ? 'githubLight' : 'dracula';
+    updateSettings({ theme: nextCodeTheme });
+    toast.success(`Switched to ${isNextLight ? 'Light Mode' : 'Dark Mode'}`);
   };
 
   return (
-    <div className="flex flex-col h-screen bg-gray-950 text-gray-100 overflow-hidden">
+    <div data-app-theme={appTheme} className="flex flex-col h-screen bg-gray-950 text-gray-100 overflow-hidden font-sans transition-colors">
       {/* Presence Bar */}
       <PresenceBar
         users={presenceUsers}
@@ -553,8 +555,8 @@ const EditorPage: React.FC = () => {
             />
           </Panel>
 
-          <PanelResizeHandle className="flex-shrink-0 w-1.5 bg-gray-900 border-x border-gray-800/50 hover:bg-green-500/40 transition-all cursor-col-resize flex items-center justify-center group focus:outline-none select-none z-20">
-            <div className="w-0.5 h-8 bg-gray-700 rounded-full group-hover:bg-green-400 transition-colors pointer-events-none" />
+          <PanelResizeHandle className="flex-shrink-0 w-1.5 bg-gray-900 border-x border-gray-800/50 hover:bg-indigo-500/40 transition-all cursor-col-resize flex items-center justify-center group focus:outline-none select-none z-20">
+            <div className="w-0.5 h-8 bg-gray-700 rounded-full group-hover:bg-indigo-400 transition-colors pointer-events-none" />
           </PanelResizeHandle>
 
           {/* Main Editor Center Panel */}
@@ -564,7 +566,7 @@ const EditorPage: React.FC = () => {
               <div className="px-3 py-1.5 bg-gray-900 border-b border-gray-800 flex items-center justify-between flex-wrap gap-2">
                 <div className="flex items-center gap-2 min-w-0">
                   <span className="text-xs font-mono text-gray-400 whitespace-nowrap">Editing:</span>
-                  <span className="text-xs font-semibold text-green-400 font-mono truncate">{activeFile}</span>
+                  <span className="text-xs font-semibold text-sky-400 font-mono truncate">{activeFile}</span>
                 </div>
                 <div className="flex items-center gap-1.5 flex-wrap">
                   <input
@@ -583,7 +585,7 @@ const EditorPage: React.FC = () => {
                   </button>
                   <button
                     onClick={copyRoomId}
-                    className="px-3 py-1.5 bg-green-500 hover:bg-green-400 text-gray-950 text-xs font-semibold rounded-lg transition-colors whitespace-nowrap"
+                    className="px-3 py-1.5 bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-semibold rounded-lg transition-colors whitespace-nowrap shadow-sm"
                   >
                     Copy Room ID
                   </button>
@@ -629,8 +631,8 @@ const EditorPage: React.FC = () => {
             </div>
           </Panel>
 
-          <PanelResizeHandle className="flex-shrink-0 w-1.5 bg-gray-900 border-x border-gray-800/50 hover:bg-green-500/40 transition-all cursor-col-resize flex items-center justify-center group focus:outline-none select-none z-20">
-            <div className="w-0.5 h-8 bg-gray-700 rounded-full group-hover:bg-green-400 transition-colors pointer-events-none" />
+          <PanelResizeHandle className="flex-shrink-0 w-1.5 bg-gray-900 border-x border-gray-800/50 hover:bg-indigo-500/40 transition-all cursor-col-resize flex items-center justify-center group focus:outline-none select-none z-20">
+            <div className="w-0.5 h-8 bg-gray-700 rounded-full group-hover:bg-indigo-400 transition-colors pointer-events-none" />
           </PanelResizeHandle>
 
           {/* Right Tools & Customization Panel */}

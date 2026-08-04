@@ -84,7 +84,7 @@ export const FileTree: React.FC<FileTreeProps> = ({
 
         <button
           onClick={() => setIsCreating(!isCreating)}
-          className="p-1 hover:bg-gray-800 text-gray-400 hover:text-green-400 rounded transition-colors text-xs font-semibold"
+          className="p-1 hover:bg-gray-800 text-gray-400 hover:text-indigo-400 rounded transition-colors text-xs font-semibold"
           title="Create New File"
         >
           <span className="text-sm leading-none">+</span>
@@ -100,12 +100,12 @@ export const FileTree: React.FC<FileTreeProps> = ({
               placeholder="e.g. index.ts or utils.js"
               value={newFileName}
               onChange={(e) => setNewFileName(e.target.value)}
-              className="flex-1 bg-gray-950 text-xs px-2.5 py-1.5 border border-gray-700 rounded-lg text-gray-100 focus:outline-none focus:border-green-500 font-mono"
+              className="flex-1 bg-gray-950 text-xs px-2.5 py-1.5 border border-gray-700 rounded-lg text-gray-100 focus:outline-none focus:border-indigo-500 font-mono"
               autoFocus
             />
             <button
               type="submit"
-              className="px-3 py-1.5 bg-green-500 hover:bg-green-400 text-gray-950 text-xs font-bold rounded-lg transition-colors shadow-sm"
+              className="px-3 py-1.5 bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-semibold rounded-lg transition-colors shadow-sm"
             >
               Add
             </button>
@@ -117,7 +117,7 @@ export const FileTree: React.FC<FileTreeProps> = ({
       <div className="flex-1 overflow-y-auto p-2 space-y-1">
         {files.length === 0 ? (
           <div className="p-6 text-center text-xs text-gray-500 italic border border-dashed border-gray-800 rounded-xl my-4">
-            No files in project workspace. Click <span className="text-green-400 font-bold">+ File</span> to create one.
+            No files in project workspace. Click <span className="text-indigo-400 font-bold">+ File</span> to create one.
           </div>
         ) : (
           files.map((filePath) => {
@@ -130,12 +130,12 @@ export const FileTree: React.FC<FileTreeProps> = ({
                 onClick={() => onSelectFile(filePath)}
                 className={`group relative flex items-center justify-between px-3 py-2 rounded-xl text-xs cursor-pointer transition-all border ${
                   isActive
-                    ? 'bg-green-500/10 border-green-500/40 text-green-400 font-semibold shadow-sm'
+                    ? 'bg-indigo-500/10 border-indigo-500/40 text-indigo-300 font-semibold shadow-sm'
                     : 'bg-gray-900/40 border-transparent hover:bg-gray-900 hover:border-gray-800 text-gray-300'
                 }`}
               >
                 {/* Active Indicator Bar */}
-                {isActive && <div className="absolute left-0 top-1.5 bottom-1.5 w-1 bg-green-500 rounded-r" />}
+                {isActive && <div className="absolute left-0 top-1.5 bottom-1.5 w-1 bg-indigo-500 rounded-r" />}
 
                 <div className="flex items-center gap-2 truncate pl-1">
                   <span className="truncate font-mono text-xs">{filePath}</span>
@@ -186,8 +186,8 @@ export const FileTree: React.FC<FileTreeProps> = ({
       {/* Footer Info */}
       <div className="px-3 py-2 bg-gray-900/80 border-t border-gray-800 text-[10px] text-gray-400 flex items-center justify-between font-mono tracking-tight">
         <span>Sync Workspace</span>
-        <span className="text-green-400 font-medium flex items-center gap-1">
-          <span className="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse"></span>
+        <span className="text-emerald-400 font-medium flex items-center gap-1">
+          <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
           Realtime
         </span>
       </div>

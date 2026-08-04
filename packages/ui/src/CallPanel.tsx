@@ -52,7 +52,7 @@ export const CallPanel: React.FC<CallPanelProps> = ({ username, onFetchToken }) 
 
         {!joined ? (
           <div className="flex-1 flex flex-col items-center justify-center text-center space-y-4 my-auto">
-            <div className="w-16 h-16 bg-gray-800 rounded-full flex items-center justify-center text-xs font-mono font-bold border border-gray-700 text-green-400">
+            <div className="w-16 h-16 bg-gray-800 rounded-full flex items-center justify-center text-xs font-mono font-bold border border-gray-700 text-indigo-400">
               AV
             </div>
             <div>
@@ -64,7 +64,7 @@ export const CallPanel: React.FC<CallPanelProps> = ({ username, onFetchToken }) 
             <button
               onClick={handleJoinCall}
               disabled={loading}
-              className="px-3 py-1.5 bg-green-500 hover:bg-green-400 text-gray-950 font-semibold rounded-lg text-xs transition-all shadow-md shadow-green-500/20"
+              className="px-3 py-1.5 bg-indigo-600 hover:bg-indigo-500 text-white font-semibold rounded-lg text-xs transition-all shadow-md shadow-indigo-600/20"
             >
               {loading ? 'Connecting...' : 'Join Call'}
             </button>
@@ -73,11 +73,11 @@ export const CallPanel: React.FC<CallPanelProps> = ({ username, onFetchToken }) 
           <div className="flex-1 flex flex-col justify-between space-y-4">
             {/* Participant Video Grid Mock Preview */}
             <div className="flex-1 bg-gray-950 rounded-xl border border-gray-800 p-4 flex flex-col items-center justify-center relative overflow-hidden">
-              <div className="w-20 h-20 bg-green-500/20 rounded-full flex items-center justify-center border-2 border-green-500 text-green-400 font-bold text-xl mb-2 animate-pulse">
+              <div className="w-20 h-20 bg-indigo-500/20 rounded-full flex items-center justify-center border-2 border-indigo-500 text-indigo-400 font-bold text-xl mb-2 animate-pulse">
                 {username.substring(0, 2).toUpperCase()}
               </div>
               <span className="text-xs font-semibold text-gray-200">{username} (You)</span>
-              <span className="text-2xs text-green-400 mt-1 font-mono">
+              <span className="text-2xs text-sky-400 mt-1 font-mono">
                 {screenShare ? 'Sharing Screen' : micOn ? 'Mic Active' : 'Muted'}
               </span>
 
@@ -113,7 +113,7 @@ export const CallPanel: React.FC<CallPanelProps> = ({ username, onFetchToken }) 
               <button
                 onClick={() => setScreenShare(!screenShare)}
                 className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-colors ${
-                  screenShare ? 'bg-green-500 text-gray-950' : 'bg-gray-800 text-gray-200 border border-gray-700 hover:bg-gray-700'
+                  screenShare ? 'bg-indigo-600 text-white' : 'bg-gray-800 text-gray-200 border border-gray-700 hover:bg-gray-700'
                 }`}
                 title="Share Screen"
               >

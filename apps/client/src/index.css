@@ -109,3 +109,69 @@ html, body, #root {
 ::-webkit-scrollbar-thumb:hover {
   background: #374151;
 }
+
+/* App-wide Light Theme Overrides */
+[data-app-theme="light"] {
+  background-color: #f8fafc !important;
+  color: #0f172a !important;
+}
+
+[data-app-theme="light"] .bg-gray-950,
+[data-app-theme="light"] .bg-gray-900,
+[data-app-theme="light"] .bg-gray-900\/90,
+[data-app-theme="light"] .bg-gray-900\/80,
+[data-app-theme="light"] .bg-gray-900\/60,
+[data-app-theme="light"] .bg-gray-900\/40,
+[data-app-theme="light"] .bg-gray-950\/90,
+[data-app-theme="light"] .bg-gray-950\/80,
+[data-app-theme="light"] .bg-gray-950\/70,
+[data-app-theme="light"] .bg-gray-950\/60 {
+  background-color: #ffffff !important;
+}
+
+[data-app-theme="light"] .bg-gray-800 {
+  background-color: #f1f5f9 !important;
+}
+
+[data-app-theme="light"] .bg-gray-800\/80,
+[data-app-theme="light"] .bg-gray-800\/50 {
+  background-color: #e2e8f0 !important;
+}
+
+[data-app-theme="light"] .border-gray-800,
+[data-app-theme="light"] .border-gray-800\/60,
+[data-app-theme="light"] .border-gray-800\/50,
+[data-app-theme="light"] .border-gray-700 {
+  border-color: #e2e8f0 !important;
+}
+
+[data-app-theme="light"] .text-gray-100,
+[data-app-theme="light"] .text-gray-200,
+[data-app-theme="light"] .text-gray-300 {
+  color: #0f172a !important;
+}
+
+[data-app-theme="light"] .text-gray-400,
+[data-app-theme="light"] .text-gray-500 {
+  color: #64748b !important;
+}
+
+[data-app-theme="light"] input,
+[data-app-theme="light"] textarea,
+[data-app-theme="light"] select {
+  background-color: #f8fafc !important;
+  color: #0f172a !important;
+  border-color: #cbd5e1 !important;
+}
+
+[data-app-theme="light"] ::-webkit-scrollbar-track {
+  background: #f8fafc !important;
+}
+
+[data-app-theme="light"] ::-webkit-scrollbar-thumb {
+  background: #cbd5e1 !important;
+}
+
+[data-app-theme="light"] ::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8 !important;
+}
