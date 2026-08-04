@@ -183,3 +183,24 @@ html, body, #root {
 [data-app-theme] button {
   font-family: inherit;
 }
+
+/* Anti-breakage Responsive Guards */
+* {
+  box-sizing: border-box;
+}
+
+html, body, #root {
+  max-width: 100vw !important;
+  max-height: 100vh !important;
+  overflow: hidden !important;
+}
+
+[data-panel] {
+  min-width: 0 !important;
+  min-height: 0 !important;
+  overflow: hidden !important;
+}
+
+button, input, select, textarea {
+  max-width: 100%;
+}
