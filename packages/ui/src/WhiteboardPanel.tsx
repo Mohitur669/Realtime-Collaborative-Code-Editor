@@ -7,6 +7,30 @@ interface WhiteboardPanelProps {
   onClearElements: () => void;
 }
 
+const PencilToolIcon = () => (
+  <svg className="w-3.5 h-3.5 fill-none stroke-current stroke-2" viewBox="0 0 24 24">
+    <path strokeLinecap="round" strokeLinejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L6.832 19.82a4.5 4.5 0 01-1.897 1.13l-2.685.8.8-2.685a4.5 4.5 0 011.13-1.897L16.863 4.487zm0 0L19.5 7.125" />
+  </svg>
+);
+
+const RectToolIcon = () => (
+  <svg className="w-3.5 h-3.5 fill-none stroke-current stroke-2" viewBox="0 0 24 24">
+    <rect x="4" y="4" width="16" height="16" rx="2" strokeLinecap="round" strokeLinejoin="round" />
+  </svg>
+);
+
+const CircleToolIcon = () => (
+  <svg className="w-3.5 h-3.5 fill-none stroke-current stroke-2" viewBox="0 0 24 24">
+    <circle cx="12" cy="12" r="8" strokeLinecap="round" strokeLinejoin="round" />
+  </svg>
+);
+
+const TextToolIcon = () => (
+  <svg className="w-3.5 h-3.5 fill-none stroke-current stroke-2" viewBox="0 0 24 24">
+    <path strokeLinecap="round" strokeLinejoin="round" d="M7.5 4.5h9M12 4.5v15M9 19.5h6" />
+  </svg>
+);
+
 export const WhiteboardPanel: React.FC<WhiteboardPanelProps> = ({
   elements,
   onAddElement,
@@ -196,39 +220,39 @@ export const WhiteboardPanel: React.FC<WhiteboardPanelProps> = ({
         <div className="flex flex-wrap items-center gap-1">
           <button
             onClick={() => setTool('pencil')}
-            className={`px-2.5 py-1 rounded-lg text-xs font-semibold transition-all ${
-              tool === 'pencil' ? 'bg-green-500 text-gray-950' : 'bg-gray-800 text-gray-300 hover:bg-gray-700'
+            className={`p-1.5 rounded-lg transition-all ${
+              tool === 'pencil' ? 'bg-green-500 text-gray-950 shadow-sm' : 'bg-gray-800 text-gray-300 hover:bg-gray-700'
             }`}
-            title="Pencil"
+            title="Pencil Tool"
           >
-            Pencil
+            <PencilToolIcon />
           </button>
           <button
             onClick={() => setTool('rectangle')}
-            className={`px-2.5 py-1 rounded-lg text-xs font-semibold transition-all ${
-              tool === 'rectangle' ? 'bg-green-500 text-gray-950' : 'bg-gray-800 text-gray-300 hover:bg-gray-700'
+            className={`p-1.5 rounded-lg transition-all ${
+              tool === 'rectangle' ? 'bg-green-500 text-gray-950 shadow-sm' : 'bg-gray-800 text-gray-300 hover:bg-gray-700'
             }`}
-            title="Rectangle"
+            title="Rectangle Tool"
           >
-            Rect
+            <RectToolIcon />
           </button>
           <button
             onClick={() => setTool('circle')}
-            className={`px-2.5 py-1 rounded-lg text-xs font-semibold transition-all ${
-              tool === 'circle' ? 'bg-green-500 text-gray-950' : 'bg-gray-800 text-gray-300 hover:bg-gray-700'
+            className={`p-1.5 rounded-lg transition-all ${
+              tool === 'circle' ? 'bg-green-500 text-gray-950 shadow-sm' : 'bg-gray-800 text-gray-300 hover:bg-gray-700'
             }`}
-            title="Circle"
+            title="Circle Tool"
           >
-            Circle
+            <CircleToolIcon />
           </button>
           <button
             onClick={() => setTool('text')}
-            className={`px-2.5 py-1 rounded-lg text-xs font-semibold transition-all ${
-              tool === 'text' ? 'bg-green-500 text-gray-950' : 'bg-gray-800 text-gray-300 hover:bg-gray-700'
+            className={`p-1.5 rounded-lg transition-all ${
+              tool === 'text' ? 'bg-green-500 text-gray-950 shadow-sm' : 'bg-gray-800 text-gray-300 hover:bg-gray-700'
             }`}
-            title="Text"
+            title="Text Tool"
           >
-            Text
+            <TextToolIcon />
           </button>
         </div>
 
