@@ -7,6 +7,7 @@ interface RecordingsPanelProps {
   onStartRecording: (title?: string) => Promise<string>;
   onStopRecording: (recordingId: string) => Promise<SessionRecording>;
   onFetchRecordings: () => Promise<SessionRecording[]>;
+  onReplayCodeChange?: (code: string) => void;
 }
 
 export const RecordingsPanel: React.FC<RecordingsPanelProps> = ({
@@ -14,6 +15,7 @@ export const RecordingsPanel: React.FC<RecordingsPanelProps> = ({
   onStartRecording,
   onStopRecording,
   onFetchRecordings,
+  onReplayCodeChange,
 }) => {
   const [activeRecordingId, setActiveRecordingId] = useState<string | null>(null);
   const [recordingSeconds, setRecordingSeconds] = useState(0);
@@ -57,6 +59,23 @@ export const RecordingsPanel: React.FC<RecordingsPanelProps> = ({
     return () => clearInterval(timer);
   }, [isPlaying, selectedRecording, playbackSpeed]);
 
+  const visibleEvents: RecordingEvent[] = selectedRecording
+    ? selectedRecording.events.filter((e) => e.timestamp <= playbackTime)
+    : [];
+
+  // Replay code into editor as timeline progresses
+  useEffect(() => {
+    if (isPlaying && selectedRecording && onReplayCodeChange) {
+      const codeEvents = visibleEvents.filter((e) => e.type === 'code');
+      if (codeEvents.length > 0) {
+        const latest = codeEvents[codeEvents.length - 1];
+        if (latest && latest.detail) {
+          onReplayCodeChange(latest.detail);
+        }
+      }
+    }
+  }, [playbackTime, isPlaying, selectedRecording, onReplayCodeChange]);
+
   const handleStart = async () => {
     try {
       const id = await onStartRecording(titleInput || `Session by ${currentUsername}`);
@@ -84,10 +103,6 @@ export const RecordingsPanel: React.FC<RecordingsPanelProps> = ({
     const secs = seconds % 60;
     return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
   };
-
-  const visibleEvents: RecordingEvent[] = selectedRecording
-    ? selectedRecording.events.filter((e) => e.timestamp <= playbackTime)
-    : [];
 
   return (
     <div className="flex flex-col h-full bg-gray-900 text-gray-200 overflow-hidden min-w-0">

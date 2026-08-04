@@ -528,6 +528,18 @@ const EditorPage: React.FC = () => {
     toast.success(`Switched to ${isNextLight ? 'Light Mode' : 'Dark Mode'}`);
   };
 
+  const handleReplayCodeChange = (newCode: string) => {
+    if (activeFile && doc) {
+      const yText = doc.getText(`file:${activeFile}`);
+      if (yText.toString() !== newCode) {
+        doc.transact(() => {
+          yText.delete(0, yText.length);
+          yText.insert(0, newCode);
+        });
+      }
+    }
+  };
+
   return (
     <div
       data-app-theme={appTheme}
@@ -627,7 +639,7 @@ const EditorPage: React.FC = () => {
                   onCodeChange={(code) => {
                     codeRef.current = code;
                     if (activeRecordingIdRef.current) {
-                      recordEvent('code', username, `Edited ${activeFile}`);
+                      recordEvent('code', username, code);
                     }
                   }}
                 />
@@ -686,6 +698,7 @@ const EditorPage: React.FC = () => {
                   onStartRecording={handleStartRecording}
                   onStopRecording={handleStopRecording}
                   onFetchRecordings={handleFetchRecordings}
+                  onReplayCodeChange={handleReplayCodeChange}
                 />
               )}
             </ToolsPanel>
