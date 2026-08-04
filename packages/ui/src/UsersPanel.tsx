@@ -118,14 +118,14 @@ export const UsersPanel: React.FC<UsersPanelProps> = ({
                   <div className="min-w-0">
                     <div className="flex items-center gap-1.5 flex-wrap">
                       <span className="text-xs font-semibold text-gray-100 truncate">{client.username}</span>
-                      {isMe && <span className="text-3xs px-1.5 py-0.5 bg-gray-800 text-gray-400 rounded-full font-mono">(You)</span>}
+                      {isMe && <span className="px-1 py-px bg-gray-800 text-gray-400 rounded-full font-mono" style={{ fontSize: '9px' }}>(You)</span>}
                       {isHost && (
-                        <span className="text-3xs px-1.5 py-0.5 bg-indigo-500/20 text-indigo-400 border border-indigo-500/30 rounded-full font-mono font-bold">
+                        <span className="px-1 py-px bg-indigo-500/20 text-indigo-400 border border-indigo-500/30 rounded-full font-mono font-bold" style={{ fontSize: '9px' }}>
                           Host
                         </span>
                       )}
                     </div>
-                    <span className="text-2xs text-gray-500 font-mono block truncate">
+                    <span className="text-gray-500 font-mono block truncate" style={{ fontSize: '10px' }}>
                       Status: {isMuted ? 'Muted' : 'Active'}
                     </span>
                   </div>
