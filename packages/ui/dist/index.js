@@ -9,4 +9,5 @@ export * from './CallPanel';
 export * from './RecordingsPanel';
 export * from './AiAssistantPanel';
 export * from './WhiteboardPanel';
+export * from './UsersPanel';
 //# sourceMappingURL=index.js.map

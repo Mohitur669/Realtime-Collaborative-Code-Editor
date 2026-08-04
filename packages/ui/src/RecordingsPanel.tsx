@@ -124,6 +124,110 @@ export const RecordingsPanel: React.FC<RecordingsPanelProps> = ({
     }
   };
 
+const VideoIcon = () => (
+  <svg className="w-3.5 h-3.5 fill-none stroke-current stroke-2" viewBox="0 0 24 24">
+    <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 10.5l4.72-4.72a.75.75 0 011.28.53v11.38a.75.75 0 01-1.28.53l-4.72-4.72M4.5 18.75h9a2.25 2.25 0 002.25-2.25v-9a2.25 2.25 0 00-2.25-2.25h-9A2.25 2.25 0 002.25 7.5v9a2.25 2.25 0 002.25 2.25z" />
+  </svg>
+);
+
+  const handleDownloadVideoRecording = (rec: SessionRecording) => {
+    const canvas = document.createElement('canvas');
+    canvas.width = 960;
+    canvas.height = 540;
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
+
+    let mediaRecorder: MediaRecorder;
+    try {
+      const stream = canvas.captureStream(30);
+      mediaRecorder = new MediaRecorder(stream, { mimeType: 'video/webm' });
+    } catch (e) {
+      console.error('MediaRecorder error', e);
+      return;
+    }
+
+    const chunks: Blob[] = [];
+    mediaRecorder.ondataavailable = (e) => {
+      if (e.data.size > 0) chunks.push(e.data);
+    };
+
+    mediaRecorder.onstop = () => {
+      const blob = new Blob(chunks, { type: 'video/webm' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `${rec.title.replace(/\s+/g, '_')}_video.webm`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    };
+
+    mediaRecorder.start();
+
+    const maxSec = Math.max(1, rec.durationSeconds);
+    let currentSec = 0;
+
+    const interval = setInterval(() => {
+      ctx.fillStyle = '#0f172a';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      ctx.fillStyle = '#1e293b';
+      ctx.fillRect(0, 0, canvas.width, 60);
+
+      ctx.fillStyle = '#818cf8';
+      ctx.font = 'bold 18px sans-serif';
+      ctx.fillText(`CodeSync Replay — ${rec.title}`, 20, 36);
+
+      ctx.fillStyle = '#94a3b8';
+      ctx.font = '12px monospace';
+      ctx.fillText(`Time: ${currentSec}s / ${maxSec}s`, canvas.width - 160, 36);
+
+      const visible = rec.events.filter((e) => e.timestamp <= currentSec);
+      const codeEvent = visible.filter((e) => e.type === 'code').pop();
+
+      ctx.fillStyle = '#020617';
+      ctx.fillRect(20, 80, 580, 430);
+      ctx.strokeStyle = '#334155';
+      ctx.strokeRect(20, 80, 580, 430);
+
+      ctx.fillStyle = '#38bdf8';
+      ctx.font = 'bold 12px monospace';
+      ctx.fillText('Editor Buffer Stream', 35, 105);
+
+      ctx.fillStyle = '#f8fafc';
+      ctx.font = '12px monospace';
+      const lines = (codeEvent?.detail || '// Session code stream').split('\n').slice(0, 18);
+      lines.forEach((line, idx) => {
+        ctx.fillText(line, 35, 132 + idx * 20);
+      });
+
+      ctx.fillStyle = '#020617';
+      ctx.fillRect(620, 80, 320, 430);
+      ctx.strokeRect(620, 80, 320, 430);
+
+      ctx.fillStyle = '#818cf8';
+      ctx.font = 'bold 12px sans-serif';
+      ctx.fillText('Activity Stream Timeline', 635, 105);
+
+      visible.slice(-7).forEach((evt, idx) => {
+        ctx.fillStyle = evt.type === 'code' ? '#818cf8' : evt.type === 'chat' ? '#34d399' : '#f59e0b';
+        ctx.font = 'bold 11px sans-serif';
+        ctx.fillText(`[${evt.type.toUpperCase()}] ${evt.author}:`, 635, 135 + idx * 42);
+        ctx.fillStyle = '#94a3b8';
+        ctx.font = '11px sans-serif';
+        const txt = evt.detail.length > 32 ? evt.detail.substring(0, 30) + '...' : evt.detail;
+        ctx.fillText(txt, 635, 153 + idx * 42);
+      });
+
+      currentSec++;
+      if (currentSec > maxSec) {
+        clearInterval(interval);
+        mediaRecorder.stop();
+      }
+    }, 100);
+  };
+
   const handleDownloadRecording = (rec: SessionRecording) => {
     const jsonStr = JSON.stringify(rec, null, 2);
     const blob = new Blob([jsonStr], { type: 'application/json' });
@@ -219,6 +323,13 @@ export const RecordingsPanel: React.FC<RecordingsPanelProps> = ({
                 </span>
               </div>
               <div className="flex items-center gap-1">
+                <button
+                  onClick={() => handleDownloadVideoRecording(selectedRecording)}
+                  className="p-1.5 bg-gray-800 hover:bg-gray-700 text-indigo-400 rounded-lg border border-gray-700 transition-colors"
+                  title="Download Session Video (.webm)"
+                >
+                  <VideoIcon />
+                </button>
                 <button
                   onClick={() => handleDownloadRecording(selectedRecording)}
                   className="p-1.5 bg-gray-800 hover:bg-gray-700 text-gray-300 rounded-lg border border-gray-700 transition-colors"
@@ -344,6 +455,16 @@ export const RecordingsPanel: React.FC<RecordingsPanelProps> = ({
                       title="Play Session Replay"
                     >
                       <PlayIcon />
+                    </button>
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleDownloadVideoRecording(rec);
+                      }}
+                      className="p-1.5 bg-gray-800 hover:bg-gray-700 text-indigo-400 rounded-lg border border-gray-700 transition-colors"
+                      title="Download Session Video (.webm)"
+                    >
+                      <VideoIcon />
                     </button>
                     <button
                       onClick={(e) => {

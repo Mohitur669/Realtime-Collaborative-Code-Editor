@@ -107,4 +107,32 @@ export class RoomGateway implements OnGatewayConnection, OnGatewayDisconnect {
 
     this.server.in(roomId).emit(SocketActions.CHAT_BROADCAST, chatMsg);
   }
+
+  @SubscribeMessage(SocketActions.RECORDING_NOTIFY)
+  handleRecordingNotify(
+    @ConnectedSocket() client: Socket,
+    @MessageBody() payload: { roomId: string; username: string; action: 'start' | 'stop'; title?: string },
+  ) {
+    this.server.in(payload.roomId).emit(SocketActions.RECORDING_NOTIFY, payload);
+  }
+
+  @SubscribeMessage(SocketActions.USER_MUTE)
+  handleUserMute(
+    @ConnectedSocket() client: Socket,
+    @MessageBody() payload: { roomId: string; targetSocketId: string; targetUsername: string; mute: boolean; byUsername: string },
+  ) {
+    this.server.in(payload.roomId).emit(SocketActions.USER_MUTE, payload);
+  }
+
+  @SubscribeMessage(SocketActions.USER_KICK)
+  handleUserKick(
+    @ConnectedSocket() client: Socket,
+    @MessageBody() payload: { roomId: string; targetSocketId: string; targetUsername: string; byUsername: string },
+  ) {
+    this.server.in(payload.roomId).emit(SocketActions.USER_KICK, payload);
+    const targetClient = this.server.sockets.sockets.get(payload.targetSocketId);
+    if (targetClient) {
+      targetClient.leave(payload.roomId);
+    }
+  }
 }

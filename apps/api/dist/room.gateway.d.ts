@@ -10,5 +10,24 @@ export declare class RoomGateway implements OnGatewayConnection, OnGatewayDiscon
     private getAllConnectedClients;
     handleJoin(client: Socket, payload: JoinPayload): void;
     handleChatMessage(client: Socket, payload: SendChatMessagePayload): void;
+    handleRecordingNotify(client: Socket, payload: {
+        roomId: string;
+        username: string;
+        action: 'start' | 'stop';
+        title?: string;
+    }): void;
+    handleUserMute(client: Socket, payload: {
+        roomId: string;
+        targetSocketId: string;
+        targetUsername: string;
+        mute: boolean;
+        byUsername: string;
+    }): void;
+    handleUserKick(client: Socket, payload: {
+        roomId: string;
+        targetSocketId: string;
+        targetUsername: string;
+        byUsername: string;
+    }): void;
 }
 //# sourceMappingURL=room.gateway.d.ts.map

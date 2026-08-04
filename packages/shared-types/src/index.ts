@@ -8,6 +8,9 @@ export enum SocketActions {
   CHAT_SEND = 'chat-message:send',
   CHAT_BROADCAST = 'chat-message:broadcast',
   CHAT_HISTORY = 'chat-history',
+  RECORDING_NOTIFY = 'recording-notify',
+  USER_MUTE = 'user-mute',
+  USER_KICK = 'user-kick',
 }
 
 export interface User {

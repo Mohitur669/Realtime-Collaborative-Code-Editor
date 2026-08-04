@@ -1,6 +1,6 @@
 import React from 'react';
 
-export type ToolTab = 'chat' | 'ai' | 'call' | 'whiteboard' | 'settings' | 'recordings';
+export type ToolTab = 'users' | 'chat' | 'ai' | 'call' | 'whiteboard' | 'settings' | 'recordings';
 
 interface ToolsPanelProps {
   activeTab: ToolTab;
@@ -10,6 +10,7 @@ interface ToolsPanelProps {
 
 export const ToolsPanel: React.FC<ToolsPanelProps> = ({ activeTab, onSelectTab, children }) => {
   const tabs: { id: ToolTab; label: string }[] = [
+    { id: 'users', label: 'Users' },
     { id: 'chat', label: 'Chat' },
     { id: 'ai', label: 'AI' },
     { id: 'call', label: 'Call' },

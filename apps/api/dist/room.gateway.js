@@ -80,6 +80,19 @@ let RoomGateway = class RoomGateway {
             history.shift(); // maintain 100 msg ring buffer
         this.server.in(roomId).emit(shared_types_1.SocketActions.CHAT_BROADCAST, chatMsg);
     }
+    handleRecordingNotify(client, payload) {
+        this.server.in(payload.roomId).emit(shared_types_1.SocketActions.RECORDING_NOTIFY, payload);
+    }
+    handleUserMute(client, payload) {
+        this.server.in(payload.roomId).emit(shared_types_1.SocketActions.USER_MUTE, payload);
+    }
+    handleUserKick(client, payload) {
+        this.server.in(payload.roomId).emit(shared_types_1.SocketActions.USER_KICK, payload);
+        const targetClient = this.server.sockets.sockets.get(payload.targetSocketId);
+        if (targetClient) {
+            targetClient.leave(payload.roomId);
+        }
+    }
 };
 exports.RoomGateway = RoomGateway;
 __decorate([
@@ -102,6 +115,30 @@ __decorate([
     __metadata("design:paramtypes", [socket_io_1.Socket, Object]),
     __metadata("design:returntype", void 0)
 ], RoomGateway.prototype, "handleChatMessage", null);
+__decorate([
+    (0, websockets_1.SubscribeMessage)(shared_types_1.SocketActions.RECORDING_NOTIFY),
+    __param(0, (0, websockets_1.ConnectedSocket)()),
+    __param(1, (0, websockets_1.MessageBody)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [socket_io_1.Socket, Object]),
+    __metadata("design:returntype", void 0)
+], RoomGateway.prototype, "handleRecordingNotify", null);
+__decorate([
+    (0, websockets_1.SubscribeMessage)(shared_types_1.SocketActions.USER_MUTE),
+    __param(0, (0, websockets_1.ConnectedSocket)()),
+    __param(1, (0, websockets_1.MessageBody)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [socket_io_1.Socket, Object]),
+    __metadata("design:returntype", void 0)
+], RoomGateway.prototype, "handleUserMute", null);
+__decorate([
+    (0, websockets_1.SubscribeMessage)(shared_types_1.SocketActions.USER_KICK),
+    __param(0, (0, websockets_1.ConnectedSocket)()),
+    __param(1, (0, websockets_1.MessageBody)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [socket_io_1.Socket, Object]),
+    __metadata("design:returntype", void 0)
+], RoomGateway.prototype, "handleUserKick", null);
 exports.RoomGateway = RoomGateway = __decorate([
     (0, websockets_1.WebSocketGateway)({
         cors: {

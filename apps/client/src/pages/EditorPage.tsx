@@ -29,6 +29,7 @@ import {
   RecordingsPanel,
   AiAssistantPanel,
   WhiteboardPanel,
+  UsersPanel,
 } from '@codesync/ui';
 import { Group as PanelGroup, Panel, Separator as PanelResizeHandle } from 'react-resizable-panels';
 import * as Y from 'yjs';
@@ -67,6 +68,7 @@ const EditorPage: React.FC = () => {
   const { settings, updateSettings, appTheme, toggleAppTheme } = useSettingsStore();
   const [clients, setClients] = useState<ClientInfo[]>([]);
   const [chatMessages, setChatMessages] = useState<ChatMessage[]>([]);
+  const [mutedUserSockets, setMutedUserSockets] = useState<string[]>([]);
 
   const socketRef = useRef<Socket | null>(null);
   const codeRef = useRef<string>('');
@@ -208,6 +210,11 @@ const EditorPage: React.FC = () => {
       socket.off(SocketActions.CHAT_HISTORY);
       socket.off(SocketActions.CHAT_BROADCAST);
 
+      socket.off(SocketActions.CHAT_BROADCAST);
+      socket.off(SocketActions.RECORDING_NOTIFY);
+      socket.off(SocketActions.USER_MUTE);
+      socket.off(SocketActions.USER_KICK);
+
       socket.on('connect_error', (err) => handleErrors(err));
       socket.on('connect_failed', (err) => handleErrors(err));
 
@@ -263,6 +270,40 @@ const EditorPage: React.FC = () => {
           recordEvent('chat', msg.senderName, msg.content);
         },
       );
+
+      socket.on(SocketActions.RECORDING_NOTIFY, (payload: any) => {
+        if (payload.action === 'start') {
+          toast(`${payload.username} started session recording`, { icon: '🔴' });
+        } else {
+          toast(`${payload.username} stopped session recording`);
+        }
+      });
+
+      socket.on(SocketActions.USER_MUTE, (payload: any) => {
+        if (payload.mute) {
+          setMutedUserSockets((prev) => [...new Set([...prev, payload.targetSocketId])]);
+          if (payload.targetSocketId === socket.id) {
+            toast.error(`You were muted by ${payload.byUsername}`);
+          } else {
+            toast(`${payload.targetUsername} was muted by ${payload.byUsername}`);
+          }
+        } else {
+          setMutedUserSockets((prev) => prev.filter((id) => id !== payload.targetSocketId));
+          if (payload.targetSocketId === socket.id) {
+            toast.success(`You were unmuted by ${payload.byUsername}`);
+          }
+        }
+      });
+
+      socket.on(SocketActions.USER_KICK, (payload: any) => {
+        if (payload.targetSocketId === socket.id) {
+          toast.error(`You were removed from the room by host ${payload.byUsername}`);
+          setTimeout(() => navigate('/'), 1200);
+        } else {
+          toast(`${payload.targetUsername} was removed by host ${payload.byUsername}`);
+          setClients((prev) => prev.filter((c) => c.socketId !== payload.targetSocketId));
+        }
+      });
     };
 
     init();
@@ -273,6 +314,9 @@ const EditorPage: React.FC = () => {
         socketRef.current.off(SocketActions.DISCONNECTED);
         socketRef.current.off(SocketActions.CHAT_HISTORY);
         socketRef.current.off(SocketActions.CHAT_BROADCAST);
+        socketRef.current.off(SocketActions.RECORDING_NOTIFY);
+        socketRef.current.off(SocketActions.USER_MUTE);
+        socketRef.current.off(SocketActions.USER_KICK);
         socketRef.current.disconnect();
       }
       provider.destroy();
@@ -322,6 +366,15 @@ const EditorPage: React.FC = () => {
     });
     const data = await res.json();
     activeRecordingIdRef.current = data.recordingId;
+
+    // Notify all participants in room
+    socketRef.current?.emit(SocketActions.RECORDING_NOTIFY, {
+      roomId: roomId || 'default-room',
+      username,
+      action: 'start',
+      title,
+    });
+
     return data.recordingId;
   };
 
@@ -333,7 +386,34 @@ const EditorPage: React.FC = () => {
       body: JSON.stringify({ recordingId }),
     });
     activeRecordingIdRef.current = null;
+
+    // Notify all participants in room
+    socketRef.current?.emit(SocketActions.RECORDING_NOTIFY, {
+      roomId: roomId || 'default-room',
+      username,
+      action: 'stop',
+    });
+
     return await res.json();
+  };
+
+  const handleMuteUser = (targetSocketId: string, targetUsername: string, mute: boolean) => {
+    socketRef.current?.emit(SocketActions.USER_MUTE, {
+      roomId: roomId || 'default-room',
+      targetSocketId,
+      targetUsername,
+      mute,
+      byUsername: username,
+    });
+  };
+
+  const handleKickUser = (targetSocketId: string, targetUsername: string) => {
+    socketRef.current?.emit(SocketActions.USER_KICK, {
+      roomId: roomId || 'default-room',
+      targetSocketId,
+      targetUsername,
+      byUsername: username,
+    });
   };
 
   const handleFetchRecordings = async (): Promise<SessionRecording[]> => {
@@ -665,6 +745,16 @@ const EditorPage: React.FC = () => {
           {/* Right Tools & Customization Panel */}
           <Panel id="tools" defaultSize="25%" minSize="18%" maxSize="45%">
             <ToolsPanel activeTab={activeTab} onSelectTab={handleSelectTab}>
+              {activeTab === 'users' && (
+                <UsersPanel
+                  clients={clients}
+                  currentUsername={username}
+                  creatorUsername={clients[0]?.username}
+                  mutedUserSockets={mutedUserSockets}
+                  onMuteUser={handleMuteUser}
+                  onKickUser={handleKickUser}
+                />
+              )}
               {activeTab === 'chat' && (
                 <ChatPanel
                   messages={chatMessages}
