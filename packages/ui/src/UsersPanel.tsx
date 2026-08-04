@@ -10,6 +10,22 @@ interface UsersPanelProps {
   onKickUser: (targetSocketId: string, targetUsername: string) => void;
 }
 
+const MuteIcon = ({ isMuted }: { isMuted: boolean }) => (
+  <svg className="w-3.5 h-3.5 fill-none stroke-current stroke-2" viewBox="0 0 24 24">
+    {isMuted ? (
+      <path strokeLinecap="round" strokeLinejoin="round" d="M12 18.75a6 6 0 006-6v-1.5m-6 7.5a6 6 0 01-6-6v-1.5m6 7.5v3.75m-3.75 0h7.5M12 15.75a3 3 0 003-3V6a3 3 0 00-6 0v6.75a3 3 0 003 3zM3 3l18 18" />
+    ) : (
+      <path strokeLinecap="round" strokeLinejoin="round" d="M12 18.75a6 6 0 006-6v-1.5m-6 7.5a6 6 0 01-6-6v-1.5m6 7.5v3.75m-3.75 0h7.5M12 15.75a3 3 0 003-3V6a3 3 0 00-6 0v6.75a3 3 0 003 3z" />
+    )}
+  </svg>
+);
+
+const UserRemoveIcon = () => (
+  <svg className="w-3.5 h-3.5 fill-none stroke-current stroke-2" viewBox="0 0 24 24">
+    <path strokeLinecap="round" strokeLinejoin="round" d="M22 10.5h-6m-2.25-4.125a3.375 3.375 0 11-6.75 0 3.375 3.375 0 016.75 0zM4 19.235v-.11a6.375 6.375 0 0112.75 0v.109A12.318 12.318 0 0110.375 21c-2.33 0-4.512-.645-6.374-1.766z" />
+  </svg>
+);
+
 export const UsersPanel: React.FC<UsersPanelProps> = ({
   clients,
   currentUsername,
@@ -18,12 +34,9 @@ export const UsersPanel: React.FC<UsersPanelProps> = ({
   onMuteUser,
   onKickUser,
 }) => {
-  // Room Creator check: if creatorUsername is specified, check against it.
-  // Default first client in room as creator host if not specified.
   const hostName = creatorUsername || (clients[0] ? clients[0].username : currentUsername);
   const isCreator = currentUsername === hostName;
 
-  // Deduplicate user list by username so same participant is never shown multiple times
   const uniqueClients = clients.filter(
     (c, idx, self) => idx === self.findIndex((item) => item.username === c.username)
   );
@@ -80,26 +93,26 @@ export const UsersPanel: React.FC<UsersPanelProps> = ({
                 </div>
               </div>
 
-              {/* Controls for Creator / Admin */}
+              {/* Controls for Creator / Admin — minimal SVG icon buttons */}
               {isCreator && !isMe && (
                 <div className="flex items-center gap-1.5 shrink-0">
                   <button
                     onClick={() => onMuteUser(client.socketId, client.username, !isMuted)}
-                    className={`px-2.5 py-1 text-xs font-semibold rounded-lg border transition-colors ${
+                    className={`p-1.5 rounded-lg border transition-colors ${
                       isMuted
                         ? 'bg-amber-500/20 text-amber-300 border-amber-500/30 hover:bg-amber-500/30'
                         : 'bg-gray-800 text-gray-300 border-gray-700 hover:bg-gray-700'
                     }`}
                     title={isMuted ? 'Unmute User' : 'Mute User'}
                   >
-                    {isMuted ? 'Unmute' : 'Mute'}
+                    <MuteIcon isMuted={isMuted} />
                   </button>
                   <button
                     onClick={() => onKickUser(client.socketId, client.username)}
-                    className="px-2.5 py-1 bg-red-600/20 hover:bg-red-600/30 text-red-400 border border-red-500/30 text-xs font-semibold rounded-lg transition-colors"
+                    className="p-1.5 bg-red-600/20 hover:bg-red-600/30 text-red-400 border border-red-500/30 rounded-lg transition-colors"
                     title="Remove / Kick User from Room"
                   >
-                    Remove
+                    <UserRemoveIcon />
                   </button>
                 </div>
               )}
