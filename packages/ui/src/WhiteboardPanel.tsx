@@ -25,6 +25,9 @@ export const WhiteboardPanel: React.FC<WhiteboardPanelProps> = ({
   const [currentPoints, setCurrentPoints] = useState<{ x: number; y: number }[]>([]);
   const [startPos, setStartPos] = useState<{ x: number; y: number } | null>(null);
 
+  const [textModalPos, setTextModalPos] = useState<{ x: number; y: number } | null>(null);
+  const [textInputVal, setTextInputVal] = useState('');
+
   // ResizeObserver to make whiteboard canvas fit container width/height dynamically
   useEffect(() => {
     const container = containerRef.current;
@@ -120,18 +123,8 @@ export const WhiteboardPanel: React.FC<WhiteboardPanelProps> = ({
     if (tool === 'pencil') {
       setCurrentPoints([pos]);
     } else if (tool === 'text') {
-      const text = prompt('Enter text to add to canvas:');
-      if (text) {
-        onAddElement({
-          id: `el_${Date.now()}`,
-          type: 'text',
-          x: pos.x,
-          y: pos.y,
-          text,
-          color,
-          strokeWidth,
-        });
-      }
+      setTextModalPos(pos);
+      setTextInputVal('');
       setIsDrawing(false);
     }
   };
@@ -197,7 +190,7 @@ export const WhiteboardPanel: React.FC<WhiteboardPanelProps> = ({
   };
 
   return (
-    <div className="flex flex-col h-full bg-gray-900 text-gray-200">
+    <div className="flex flex-col h-full bg-gray-900 text-gray-200 relative">
       {/* Tools Toolbar */}
       <div className="p-3 border-b border-gray-800 flex flex-wrap items-center justify-between gap-2 overflow-x-auto min-w-0">
         <div className="flex flex-wrap items-center gap-1">
@@ -281,6 +274,67 @@ export const WhiteboardPanel: React.FC<WhiteboardPanelProps> = ({
           className="bg-gray-950 cursor-crosshair w-full h-full"
         />
       </div>
+
+      {/* Text Entry Modal */}
+      {textModalPos && (
+        <div className="fixed inset-0 bg-black/60 backdrop-blur-xs flex items-center justify-center z-50 p-4">
+          <div className="bg-gray-900 border border-gray-800 p-4 rounded-xl shadow-2xl w-full max-w-xs space-y-3">
+            <h4 className="text-xs font-bold text-gray-200">Add Text to Whiteboard</h4>
+            <input
+              type="text"
+              value={textInputVal}
+              onChange={(e) => setTextInputVal(e.target.value)}
+              placeholder="Enter text..."
+              className="w-full bg-gray-950 border border-gray-800 rounded-lg px-3 py-1.5 text-xs text-gray-100 focus:outline-none focus:border-indigo-500 font-mono"
+              autoFocus
+              onKeyDown={(e) => {
+                if (e.key === 'Enter') {
+                  e.preventDefault();
+                  if (textInputVal.trim() && textModalPos) {
+                    onAddElement({
+                      id: `el_${Date.now()}`,
+                      type: 'text',
+                      x: textModalPos.x,
+                      y: textModalPos.y,
+                      text: textInputVal.trim(),
+                      color,
+                      strokeWidth,
+                    });
+                  }
+                  setTextModalPos(null);
+                }
+              }}
+            />
+            <div className="flex items-center justify-end gap-2">
+              <button
+                onClick={() => setTextModalPos(null)}
+                className="px-3 py-1.5 bg-gray-800 hover:bg-gray-700 text-gray-300 text-xs font-semibold rounded-lg border border-gray-700 transition-colors"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={() => {
+                  if (textInputVal.trim() && textModalPos) {
+                    onAddElement({
+                      id: `el_${Date.now()}`,
+                      type: 'text',
+                      x: textModalPos.x,
+                      y: textModalPos.y,
+                      text: textInputVal.trim(),
+                      color,
+                      strokeWidth,
+                    });
+                  }
+                  setTextModalPos(null);
+                }}
+                className="px-3 py-1.5 bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-semibold rounded-lg shadow-sm transition-colors"
+              >
+                Add Text
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
