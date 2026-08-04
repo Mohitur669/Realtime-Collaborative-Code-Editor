@@ -16,13 +16,12 @@ const Home: React.FC = () => {
   };
 
   const joinRoom = () => {
-    if (!roomId || !username) {
-      toast.error('ROOM ID & username is required');
+    if (!roomId.trim() || !username.trim()) {
       return;
     }
 
-    navigate(`/editor/${roomId}`, {
-      state: { username },
+    navigate(`/editor/${roomId.trim()}`, {
+      state: { username: username.trim() },
     });
   };
 
