@@ -235,7 +235,10 @@ const EditorPage: React.FC = () => {
           if (joinedUser !== username) {
             toast.success(`${joinedUser} joined the room.`);
           }
-          setClients(updatedClients);
+          const uniqueClients = updatedClients.filter(
+            (c, idx, self) => idx === self.findIndex((item) => item.username === c.username)
+          );
+          setClients(uniqueClients);
           recordEvent('presence', joinedUser, `${joinedUser} joined room`);
         },
       );
@@ -246,7 +249,7 @@ const EditorPage: React.FC = () => {
           if (leftUser) {
             toast.success(`${leftUser} left the room.`);
           }
-          setClients((prev) => prev.filter((client) => client.socketId !== socketId));
+          setClients((prev) => prev.filter((client) => client.socketId !== socketId && client.username !== leftUser));
           if (leftUser) {
             recordEvent('presence', leftUser, `${leftUser} left room`);
           }

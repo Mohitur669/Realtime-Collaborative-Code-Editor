@@ -53,10 +53,17 @@ export class RoomGateway implements OnGatewayConnection, OnGatewayDisconnect {
     const room = this.server.sockets.adapter.rooms.get(roomId);
     if (!room) return [];
 
-    return Array.from(room).map((socketId) => ({
+    const rawClients = Array.from(room).map((socketId) => ({
       socketId,
       username: this.userSocketMap[socketId] || 'Anonymous',
     }));
+
+    // Deduplicate by username so the same participant is never shown multiple times
+    const uniqueMap = new Map<string, { socketId: string; username: string }>();
+    for (const client of rawClients) {
+      uniqueMap.set(client.username, client);
+    }
+    return Array.from(uniqueMap.values());
   }
 
   @SubscribeMessage(SocketActions.JOIN)

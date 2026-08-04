@@ -23,9 +23,9 @@ export const UsersPanel: React.FC<UsersPanelProps> = ({
   const hostName = creatorUsername || (clients[0] ? clients[0].username : currentUsername);
   const isCreator = currentUsername === hostName;
 
-  // Deduplicate user list by socketId
+  // Deduplicate user list by username so same participant is never shown multiple times
   const uniqueClients = clients.filter(
-    (c, idx, self) => idx === self.findIndex((item) => item.socketId === c.socketId)
+    (c, idx, self) => idx === self.findIndex((item) => item.username === c.username)
   );
 
   return (
