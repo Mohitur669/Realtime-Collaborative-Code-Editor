@@ -44,6 +44,7 @@ export interface SyncCodePayload {
 export interface DisconnectedPayload {
     socketId: string;
     username: string;
+    clients?: ClientInfo[];
 }
 export interface ChatMessage {
     id: string;

@@ -40,9 +40,12 @@ export class RoomGateway implements OnGatewayConnection, OnGatewayDisconnect {
     delete this.socketRoomMap[client.id];
 
     if (roomId && username) {
+      const updatedClients = this.getAllConnectedClients(roomId, client.id);
+
       this.server.in(roomId).emit(SocketActions.DISCONNECTED, {
         socketId: client.id,
         username,
+        clients: updatedClients,
       });
 
       const leaveSystemMsg: ChatMessage = {
@@ -67,14 +70,16 @@ export class RoomGateway implements OnGatewayConnection, OnGatewayDisconnect {
     console.log(`Client disconnected: ${client.id}`);
   }
 
-  private getAllConnectedClients(roomId: string) {
+  private getAllConnectedClients(roomId: string, excludeSocketId?: string) {
     const room = this.server.sockets.adapter.rooms.get(roomId);
     if (!room) return [];
 
-    const rawClients = Array.from(room).map((socketId) => ({
-      socketId,
-      username: this.userSocketMap[socketId] || 'Anonymous',
-    }));
+    const rawClients = Array.from(room)
+      .filter((socketId) => socketId !== excludeSocketId && !!this.userSocketMap[socketId])
+      .map((socketId) => ({
+        socketId,
+        username: this.userSocketMap[socketId],
+      }));
 
     // Deduplicate by username so the same participant is never shown multiple times
     const uniqueMap = new Map<string, { socketId: string; username: string }>();

@@ -251,7 +251,7 @@ const EditorPage: React.FC = () => {
 
     socket.on(
       SocketActions.DISCONNECTED,
-      ({ socketId, username: leftUser }: DisconnectedPayload) => {
+      ({ socketId, username: leftUser, clients: updatedClients }: DisconnectedPayload) => {
         if (leftUser && !recentlyNotifiedLeavesRef.current.has(leftUser)) {
           recentlyNotifiedLeavesRef.current.add(leftUser);
           toast.success(`${leftUser} left the room.`, { id: `leave-${leftUser}` });
@@ -259,7 +259,14 @@ const EditorPage: React.FC = () => {
             recentlyNotifiedLeavesRef.current.delete(leftUser);
           }, 4000);
         }
-        setClients((prev) => prev.filter((client) => client.socketId !== socketId && client.username !== leftUser));
+        if (updatedClients && updatedClients.length >= 0) {
+          const uniqueClients = updatedClients.filter(
+            (c, idx, self) => idx === self.findIndex((item) => item.username === c.username)
+          );
+          setClients(uniqueClients);
+        } else {
+          setClients((prev) => prev.filter((client) => client.socketId !== socketId && client.username !== leftUser));
+        }
         if (leftUser) {
           recordEvent('presence', leftUser, `${leftUser} left room`);
         }

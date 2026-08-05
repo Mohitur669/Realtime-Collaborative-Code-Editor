@@ -31,9 +31,11 @@ let RoomGateway = class RoomGateway {
         delete this.userSocketMap[client.id];
         delete this.socketRoomMap[client.id];
         if (roomId && username) {
+            const updatedClients = this.getAllConnectedClients(roomId, client.id);
             this.server.in(roomId).emit(shared_types_1.SocketActions.DISCONNECTED, {
                 socketId: client.id,
                 username,
+                clients: updatedClients,
             });
             const leaveSystemMsg = {
                 id: (0, crypto_1.randomUUID)(),
@@ -54,13 +56,15 @@ let RoomGateway = class RoomGateway {
         }
         console.log(`Client disconnected: ${client.id}`);
     }
-    getAllConnectedClients(roomId) {
+    getAllConnectedClients(roomId, excludeSocketId) {
         const room = this.server.sockets.adapter.rooms.get(roomId);
         if (!room)
             return [];
-        const rawClients = Array.from(room).map((socketId) => ({
+        const rawClients = Array.from(room)
+            .filter((socketId) => socketId !== excludeSocketId && !!this.userSocketMap[socketId])
+            .map((socketId) => ({
             socketId,
-            username: this.userSocketMap[socketId] || 'Anonymous',
+            username: this.userSocketMap[socketId],
         }));
         // Deduplicate by username so the same participant is never shown multiple times
         const uniqueMap = new Map();
