@@ -67,7 +67,8 @@ describe('RoomGateway Integration & Chat Events', () => {
     const history = await historyPromise;
 
     expect(history.length).toBeGreaterThanOrEqual(1);
-    expect(history[0].content).toBe('Hello **world**!');
+    const userMsg = history.find((m) => m.content === 'Hello **world**!');
+    expect(userMsg).toBeDefined();
 
     // Client 2 sends a message, both should receive broadcast
     const broadcastPromise = new Promise<ChatMessage>((resolve) => {

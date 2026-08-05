@@ -35,6 +35,22 @@ let RoomGateway = class RoomGateway {
                 socketId: client.id,
                 username,
             });
+            const leaveSystemMsg = {
+                id: (0, crypto_1.randomUUID)(),
+                roomId,
+                senderId: 'system',
+                senderName: 'System',
+                content: `${username} left the room`,
+                timestamp: Date.now(),
+            };
+            if (!this.roomChatHistory.has(roomId)) {
+                this.roomChatHistory.set(roomId, []);
+            }
+            const history = this.roomChatHistory.get(roomId);
+            history.push(leaveSystemMsg);
+            if (history.length > 100)
+                history.shift();
+            this.server.in(roomId).emit(shared_types_1.SocketActions.CHAT_BROADCAST, leaveSystemMsg);
         }
         console.log(`Client disconnected: ${client.id}`);
     }
@@ -65,8 +81,23 @@ let RoomGateway = class RoomGateway {
             username,
             socketId: client.id,
         });
+        const joinSystemMsg = {
+            id: (0, crypto_1.randomUUID)(),
+            roomId,
+            senderId: 'system',
+            senderName: 'System',
+            content: `${username} joined the room`,
+            timestamp: Date.now(),
+        };
+        if (!this.roomChatHistory.has(roomId)) {
+            this.roomChatHistory.set(roomId, []);
+        }
+        const history = this.roomChatHistory.get(roomId);
+        history.push(joinSystemMsg);
+        if (history.length > 100)
+            history.shift();
+        this.server.in(roomId).emit(shared_types_1.SocketActions.CHAT_BROADCAST, joinSystemMsg);
         // Send Chat history to newly joined user
-        const history = this.roomChatHistory.get(roomId) || [];
         client.emit(shared_types_1.SocketActions.CHAT_HISTORY, { messages: history });
     }
     handleChatMessage(client, payload) {

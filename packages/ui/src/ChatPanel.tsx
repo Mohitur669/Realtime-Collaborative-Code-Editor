@@ -86,6 +86,16 @@ export const ChatPanel: React.FC<ChatPanelProps> = ({
           </div>
         ) : (
           messages.map((msg) => {
+            if (msg.senderId === 'system') {
+              return (
+                <div key={msg.id} className="flex justify-center my-1.5">
+                  <span className="px-2.5 py-0.5 bg-gray-800/80 text-gray-400 border border-gray-700/50 rounded-full font-mono" style={{ fontSize: '10px' }}>
+                    {msg.content} • {new Date(msg.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                  </span>
+                </div>
+              );
+            }
+
             const isMe = msg.senderName === currentUsername;
             const hasMention = msg.content.includes(`@${currentUsername}`);
 
