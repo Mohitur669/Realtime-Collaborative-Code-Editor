@@ -1,12 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { WhiteboardElement } from '@codesync/shared-types';
 
-interface WhiteboardPanelProps {
-  elements: WhiteboardElement[];
-  onAddElement: (element: WhiteboardElement) => void;
-  onClearElements: () => void;
-}
-
 const PencilToolIcon = () => (
   <svg className="w-3.5 h-3.5 fill-none stroke-current stroke-2" viewBox="0 0 24 24">
     <path strokeLinecap="round" strokeLinejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L6.832 19.82a4.5 4.5 0 01-1.897 1.13l-2.685.8.8-2.685a4.5 4.5 0 011.13-1.897L16.863 4.487zm0 0L19.5 7.125" />
@@ -31,10 +25,24 @@ const TextToolIcon = () => (
   </svg>
 );
 
+const ExternalLinkIcon = () => (
+  <svg className="w-3.5 h-3.5 fill-none stroke-current stroke-2" viewBox="0 0 24 24">
+    <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 6H5.25A2.25 2.25 0 003 8.25v10.5A2.25 2.25 0 005.25 21h10.5A2.25 2.25 0 0018 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25" />
+  </svg>
+);
+
+interface WhiteboardPanelProps {
+  elements: WhiteboardElement[];
+  onAddElement: (element: WhiteboardElement) => void;
+  onClearElements: () => void;
+  onOpenNewTab?: () => void;
+}
+
 export const WhiteboardPanel: React.FC<WhiteboardPanelProps> = ({
   elements,
   onAddElement,
   onClearElements,
+  onOpenNewTab,
 }) => {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const containerRef = useRef<HTMLDivElement | null>(null);
@@ -271,6 +279,15 @@ export const WhiteboardPanel: React.FC<WhiteboardPanelProps> = ({
         </div>
 
         <div className="flex flex-wrap items-center gap-1.5">
+          {onOpenNewTab && (
+            <button
+              onClick={onOpenNewTab}
+              className="p-1.5 bg-indigo-600/20 hover:bg-indigo-600/30 text-indigo-400 text-xs font-semibold rounded-lg border border-indigo-500/30 transition-colors flex items-center gap-1"
+              title="Open Whiteboard in New Tab"
+            >
+              <ExternalLinkIcon />
+            </button>
+          )}
           <button
             onClick={onClearElements}
             className="px-2.5 py-1 bg-red-600/20 hover:bg-red-600/30 text-red-400 text-xs font-semibold rounded-lg border border-red-500/30"

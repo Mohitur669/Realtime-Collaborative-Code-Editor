@@ -815,6 +815,7 @@ const EditorPage: React.FC = () => {
                   elements={whiteboardElements}
                   onAddElement={handleAddWhiteboardElement}
                   onClearElements={handleClearWhiteboard}
+                  onOpenNewTab={() => window.open(`/whiteboard/${roomId}?username=${encodeURIComponent(username)}`, '_blank')}
                 />
               )}
               {activeTab === 'recordings' && (
