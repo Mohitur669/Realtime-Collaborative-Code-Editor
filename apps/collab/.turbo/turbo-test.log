@@ -12,11 +12,11 @@ stdout | test/collab.spec.ts > CRDT Collaboration Server (Hocuspocus + Yjs)
   > HTTP: http://0.0.0.0:1235
   > WebSocket: ws://0.0.0.0:1235
 
- ✓ test/collab.spec.ts (1 test) 342ms
+ ✓ test/collab.spec.ts (1 test) 340ms
    ✓ CRDT Collaboration Server (Hocuspocus + Yjs) > should synchronize concurrent edits from two Yjs clients without losing data 333ms
 
  Test Files  1 passed (1)
       Tests  1 passed (1)
-   Start at  23:05:36
-   Duration  798ms (transform 39ms, setup 0ms, collect 93ms, tests 342ms, environment 0ms, prepare 39ms)
+   Start at  21:41:31
+   Duration  1.09s (transform 408ms, setup 0ms, collect 460ms, tests 340ms, environment 0ms, prepare 39ms)
 

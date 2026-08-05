@@ -4,6 +4,7 @@ import { JoinPayload, SendChatMessagePayload } from '@codesync/shared-types';
 export declare class RoomGateway implements OnGatewayConnection, OnGatewayDisconnect {
     server: Server;
     private userSocketMap;
+    private socketRoomMap;
     private roomChatHistory;
     handleConnection(client: Socket): void;
     handleDisconnect(client: Socket): void;

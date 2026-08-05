@@ -20,21 +20,22 @@ const crypto_1 = require("crypto");
 let RoomGateway = class RoomGateway {
     server;
     userSocketMap = {};
+    socketRoomMap = {};
     roomChatHistory = new Map();
     handleConnection(client) {
         console.log(`Client connected: ${client.id}`);
     }
     handleDisconnect(client) {
         const username = this.userSocketMap[client.id];
+        const roomId = this.socketRoomMap[client.id];
         delete this.userSocketMap[client.id];
-        // Find rooms client was in
-        const rooms = Array.from(client.rooms).filter((r) => r !== client.id);
-        rooms.forEach((roomId) => {
-            client.to(roomId).emit(shared_types_1.SocketActions.DISCONNECTED, {
+        delete this.socketRoomMap[client.id];
+        if (roomId && username) {
+            this.server.in(roomId).emit(shared_types_1.SocketActions.DISCONNECTED, {
                 socketId: client.id,
                 username,
             });
-        });
+        }
         console.log(`Client disconnected: ${client.id}`);
     }
     getAllConnectedClients(roomId) {
@@ -55,6 +56,7 @@ let RoomGateway = class RoomGateway {
     handleJoin(client, payload) {
         const { roomId, username } = payload;
         this.userSocketMap[client.id] = username;
+        this.socketRoomMap[client.id] = roomId;
         client.join(roomId);
         const clients = this.getAllConnectedClients(roomId);
         // Notify everyone in the room

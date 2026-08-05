@@ -26,6 +26,7 @@ export class RoomGateway implements OnGatewayConnection, OnGatewayDisconnect {
   server!: Server;
 
   private userSocketMap: Record<string, string> = {};
+  private socketRoomMap: Record<string, string> = {};
   private roomChatHistory: Map<string, ChatMessage[]> = new Map();
 
   handleConnection(client: Socket) {
@@ -34,17 +35,16 @@ export class RoomGateway implements OnGatewayConnection, OnGatewayDisconnect {
 
   handleDisconnect(client: Socket) {
     const username = this.userSocketMap[client.id];
+    const roomId = this.socketRoomMap[client.id];
     delete this.userSocketMap[client.id];
+    delete this.socketRoomMap[client.id];
 
-    // Find rooms client was in
-    const rooms = Array.from(client.rooms).filter((r) => r !== client.id);
-
-    rooms.forEach((roomId) => {
-      client.to(roomId).emit(SocketActions.DISCONNECTED, {
+    if (roomId && username) {
+      this.server.in(roomId).emit(SocketActions.DISCONNECTED, {
         socketId: client.id,
         username,
       });
-    });
+    }
 
     console.log(`Client disconnected: ${client.id}`);
   }
@@ -73,6 +73,7 @@ export class RoomGateway implements OnGatewayConnection, OnGatewayDisconnect {
   ) {
     const { roomId, username } = payload;
     this.userSocketMap[client.id] = username;
+    this.socketRoomMap[client.id] = roomId;
     client.join(roomId);
 
     const clients = this.getAllConnectedClients(roomId);

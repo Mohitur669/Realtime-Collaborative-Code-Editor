@@ -176,6 +176,8 @@ const EditorPage: React.FC = () => {
   };
 
   const activeRecordingIdRef = useRef<string | null>(null);
+  const recentlyNotifiedJoinsRef = useRef<Set<string>>(new Set());
+  const recentlyNotifiedLeavesRef = useRef<Set<string>>(new Set());
 
   const recordEvent = async (type: 'code' | 'chat' | 'presence', author: string, detail: string) => {
     if (!activeRecordingIdRef.current) return;
@@ -199,62 +201,70 @@ const EditorPage: React.FC = () => {
   useEffect(() => {
     if (!username) return;
 
-    const init = async () => {
-      socketRef.current = await initSocket();
+    if (socketRef.current) {
+      socketRef.current.disconnect();
+    }
+    const socket = initSocket();
+    socketRef.current = socket;
 
-      const socket = socketRef.current;
-      socket.off('connect_error');
-      socket.off('connect_failed');
-      socket.off(SocketActions.JOINED);
-      socket.off(SocketActions.DISCONNECTED);
-      socket.off(SocketActions.CHAT_HISTORY);
-      socket.off(SocketActions.CHAT_BROADCAST);
+    socket.off('connect_error');
+    socket.off('connect_failed');
+    socket.off(SocketActions.JOINED);
+    socket.off(SocketActions.DISCONNECTED);
+    socket.off(SocketActions.CHAT_HISTORY);
+    socket.off(SocketActions.CHAT_BROADCAST);
+    socket.off(SocketActions.RECORDING_NOTIFY);
+    socket.off(SocketActions.USER_MUTE);
+    socket.off(SocketActions.USER_KICK);
 
-      socket.off(SocketActions.CHAT_BROADCAST);
-      socket.off(SocketActions.RECORDING_NOTIFY);
-      socket.off(SocketActions.USER_MUTE);
-      socket.off(SocketActions.USER_KICK);
+    socket.on('connect_error', (err) => handleErrors(err));
+    socket.on('connect_failed', (err) => handleErrors(err));
 
-      socket.on('connect_error', (err) => handleErrors(err));
-      socket.on('connect_failed', (err) => handleErrors(err));
+    function handleErrors(e: any) {
+      console.error('socket error', e);
+      toast.error('Socket connection failed, try again later.');
+      navigate('/');
+    }
 
-      function handleErrors(e: any) {
-        console.error('socket error', e);
-        toast.error('Socket connection failed, try again later.');
-        navigate('/');
-      }
+    socket.emit(SocketActions.JOIN, {
+      roomId,
+      username,
+    });
 
-      socket.emit(SocketActions.JOIN, {
-        roomId,
-        username,
-      });
+    socket.on(
+      SocketActions.JOINED,
+      ({ clients: updatedClients, username: joinedUser }: JoinedPayload) => {
+        if (joinedUser !== username && !recentlyNotifiedJoinsRef.current.has(joinedUser)) {
+          recentlyNotifiedJoinsRef.current.add(joinedUser);
+          toast.success(`${joinedUser} joined the room.`, { id: `join-${joinedUser}` });
+          setTimeout(() => {
+            recentlyNotifiedJoinsRef.current.delete(joinedUser);
+          }, 4000);
+        }
+        const uniqueClients = updatedClients.filter(
+          (c, idx, self) => idx === self.findIndex((item) => item.username === c.username)
+        );
+        setClients(uniqueClients);
+        recordEvent('presence', joinedUser, `${joinedUser} joined room`);
+      },
+    );
 
-      socket.on(
-        SocketActions.JOINED,
-        ({ clients: updatedClients, username: joinedUser }: JoinedPayload) => {
-          if (joinedUser !== username) {
-            toast.success(`${joinedUser} joined the room.`);
-          }
-          const uniqueClients = updatedClients.filter(
-            (c, idx, self) => idx === self.findIndex((item) => item.username === c.username)
-          );
-          setClients(uniqueClients);
-          recordEvent('presence', joinedUser, `${joinedUser} joined room`);
-        },
-      );
-
-      socket.on(
-        SocketActions.DISCONNECTED,
-        ({ socketId, username: leftUser }: DisconnectedPayload) => {
-          if (leftUser) {
-            toast.success(`${leftUser} left the room.`);
-          }
-          setClients((prev) => prev.filter((client) => client.socketId !== socketId && client.username !== leftUser));
-          if (leftUser) {
-            recordEvent('presence', leftUser, `${leftUser} left room`);
-          }
-        },
-      );
+    socket.on(
+      SocketActions.DISCONNECTED,
+      ({ socketId, username: leftUser }: DisconnectedPayload) => {
+        if (leftUser && !recentlyNotifiedLeavesRef.current.has(leftUser)) {
+          recentlyNotifiedLeavesRef.current.add(leftUser);
+          toast.success(`${leftUser} left the room.`, { id: `leave-${leftUser}` });
+          setTimeout(() => {
+            recentlyNotifiedLeavesRef.current.delete(leftUser);
+          }, 4000);
+        }
+        setClients((prev) => prev.filter((client) => client.socketId !== socketId && client.username !== leftUser));
+        if (leftUser) {
+          recordEvent('presence', leftUser, `${leftUser} left room`);
+        }
+      },
+    );
 
       socket.on(
         SocketActions.CHAT_HISTORY,
@@ -316,9 +326,6 @@ const EditorPage: React.FC = () => {
           setClients((prev) => prev.filter((c) => c.socketId !== payload.targetSocketId));
         }
       });
-    };
-
-    init();
 
     const handleBeforeUnload = () => {
       if (socketRef.current) {
