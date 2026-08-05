@@ -1,143 +1,193 @@
-# Sync Code: Realtime Collaborative Code Editor
+# Sync Code — Realtime Collaborative Code Editor
 
-> **Sync Code** is an ultra-fast, modern, real-time collaborative code editor built as a TypeScript monorepo using **pnpm** and **Turborepo**. It features CRDT-based document synchronization, multi-file project workspaces, live video/audio calling, interactive session recordings replay, AI pair programming, and a shared collaborative whiteboard.
+A modern, real-time collaborative code editor built as a **TypeScript monorepo** using **pnpm workspaces** and **Turborepo**. Features CRDT-based conflict-free document synchronization, multi-file project workspaces, live video/audio calling, session recording & replay, AI pair programming, and a shared collaborative whiteboard.
 
----
-
-## 🚀 Features
-
-- **⚡ Realtime CRDT Collaboration**: Powered by **Yjs** and **Hocuspocus** for conflict-free document synchronization across multiple active clients.
-- **📁 Multi-file Project Workspace**: Tree view with real-time CRUD operations, file tab switching, and ZIP project import/export.
-- **👥 Presence Bar & Cursor Tracking**: Visual badges showing real-time active users and their active files.
-- **💬 Realtime Text Chat**: Markdown message rendering, `@username` mentions, and history backfill.
-- **🎙️ LiveKit Audio & Video Call**: High-quality SFU video, voice chat, screen sharing, and participant controls.
-- **📼 Session Recording & Replay**: Capture workspace events and replay them step-by-step with an interactive scrubber bar and playback speed controls (1x, 2x, 4x).
-- **🤖 AI Pair Programmer**: Copilot assistance for code explanation, refactoring, bug fixes, and custom code generation with one-click editor insertion.
-- **🎨 Collaborative Whiteboard**: Real-time canvas drawing with pencil, rectangle, circle, text tools, color palette, and PNG image export.
-- **💾 Snapshot & Persistence Engine**: Background CRDT state snapshotting and persistence endpoints.
-- **🔐 JWT Authentication**: Token issuance and session validation.
+![TypeScript](https://img.shields.io/badge/TypeScript-5.4-blue?logo=typescript)
+![React](https://img.shields.io/badge/React-18-61dafb?logo=react)
+![NestJS](https://img.shields.io/badge/NestJS-10-e0234e?logo=nestjs)
+![Yjs](https://img.shields.io/badge/Yjs-CRDT-green)
+![Vite](https://img.shields.io/badge/Vite-6-646cff?logo=vite)
+![pnpm](https://img.shields.io/badge/pnpm-9-f69220?logo=pnpm)
+![License](https://img.shields.io/badge/License-GPLv3-blue)
 
 ---
 
-## 🏗️ Monorepo Architecture Layout
+## Features
+
+- **Realtime CRDT Collaboration** — Powered by [Yjs](https://yjs.dev/) and [Hocuspocus](https://tiptap.dev/hocuspocus) for conflict-free document sync across multiple clients with no merge conflicts.
+- **Multi-file Project Workspace** — File tree with real-time CRUD, tab switching, CodeMirror 6 editor with syntax highlighting for 20+ languages, and ZIP import/export.
+- **Presence & Cursor Tracking** — Live avatar badges showing active users and which files they're editing.
+- **Realtime Text Chat** — Markdown message rendering, `@username` mention notifications, and chat history backfill on join.
+- **LiveKit Audio & Video Calls** — SFU-based video/voice chat, screen sharing, and participant controls powered by [LiveKit](https://livekit.io/).
+- **Session Recording & Replay** — Capture canvas recordings as `.webm` video and replay with interactive scrubber and playback speed controls (1×, 2×, 4×).
+- **AI Pair Programmer** — Code explanation, refactoring, bug fixes, and custom generation with one-click editor insertion. Supports Anthropic and OpenAI providers.
+- **Collaborative Whiteboard** — Shared real-time canvas with pencil, rectangle, circle, and text tools, color palette, and PNG export.
+- **Admin Controls** — Room host can mute/unmute and remove participants.
+- **Snapshot & Persistence** — Background CRDT state snapshotting with database persistence.
+- **JWT Authentication** — Token-based session management.
+- **Dark Mode** — Toggle between dark and light editor themes.
+
+---
+
+## Tech Stack
+
+| Layer | Technology |
+| :--- | :--- |
+| Frontend | React 18, TypeScript, Vite, Tailwind CSS, CodeMirror 6, Zustand |
+| Backend API | NestJS 10, Socket.IO, TypeScript |
+| CRDT Server | Hocuspocus (Yjs), WebSocket |
+| Video/Audio | LiveKit (SFU), `@livekit/components-react` |
+| AI | Anthropic Claude, OpenAI (configurable) |
+| Database | PostgreSQL |
+| Cache | Redis |
+| Object Storage | MinIO (local) / S3 / R2 (production) |
+| Monorepo | pnpm workspaces, Turborepo |
+| Testing | Vitest |
+
+---
+
+## Monorepo Structure
 
 ```
 code-editor/
 ├── apps/
-│   ├── client/          React 18 + TypeScript + Vite + Tailwind CSS + CodeMirror 6
-│   ├── api/             NestJS + TypeScript — REST API, Auth, Chat, AI proxy, LiveKit tokens
-│   └── collab/          Node.js + TypeScript — Hocuspocus (Yjs) server for CRDT doc sync
+│   ├── client/            React 18 + Vite + Tailwind CSS + CodeMirror 6
+│   ├── api/               NestJS — REST API, Auth, Chat, AI proxy, LiveKit tokens
+│   └── collab/            Hocuspocus (Yjs) CRDT document sync server
 ├── packages/
-│   ├── shared-types/    Shared TypeScript DTOs, event contracts & schema types
-│   └── ui/              Shared React design system primitives & tab panels
+│   ├── shared-types/      Shared TypeScript DTOs, socket event contracts, schemas
+│   └── ui/                Shared React component primitives & panel designs
 ├── infra/
-│   └── docker-compose.yml PostgreSQL, Redis, MinIO, LiveKit SFU container orchestration
-└── legacy/              Preserved CRA + Express codebase reference
+│   └── docker-compose.yml PostgreSQL, Redis, MinIO, LiveKit orchestration
+└── legacy/                Preserved original CRA + Express codebase (reference only)
 ```
 
 ---
 
-## 📋 Prerequisites
+## Prerequisites
 
-Ensure you have the following installed on your machine:
-
-- **Node.js**: `v18.0.0` or higher
-- **pnpm**: `v8.0.0` or higher (`npm i -g pnpm`)
-- **Docker & Docker Compose** *(optional, for full containerized stack execution)*
+- **Node.js** `v18.0.0` or higher
+- **pnpm** `v9.0.0` or higher — install with `npm i -g pnpm`
+- **Docker & Docker Compose** *(optional — for the full containerized stack)*
 
 ---
 
-## ⚙️ Quick Start (Local Development)
+## Quick Start
 
-### 1. Clone & Install Dependencies
+### 1. Clone & Install
 
 ```bash
 git clone https://github.com/Mohitur669/Realtime-Collaborative-Code-Editor.git
-cd code-editor
+cd Realtime-Collaborative-Code-Editor
 pnpm install
 ```
 
-### 2. Environment Configuration
-
-Copy the example environment configuration:
+### 2. Configure Environment
 
 ```bash
 cp .env.example .env
 ```
 
-Default local service ports:
-- **Client App**: `http://localhost:5173`
-- **NestJS API**: `http://localhost:3000`
-- **Collab CRDT Server**: `ws://localhost:1234`
-- **LiveKit SFU Server**: `ws://localhost:7880`
+Edit `.env` and fill in the required values:
 
-### 3. Run Development Servers
+| Variable | Description |
+| :--- | :--- |
+| `DATABASE_URL` | PostgreSQL connection string |
+| `REDIS_URL` | Redis connection string |
+| `JWT_SECRET` | Secret for JWT token signing |
+| `AI_DEFAULT_PROVIDER` | `anthropic` or `openai` |
+| `ANTHROPIC_API_KEY` | Anthropic API key (if using Claude) |
+| `OPENAI_API_KEY` | OpenAI API key (if using GPT) |
+| `LIVEKIT_API_KEY` | LiveKit API key |
+| `LIVEKIT_API_SECRET` | LiveKit API secret |
+| `S3_ACCESS_KEY` | MinIO / S3 access key |
+| `S3_SECRET_KEY` | MinIO / S3 secret key |
 
-Start all application development servers simultaneously via Turborepo:
+### 3. Start Development Servers
 
 ```bash
 pnpm dev
 ```
 
-Open your browser and navigate to `http://localhost:5173` to join or create a collaboration room!
+This starts all three services simultaneously via Turborepo:
+
+| Service | URL |
+| :--- | :--- |
+| Client App | `http://localhost:5173` |
+| NestJS API | `http://localhost:3001` |
+| Collab CRDT Server | `ws://localhost:1234` |
+| LiveKit SFU | `ws://localhost:7880` |
+
+Open `http://localhost:5173` to create or join a collaboration room.
 
 ---
 
-## 🛠️ Monorepo Development Commands
+## Development Commands
 
 | Command | Description |
 | :--- | :--- |
-| `pnpm dev` | Starts development servers for `apps/client`, `apps/api`, and `apps/collab` |
-| `pnpm build` | Builds production bundles for all packages and apps via Turborepo |
-| `pnpm test` | Executes unit and integration test suites across all packages |
-| `pnpm --filter @codesync/client dev` | Starts only the client web application |
-| `pnpm --filter @codesync/api dev` | Starts only the NestJS backend API |
-| `pnpm --filter @codesync/collab dev` | Starts only the Hocuspocus CRDT server |
+| `pnpm dev` | Start all dev servers (client + api + collab) |
+| `pnpm build` | Build all packages and apps for production |
+| `pnpm test` | Run all unit and integration tests |
+| `pnpm lint` | Lint all packages |
+| `pnpm format` | Format all files with Prettier |
+| `pnpm --filter @codesync/client dev` | Start only the client |
+| `pnpm --filter @codesync/api dev` | Start only the API server |
+| `pnpm --filter @codesync/collab dev` | Start only the CRDT server |
 
 ---
 
-## 🧪 Running Tests
+## Running Tests
 
-To run all unit and integration tests across the monorepo:
+Run the full test suite across all packages:
 
 ```bash
 pnpm test
 ```
 
-Specific package testing:
+Run tests for a specific package:
 
 ```bash
-pnpm --filter @codesync/api test
-pnpm --filter @codesync/collab test
+pnpm --filter @codesync/api test      # API tests (auth, gateway, AI, recordings, persistence, LiveKit)
+pnpm --filter @codesync/collab test    # CRDT collaboration tests
 ```
 
 ---
 
-## 🐳 Running via Docker Compose
+## Docker Compose
 
-To launch the complete infrastructure stack (PostgreSQL, Redis, MinIO, LiveKit SFU, API, Collab, Client) in containerized mode:
+Launch the complete stack in containers:
 
 ```bash
 docker compose up --build
 ```
 
-Access the stack at:
-- **Web Client**: `http://localhost:5173`
-- **NestJS API**: `http://localhost:3000`
-- **Hocuspocus Server**: `http://localhost:1234`
-- **LiveKit Server**: `http://localhost:7880`
+Services:
+
+| Service | Port |
+| :--- | :--- |
+| Web Client | `http://localhost:5173` |
+| NestJS API | `http://localhost:3001` |
+| Hocuspocus Server | `ws://localhost:1234` |
+| LiveKit SFU | `ws://localhost:7880` |
+| PostgreSQL | `localhost:5432` |
+| Redis | `localhost:6379` |
+| MinIO | `localhost:9000` |
 
 ---
 
-## 📜 Development Guidelines
+## Contributing
 
-All contributions must follow the architectural constraints defined in [AGENTS.md](file:///Users/mohitur/Desktop/git-projects/code-editor/AGENTS.md):
-- **Shared Types First**: Shared logic and schemas must reside in `packages/shared-types` or `packages/ui`.
-- **No Code Execution**: In-browser code execution is explicitly out of scope for security.
-- **Build & Test Gate**: Every phase must pass `pnpm build` and `pnpm test` cleanly.
+All contributions must follow the rules defined in [AGENTS.md](AGENTS.md):
+
+1. **Shared types first** — Shared logic, DTOs, and schemas go in `packages/shared-types` or `packages/ui`. No duplicating concerns across apps.
+2. **Strict type contracts** — Every socket event, payload, and API endpoint must be fully typed in `shared-types` before use.
+3. **No fallow dependencies** — Every added dependency must be actively used.
+4. **Build & test gate** — `pnpm build` and `pnpm test` must pass before any merge.
+5. **No in-browser code execution** — Running user code is explicitly out of scope.
 
 ---
 
-## 📄 License
+## License
 
-This project is licensed under the [MIT License](LICENSE).
+This project is licensed under the [GNU General Public License v3.0](LICENSE).
