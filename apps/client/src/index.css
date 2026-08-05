@@ -1,0 +1,206 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html, body, #root {
+  height: 100%;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Ensure CodeMirror expands to fill 100% height of editor panel */
+.cm-theme {
+  height: 100% !important;
+}
+
+.cm-editor {
+  height: 100% !important;
+  font-size: 14px;
+}
+
+.cm-scroller {
+  height: 100% !important;
+  overflow: auto !important;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace !important;
+}
+
+/* Yjs Collaborative Carets & Remote Selections */
+.cm-ySelection {
+  background-color: rgba(34, 197, 94, 0.3);
+}
+
+.cm-ySelectionCaret {
+  border-left: 2px solid #22c55e;
+  margin-left: -1px;
+  margin-right: -1px;
+  box-sizing: border-box;
+  display: inline;
+  position: relative;
+}
+
+.cm-ySelectionCaretDot {
+  border-radius: 50%;
+  width: 6px;
+  height: 6px;
+  background-color: #22c55e;
+  margin-left: -3px;
+  position: absolute;
+  top: -4px;
+}
+
+/* React Resizable Panels Layout & Dragging */
+[data-panel-group] {
+  display: flex !important;
+  width: 100% !important;
+  height: 100% !important;
+}
+
+[data-panel-group-direction="horizontal"] {
+  flex-direction: row !important;
+}
+
+[data-panel-group-direction="vertical"] {
+  flex-direction: column !important;
+}
+
+[data-panel] {
+  overflow: hidden !important;
+  position: relative !important;
+}
+
+[data-panel-resize-handle-id] {
+  touch-action: none !important;
+  user-select: none !important;
+  -webkit-user-select: none !important;
+  z-index: 30 !important;
+  position: relative !important;
+  width: 6px !important;
+  min-width: 6px !important;
+}
+
+[data-panel-resize-handle-id]:hover,
+[data-panel-resize-handle-id][data-resize-handle-state="hover"],
+[data-panel-resize-handle-id][data-resize-handle-state="drag"] {
+  background-color: rgba(34, 197, 94, 0.6) !important;
+}
+
+/* Custom Sleek Dark Scrollbars */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #030712;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #1f2937;
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #374151;
+}
+
+/* App-wide Light Theme Overrides */
+[data-app-theme="light"] {
+  background-color: #f8fafc !important;
+  color: #0f172a !important;
+}
+
+[data-app-theme="light"] .bg-gray-950,
+[data-app-theme="light"] .bg-gray-900,
+[data-app-theme="light"] .bg-gray-900\/90,
+[data-app-theme="light"] .bg-gray-900\/80,
+[data-app-theme="light"] .bg-gray-900\/60,
+[data-app-theme="light"] .bg-gray-900\/40,
+[data-app-theme="light"] .bg-gray-950\/90,
+[data-app-theme="light"] .bg-gray-950\/80,
+[data-app-theme="light"] .bg-gray-950\/70,
+[data-app-theme="light"] .bg-gray-950\/60 {
+  background-color: #ffffff !important;
+}
+
+[data-app-theme="light"] .bg-gray-800 {
+  background-color: #f1f5f9 !important;
+}
+
+[data-app-theme="light"] .bg-gray-800\/80,
+[data-app-theme="light"] .bg-gray-800\/50 {
+  background-color: #e2e8f0 !important;
+}
+
+[data-app-theme="light"] .border-gray-800,
+[data-app-theme="light"] .border-gray-800\/60,
+[data-app-theme="light"] .border-gray-800\/50,
+[data-app-theme="light"] .border-gray-700 {
+  border-color: #e2e8f0 !important;
+}
+
+[data-app-theme="light"] .text-gray-100,
+[data-app-theme="light"] .text-gray-200,
+[data-app-theme="light"] .text-gray-300 {
+  color: #0f172a !important;
+}
+
+[data-app-theme="light"] .text-gray-400,
+[data-app-theme="light"] .text-gray-500 {
+  color: #64748b !important;
+}
+
+[data-app-theme="light"] input,
+[data-app-theme="light"] textarea,
+[data-app-theme="light"] select {
+  background-color: #f8fafc !important;
+  color: #0f172a !important;
+  border-color: #cbd5e1 !important;
+}
+
+[data-app-theme="light"] ::-webkit-scrollbar-track {
+  background: #f8fafc !important;
+}
+
+[data-app-theme="light"] ::-webkit-scrollbar-thumb {
+  background: #cbd5e1 !important;
+}
+
+[data-app-theme="light"] ::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8 !important;
+}
+
+/* Universal Typography & Font Proportion Sync */
+[data-app-theme] input,
+[data-app-theme] select,
+[data-app-theme] textarea,
+[data-app-theme] button {
+  font-family: inherit;
+}
+
+/* Anti-breakage Responsive Guards */
+* {
+  box-sizing: border-box;
+}
+
+html, body, #root {
+  max-width: 100vw !important;
+  max-height: 100vh !important;
+  overflow: hidden !important;
+}
+
+[data-panel] {
+  min-width: 0 !important;
+  min-height: 0 !important;
+  overflow: hidden !important;
+}
+
+button, input, select, textarea {
+  max-width: 100%;
+}

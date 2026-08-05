@@ -1,0 +1,5 @@
+legacy
+dist
+build
+node_modules
+.turbo

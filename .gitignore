@@ -9,12 +9,17 @@
 # testing
 /coverage
 yarn.lock
-# production
+
+# production & build outputs
 /build
+dist
+.turbo
+scratch
 
 # misc
 .env
 .DS_Store
+.pnpm-store
 .env.local
 .env.development.local
 .env.test.local

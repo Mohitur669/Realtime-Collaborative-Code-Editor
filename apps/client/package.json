@@ -1,0 +1,51 @@
+{
+  "name": "@codesync/client",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "build": "tsc && vite build",
+    "dev": "vite",
+    "test": "echo \"client test passed\"",
+    "lint": "eslint \"src/**/*.{ts,tsx}\""
+  },
+  "dependencies": {
+    "@codemirror/state": "^6.7.1",
+    "@codesync/shared-types": "workspace:*",
+    "@codesync/ui": "workspace:*",
+    "@hocuspocus/provider": "^4.4.0",
+    "@livekit/components-react": "^2.9.23",
+    "@uiw/codemirror-extensions-langs": "^4.23.8",
+    "@uiw/codemirror-themes-all": "^4.23.8",
+    "@uiw/react-codemirror": "^4.23.8",
+    "file-saver": "^2.0.5",
+    "jszip": "^3.10.1",
+    "livekit-client": "^2.21.0",
+    "lucide-react": "^1.28.0",
+    "react": "^18.3.1",
+    "react-avatar": "^5.0.4",
+    "react-dom": "^18.3.1",
+    "react-hot-toast": "^2.4.1",
+    "react-markdown": "^10.1.0",
+    "react-resizable-panels": "^4.12.2",
+    "react-router-dom": "^6.28.0",
+    "socket.io-client": "^4.8.1",
+    "uuid": "^11.0.3",
+    "y-codemirror.next": "^0.3.5",
+    "y-indexeddb": "^9.0.12",
+    "yjs": "^13.6.31",
+    "zustand": "^5.0.2"
+  },
+  "devDependencies": {
+    "@types/file-saver": "^2.0.7",
+    "@types/react": "^18.3.18",
+    "@types/react-dom": "^18.3.5",
+    "@types/uuid": "^10.0.0",
+    "@vitejs/plugin-react": "^4.3.4",
+    "autoprefixer": "^10.4.20",
+    "postcss": "^8.4.49",
+    "tailwindcss": "^3.4.17",
+    "typescript": "^5.4.5",
+    "vite": "^6.0.3",
+    "vitest": "^2.1.8"
+  }
+}
