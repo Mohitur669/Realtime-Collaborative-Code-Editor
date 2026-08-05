@@ -1,26 +1,78 @@
-# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
-
-# dependencies
+# ==========================================
+# Dependencies & Package Managers
+# ==========================================
 node_modules
 .node_modules
-/.pnp
-.pnp.js
-.idea
-
-# logs
-*.log
-*.log*
-logs
-pnpm-debug.log*
+.pnpm-store
+.pnpm-debug.log*
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+/.pnp
+.pnp.js
 
-# testing & cache
-/coverage
-.vite
+# ==========================================
+# Build & Distribution Outputs
+# ==========================================
+dist
+build
+out
 .turbo
 *.turbo
-.pnpm-store
-.pnpm-debug.log*
+tsconfig.tsbuildinfo
+
+# ==========================================
+# Environment & Secret Files
+# ==========================================
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+.env.*.local
+*.pem
+*.key
+
+# ==========================================
+# Testing & Code Coverage
+# ==========================================
+coverage
+*.lcov
+.nyc_output
+.vite
 scratch
+
+# ==========================================
+# Logs & Temporary Files
+# ==========================================
+logs
+*.log
+*.log*
+*.tmp
+*.temp
+
+# ==========================================
+# IDE & Editor Configurations
+# ==========================================
+.idea
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+*.suo
+*.user
+*.swp
+*~
+*.bak
+
+# ==========================================
+# OS & System Files
+# ==========================================
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
