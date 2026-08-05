@@ -21,4 +21,6 @@ yarn-error.log*
 .vite
 .turbo
 *.turbo
+.pnpm-store
+.pnpm-debug.log*
 scratch
