@@ -31,18 +31,18 @@ A modern, real-time collaborative code editor built as a **TypeScript monorepo**
 
 ## Tech Stack
 
-| Layer | Technology |
-| :--- | :--- |
-| Frontend | React 18, TypeScript, Vite, Tailwind CSS, CodeMirror 6, Zustand |
-| Backend API | NestJS 10, Socket.IO, TypeScript |
-| CRDT Server | Hocuspocus (Yjs), WebSocket |
-| Video/Audio | LiveKit (SFU), `@livekit/components-react` |
-| AI | Anthropic Claude, OpenAI (configurable) |
-| Database | PostgreSQL |
-| Cache | Redis |
-| Object Storage | MinIO (local) / S3 / R2 (production) |
-| Monorepo | pnpm workspaces, Turborepo |
-| Testing | Vitest |
+| Layer          | Technology                                                      |
+| :------------- | :-------------------------------------------------------------- |
+| Frontend       | React 18, TypeScript, Vite, Tailwind CSS, CodeMirror 6, Zustand |
+| Backend API    | NestJS 10, Socket.IO, TypeScript                                |
+| CRDT Server    | Hocuspocus (Yjs), WebSocket                                     |
+| Video/Audio    | LiveKit (SFU), `@livekit/components-react`                      |
+| AI             | Anthropic Claude, OpenAI (configurable)                         |
+| Database       | PostgreSQL                                                      |
+| Cache          | Redis                                                           |
+| Object Storage | MinIO (local) / S3 / R2 (production)                            |
+| Monorepo       | pnpm workspaces, Turborepo                                      |
+| Testing        | Vitest                                                          |
 
 ---
 
@@ -68,7 +68,7 @@ code-editor/
 
 - **Node.js** `v18.0.0` or higher
 - **pnpm** `v9.0.0` or higher — install with `npm i -g pnpm`
-- **Docker & Docker Compose** *(optional — for the full containerized stack)*
+- **Docker & Docker Compose** _(optional — for the full containerized stack)_
 
 ---
 
@@ -77,8 +77,8 @@ code-editor/
 ### 1. Clone & Install
 
 ```bash
-git clone https://github.com/Mohitur669/Realtime-Collaborative-Code-Editor.git
-cd Realtime-Collaborative-Code-Editor
+git clone https://github.com/Mohitur669/code-editor.git
+cd code-editor
 pnpm install
 ```
 
@@ -90,18 +90,18 @@ cp .env.example .env
 
 Edit `.env` and fill in the required values:
 
-| Variable | Description |
-| :--- | :--- |
-| `DATABASE_URL` | PostgreSQL connection string |
-| `REDIS_URL` | Redis connection string |
-| `JWT_SECRET` | Secret for JWT token signing |
-| `AI_DEFAULT_PROVIDER` | `anthropic` or `openai` |
-| `ANTHROPIC_API_KEY` | Anthropic API key (if using Claude) |
-| `OPENAI_API_KEY` | OpenAI API key (if using GPT) |
-| `LIVEKIT_API_KEY` | LiveKit API key |
-| `LIVEKIT_API_SECRET` | LiveKit API secret |
-| `S3_ACCESS_KEY` | MinIO / S3 access key |
-| `S3_SECRET_KEY` | MinIO / S3 secret key |
+| Variable              | Description                         |
+| :-------------------- | :---------------------------------- |
+| `DATABASE_URL`        | PostgreSQL connection string        |
+| `REDIS_URL`           | Redis connection string             |
+| `JWT_SECRET`          | Secret for JWT token signing        |
+| `AI_DEFAULT_PROVIDER` | `anthropic` or `openai`             |
+| `ANTHROPIC_API_KEY`   | Anthropic API key (if using Claude) |
+| `OPENAI_API_KEY`      | OpenAI API key (if using GPT)       |
+| `LIVEKIT_API_KEY`     | LiveKit API key                     |
+| `LIVEKIT_API_SECRET`  | LiveKit API secret                  |
+| `S3_ACCESS_KEY`       | MinIO / S3 access key               |
+| `S3_SECRET_KEY`       | MinIO / S3 secret key               |
 
 ### 3. Start Development Servers
 
@@ -111,12 +111,12 @@ pnpm dev
 
 This starts all three services simultaneously via Turborepo:
 
-| Service | URL |
-| :--- | :--- |
-| Client App | `http://localhost:5173` |
-| NestJS API | `http://localhost:3001` |
-| Collab CRDT Server | `ws://localhost:1234` |
-| LiveKit SFU | `ws://localhost:7880` |
+| Service            | URL                     |
+| :----------------- | :---------------------- |
+| Client App         | `http://localhost:5173` |
+| NestJS API         | `http://localhost:3001` |
+| Collab CRDT Server | `ws://localhost:1234`   |
+| LiveKit SFU        | `ws://localhost:7880`   |
 
 Open `http://localhost:5173` to create or join a collaboration room.
 
@@ -124,16 +124,16 @@ Open `http://localhost:5173` to create or join a collaboration room.
 
 ## Development Commands
 
-| Command | Description |
-| :--- | :--- |
-| `pnpm dev` | Start all dev servers (client + api + collab) |
-| `pnpm build` | Build all packages and apps for production |
-| `pnpm test` | Run all unit and integration tests |
-| `pnpm lint` | Lint all packages |
-| `pnpm format` | Format all files with Prettier |
-| `pnpm --filter @codesync/client dev` | Start only the client |
-| `pnpm --filter @codesync/api dev` | Start only the API server |
-| `pnpm --filter @codesync/collab dev` | Start only the CRDT server |
+| Command                              | Description                                   |
+| :----------------------------------- | :-------------------------------------------- |
+| `pnpm dev`                           | Start all dev servers (client + api + collab) |
+| `pnpm build`                         | Build all packages and apps for production    |
+| `pnpm test`                          | Run all unit and integration tests            |
+| `pnpm lint`                          | Lint all packages                             |
+| `pnpm format`                        | Format all files with Prettier                |
+| `pnpm --filter @codesync/client dev` | Start only the client                         |
+| `pnpm --filter @codesync/api dev`    | Start only the API server                     |
+| `pnpm --filter @codesync/collab dev` | Start only the CRDT server                    |
 
 ---
 
@@ -164,15 +164,15 @@ docker compose up --build
 
 Services:
 
-| Service | Port |
-| :--- | :--- |
-| Web Client | `http://localhost:5173` |
-| NestJS API | `http://localhost:3001` |
-| Hocuspocus Server | `ws://localhost:1234` |
-| LiveKit SFU | `ws://localhost:7880` |
-| PostgreSQL | `localhost:5432` |
-| Redis | `localhost:6379` |
-| MinIO | `localhost:9000` |
+| Service           | Port                    |
+| :---------------- | :---------------------- |
+| Web Client        | `http://localhost:5173` |
+| NestJS API        | `http://localhost:3001` |
+| Hocuspocus Server | `ws://localhost:1234`   |
+| LiveKit SFU       | `ws://localhost:7880`   |
+| PostgreSQL        | `localhost:5432`        |
+| Redis             | `localhost:6379`        |
+| MinIO             | `localhost:9000`        |
 
 ---
 
