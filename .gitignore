@@ -7,25 +7,18 @@ node_modules
 .pnp.js
 .idea
 
-# testing
-/coverage
-yarn.lock
-
-# production & build outputs
-/build
-dist
-.turbo
-scratch
-
-# misc
-.env
-.DS_Store
-.pnpm-store
-.env.local
-.env.development.local
-.env.test.local
-.env.production.local
-
+# logs
+*.log
+*.log*
+logs
+pnpm-debug.log*
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+
+# testing & cache
+/coverage
+.vite
+.turbo
+*.turbo
+scratch
